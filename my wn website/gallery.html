@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ваша галерея</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      background: #f9f9f9;
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    #photo-container {
+      margin-top: 30px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .photo-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .photo-box img {
+      max-width: 300px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    .photo-box a {
+      margin-top: 10px;
+      padding: 8px 12px;
+      background-color: #4CAF50;
+      color: white;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .photo-box a:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Ваши фотографии</h2>
+  <div id="photo-container"></div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get("code");
+
+    const container = document.getElementById("photo-container");
+
+    if (!code) {
+      container.innerHTML = "<p>Код доступа не указан.</p>";
+    } else {
+      fetch(`/api/photos/${code}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            data.urls.forEach(url => {
+              const box = document.createElement("div");
+              box.className = "photo-box";
+
+              const img = document.createElement("img");
+              img.src = url;
+
+              const download = document.createElement("a");
+              download.href = url;
+              download.download = ""; // Попросит скачать
+              download.textContent = "Скачать";
+
+              box.appendChild(img);
+              box.appendChild(download);
+              container.appendChild(box);
+            });
+          } else {
+            container.innerHTML = "<p>Фотографии не найдены для этого кода.</p>";
+          }
+        })
+        .catch(err => {
+          container.innerHTML = "<p>Ошибка при загрузке фотографий.</p>";
+          console.error(err);
+        });
+    }
+  </script>
+</body>
+</html>

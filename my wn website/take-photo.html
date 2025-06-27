@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="author" content="Nazar Kovalev" />
+  <meta name="description" content="Страница для получения фотографий" />
+  <meta name="keywords" content="Photographer, Get Photos" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <title>Забрать фото</title>
+
+  <style>
+    .input-code {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      width: 250px;
+      margin-top: 10px;
+    }
+
+    .photo-button {
+      padding: 10px 15px;
+      font-size: 16px;
+      border-radius: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .photo-button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <nav>
+      <a href="index.html">Главная</a>
+      <a href="take-photo.html">Забрать фото</a>
+      <a href="#">Контакты</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="card">
+      <h2>Введите код доступа</h2>
+      <input type="text" id="photo-code" placeholder="Ваш уникальный код" class="input-code" />
+      <button class="photo-button" onclick="getPhotos()">Показать фото</button>
+    </div>
+  </div>
+
+  <script>
+    async function getPhotos() {
+      const code = document.getElementById("photo-code").value.trim();
+
+      if (!code) {
+        alert("Пожалуйста, введите код.");
+        return;
+      }
+
+      try {
+        const res = await fetch(`/api/photos/${code}`);
+        const data = await res.json();
+
+        if (data.success) {
+          // ✅ Переход на страницу галереи с параметром
+          window.location.href = `gallery.html?code=${encodeURIComponent(code)}`;
+        } else {
+          alert("Код неверный. Фотографии не найдены.");
+        }
+      } catch (err) {
+        alert("Ошибка подключения к серверу.");
+        console.error(err);
+      }
+    }
+  </script>
+
+</body>
+</html>
