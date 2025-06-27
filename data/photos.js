@@ -4,3 +4,5 @@ module.exports = {
     "gallery/photo2"
   ]
 };
+
+export default photos;
