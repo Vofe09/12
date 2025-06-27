@@ -1,4 +1,5 @@
-module.exports = {
+// data/photos.js
+const photos = {
   "key123": [
     "gallery/photo1",
     "gallery/photo2"
