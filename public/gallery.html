@@ -30,8 +30,9 @@
 
     .highlight-box {
       position: relative;
-      height: 50vh;
       width: 100%;
+      height: 100vh; /* адаптивная высота */
+      max-height: 1080px;
       overflow: hidden;
       margin-bottom: 20px;
     }
@@ -42,6 +43,7 @@
       object-fit: cover;
       filter: brightness(60%);
     }
+
 
     .overlay-text {
       position: absolute;
@@ -107,7 +109,7 @@
 <body>
 
   <div class="notice-bar">
-    Фотографии доступны до <strong>01.09.2025</strong>
+    Фотографии доступны до <strong> 01.09.2025</strong>
   </div>
 
   <div class="highlight-box">
@@ -117,6 +119,7 @@
       <p id="session-date">...</p>
     </div>
   </div>
+
 
   <div id="photo-container"></div>
 
