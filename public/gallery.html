@@ -6,57 +6,47 @@
   <title>Ваша галерея</title>
   <link rel="stylesheet" href="style.css" />
 <style>
-  body {
-    font-family: sans-serif;
-    padding: 20px;
-    background: #f9f9f9;
-  }
+ #photo-container {
+  column-count: 4;
+  column-gap: 12px;
+  padding: 10px;
+}
 
-  h2 {
-    text-align: center;
-    margin-bottom: 30px;
-  }
+.photo-box {
+  break-inside: avoid;
+  margin-bottom: 12px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  position: relative;
+}
 
-  #photo-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    grid-auto-rows: 8px; /* базовая "высота строки" */
-    gap: 10px;
-    justify-content: center;
-  }
+.photo-box img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 10px;
+}
 
-  .photo-box {
-    position: relative;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-  }
+.download-button {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 10px;
+  font-size: 14px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  text-decoration: none;
+}
 
-  .photo-box img {
-    width: 100%;
-    height: auto;
-    display: block;
-    border-radius: 10px;
-  }
+.photo-box:hover .download-button {
+  opacity: 1;
+}
 
-  .download-button {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    text-align: center;
-    background: rgba(0, 0, 0, 0.6);
-    color: white;
-    padding: 10px;
-    font-size: 14px;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    text-decoration: none;
-  }
-
-  .photo-box:hover .download-button {
-    opacity: 1;
-  }
 </style>
 
 
