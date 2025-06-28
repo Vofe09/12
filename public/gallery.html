@@ -134,17 +134,24 @@
 
     .download-button {
       position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      text-align: center;
-      background: rgba(0, 0, 0, 0.6);
-      color: white;
-      padding: 10px;
-      font-size: 14px;
+      bottom: 8px;
+      right: 8px;
+      width: 28px;
+      height: 28px;
+      background-color: rgba(0, 0, 0, 0.6);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       opacity: 0;
       transition: opacity 0.3s ease;
       text-decoration: none;
+    }
+
+    .download-button img {
+      width: 16px;
+      height: 16px;
+      filter: invert(1);
     }
 
     .photo-box:hover .download-button {
@@ -241,19 +248,16 @@ async function downloadAllPhotos() {
             allPhotoUrls = data.urls;
 
             data.urls.forEach(url => {
-              const box = document.createElement("div");
-              box.className = "photo-box";
-
-              const img = document.createElement("img");
-              img.src = url;
-              img.alt = "Фото";
-
               const download = document.createElement("a");
               download.href = url;
               download.download = "";
               download.className = "download-button";
-              download.textContent = "📥 Скачать";
 
+              const icon = document.createElement("img");
+              icon.src = "img/download.svg"; // не забудь положить download.svg в папку /img
+              icon.alt = "Скачать";
+
+              download.appendChild(icon);
               box.appendChild(img);
               box.appendChild(download);
               container.appendChild(box);
