@@ -1,35 +1,35 @@
-// api/photos.js
 import { v2 as cloudinary } from 'cloudinary';
-import photos from '../data/photos.js';
 
-// Конфигурация Cloudinary через переменные окружения
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key:    process.env.CLOUDINARY_API_KEY,
+  api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-// Vercel serverless API route
-export default function handler(req, res) {
+export default async function handler(req, res) {
   const { key } = req.query;
 
-  const ids = photos[key];
-
-  if (!ids) {
-    return res.status(404).json({ success: false, message: "Код не найден" });
+  if (!key) {
+    return res.status(400).json({ success: false, message: "Ключ не указан" });
   }
 
-  // Генерация временных защищённых URL (на 5 минут)
-  const signedUrls = ids.map(publicId =>
-    cloudinary.url(publicId, {
-      type: "upload", // <--- ВАЖНО: было "private", стало "upload"
-      resource_type: "image",
-      sign_url: true,
-      secure: true,
-      expires_at: Math.floor(Date.now() / 1000) + 60 * 5
-    })
-  );
+  try {
+    const result = await cloudinary.search
+      .expression(`folder:${key}`)
+      .sort_by('public_id', 'asc')
+      .max_results(30)
+      .execute();
 
+    const urls = result.resources.map(file =>
+      cloudinary.url(file.public_id, {
+        type: "upload",     // обязательно "upload", если фото не приватные
+        secure: true
+      })
+    );
 
-  res.json({ success: true, urls: signedUrls });
+    res.json({ success: true, urls });
+  } catch (error) {
+    console.error("Ошибка Cloudinary:", error);
+    res.status(500).json({ success: false, message: "Ошибка сервера" });
+  }
 }
