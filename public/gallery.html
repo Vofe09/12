@@ -125,7 +125,7 @@
       height: auto;
       display: block;
       border-radius: 10px;
-      cursor: pointer;
+      cursor: zoom-in;
     }
 
     .download-button {
@@ -154,6 +154,7 @@
       opacity: 1;
     }
 
+    /* 📱 Адаптивные стили для телефонов */
     @media (max-width: 768px) {
       .highlight-box {
         height: 60vh;
@@ -189,7 +190,7 @@
       }
     }
 
-    /* Lightbox styles */
+    /* 🌌 Lightbox */
     #lightbox {
       position: fixed;
       z-index: 2000;
@@ -219,6 +220,8 @@
       max-width: 100%;
       max-height: 100%;
       border-radius: 10px;
+      transition: transform 0.2s ease;
+      cursor: zoom-in;
     }
 
     .lightbox-close {
@@ -255,6 +258,26 @@
       width: 24px;
       height: 24px;
       filter: invert(1);
+    }
+
+    @media (max-width: 768px) {
+      .lightbox-content {
+        top: 0;
+        left: 0;
+        transform: none;
+        width: 100vw;
+        height: 100vh;
+        max-width: none;
+        max-height: none;
+        border-radius: 0;
+      }
+
+      .lightbox-content img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        border-radius: 0;
+      }
     }
   </style>
 </head>
@@ -296,11 +319,42 @@
   <script>
     let allPhotoUrls = [];
     let currentIndex = 0;
+    let zoomed = false;
+
+    async function downloadAllPhotos() {
+      if (allPhotoUrls.length === 0) {
+        alert("Фотографии ещё не загружены.");
+        return;
+      }
+
+      const zip = new JSZip();
+      const promises = allPhotoUrls.map(async (url, index) => {
+        try {
+          const response = await fetch(url);
+          const blob = await response.blob();
+          const contentType = response.headers.get("Content-Type");
+          let ext = contentType.includes("jpeg") ? "jpg" :
+                    contentType.includes("png") ? "png" :
+                    contentType.includes("webp") ? "webp" : "jpg";
+          const fileName = `photo_${String(index + 1).padStart(3, '0')}.${ext}`;
+          zip.file(fileName, blob);
+        } catch (e) {
+          console.error(`Ошибка при загрузке ${url}`, e);
+        }
+      });
+
+      await Promise.all(promises);
+      const content = await zip.generateAsync({ type: "blob" });
+      saveAs(content, "gallery.zip");
+    }
 
     function showLightbox(index) {
       if (!allPhotoUrls[index]) return;
       currentIndex = index;
-      document.getElementById("lightboxImage").src = allPhotoUrls[index];
+      zoomed = false;
+      const lightboxImage = document.getElementById("lightboxImage");
+      lightboxImage.src = allPhotoUrls[index];
+      lightboxImage.style.transform = "scale(1)";
       document.getElementById("lightbox").style.display = "block";
     }
 
@@ -318,94 +372,70 @@
       showLightbox(currentIndex);
     }
 
-    async function downloadAllPhotos() {
-      if (allPhotoUrls.length === 0) {
-        alert("Фотографии ещё не загружены.");
-        return;
-      }
-
-      const zip = new JSZip();
-      const promises = allPhotoUrls.map(async (url, index) => {
-        try {
-          const response = await fetch(url);
-          const blob = await response.blob();
-          const contentType = response.headers.get("Content-Type");
-          const ext = contentType.includes("jpeg") ? "jpg" : contentType.includes("png") ? "png" : "webp";
-          zip.file(`photo_${String(index + 1).padStart(3, '0')}.${ext}`, blob);
-        } catch (e) {
-          console.error(`Ошибка при загрузке ${url}`, e);
-        }
-      });
-
-      await Promise.all(promises);
-      const content = await zip.generateAsync({ type: "blob" });
-      saveAs(content, "gallery.zip");
-    }
-
     window.addEventListener('load', () => {
-      const code = new URLSearchParams(window.location.search).get("code");
+      const params = new URLSearchParams(window.location.search);
+      const code = params.get("code");
       const container = document.getElementById("photo-container");
 
-      if (!code) return container.innerHTML = "<p>Код доступа не указан.</p>";
+      if (!code) {
+        container.innerHTML = "<p>Код доступа не указан.</p>";
+        return;
+      }
 
       fetch(`/api/photos/${code}`)
         .then(res => res.json())
         .then(data => {
-          if (!data.success) return container.innerHTML = "<p>Фотографии не найдены.</p>";
+          if (data.success) {
+            document.getElementById("cover-image").src = data.cover || "";
+            document.getElementById("session-title").textContent = data.title || "Фотосессия";
+            document.getElementById("session-date").textContent = data.date || "";
+            allPhotoUrls = data.urls;
 
-          document.getElementById("cover-image").src = data.cover || "";
-          document.getElementById("session-title").textContent = data.title || "Фотосессия";
-          document.getElementById("session-date").textContent = data.date || "";
-          allPhotoUrls = data.urls;
+            data.urls.forEach((url, index) => {
+              const box = document.createElement("div");
+              box.className = "photo-box";
 
-          data.urls.forEach((url, index) => {
-            const box = document.createElement("div");
-            box.className = "photo-box";
+              const img = document.createElement("img");
+              img.src = url;
+              img.alt = "Фото";
+              img.addEventListener("click", () => showLightbox(index));
 
-            const img = document.createElement("img");
-            img.src = url;
-            img.alt = "Фото";
-            img.addEventListener("click", () => showLightbox(index));
+              const download = document.createElement("a");
+              download.href = url;
+              download.download = "";
+              download.className = "download-button";
 
-            const download = document.createElement("a");
-            download.href = url;
-            download.download = "";
-            download.className = "download-button";
-            const icon = document.createElement("img");
-            icon.src = "img/download.svg";
-            icon.alt = "Скачать";
-            download.appendChild(icon);
+              const icon = document.createElement("img");
+              icon.src = "img/download.svg";
+              icon.alt = "Скачать";
+              download.appendChild(icon);
 
-            box.appendChild(img);
-            box.appendChild(download);
-            container.appendChild(box);
-          });
-        })
-        .catch(err => {
-          console.error(err);
-          container.innerHTML = "<p>Ошибка при загрузке фотографий.</p>";
+              box.appendChild(img);
+              box.appendChild(download);
+              container.appendChild(box);
+            });
+          } else {
+            container.innerHTML = "<p>Фотографии не найдены для этого кода.</p>";
+          }
         });
 
-      const fixedTopbar = document.getElementById('fixedTopbar');
-      const staticTopbar = document.getElementById('staticTopbar');
       const sentinel = document.createElement('div');
       sentinel.style.height = '1px';
-      staticTopbar.before(sentinel);
-
+      document.getElementById('staticTopbar').before(sentinel);
       let observerStarted = false;
+
       window.addEventListener('scroll', () => {
         if (!observerStarted && window.scrollY >= 300) {
           observerStarted = true;
           const observer = new IntersectionObserver(([entry]) => {
-            fixedTopbar.style.display = entry.isIntersecting ? 'none' : 'flex';
-          }, { threshold: 0, rootMargin: "-30px 0px 0px 0px" });
+            document.getElementById('fixedTopbar').style.display = entry.isIntersecting ? 'none' : 'flex';
+          }, { rootMargin: "-30px 0px 0px 0px" });
           observer.observe(sentinel);
         }
       });
 
       document.getElementById('download-all-btn-static').addEventListener('click', downloadAllPhotos);
       document.getElementById('download-all-btn-fixed').addEventListener('click', downloadAllPhotos);
-
       document.getElementById("lightboxClose").addEventListener("click", closeLightbox);
       document.getElementById("lightboxBackdrop").addEventListener("click", closeLightbox);
       document.getElementById("nextBtn").addEventListener("click", nextImage);
@@ -416,6 +446,13 @@
           if (e.key === "ArrowLeft") prevImage();
           if (e.key === "Escape") closeLightbox();
         }
+      });
+
+      document.getElementById("lightboxImage").addEventListener("click", () => {
+        const img = document.getElementById("lightboxImage");
+        zoomed = !zoomed;
+        img.style.transform = zoomed ? "scale(2.5)" : "scale(1)";
+        img.style.cursor = zoomed ? "zoom-out" : "zoom-in";
       });
     });
   </script>
