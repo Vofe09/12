@@ -35,22 +35,28 @@
 
   /* Нижний белый хедер */
   .topbar {
-    display: none; /* скрыт изначально */
-    position: fixed;
-    top: 30px;
-    left: 0;
-    width: 100%;
     height: 45px;
     background: white;
-    z-index: 999;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0 35px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    font-family: sans-serif;
+    z-index: 999;
   }
 
+  .topbar.fixed {
+    position: fixed;
+    top: 30px;
+    left: 0;
+    width: 100%;
+  }
 
+  .topbar.static {
+    position: relative;
+    z-index: 1;
+  }
 
 
   .topbar .left {
@@ -169,13 +175,26 @@
   </div>
 
   <!-- Вот сюда JS добавит sentinel -->
-  <div class="topbar-placeholder" style="height:45px;"></div>
+  <!-- <div class="topbar-placeholder" style="height:45px;"></div>
   <div class="topbar">
     <div class="left">Kovalev Nazar</div>
     <div class="right">
       <img src="download.svg" alt="Скачать" />
-    </div>
+    </div> -->
+  <!-- </div> -->
+
+    <!-- Фиксированный topbar, невидимый -->
+  <div class="topbar fixed" style="display: none;">
+    <div class="left">Kovalev Nazar</div>
+    <div class="right"><img src="download.svg" alt="Скачать" /></div>
   </div>
+
+  <!-- Topbar, расположенный под обложкой -->
+  <div class="topbar static" id="staticTopbar">
+    <div class="left">Kovalev Nazar</div>
+    <div class="right"><img src="download.svg" alt="Скачать" /></div>
+  </div>
+
 
   <div id="photo-container"></div>
 
