@@ -65,6 +65,9 @@
     width: 100%;
     z-index: 999;
   }
+    .topbar.hidden {
+    visibility: hidden;
+  }
 
 
     .highlight-box {
@@ -217,24 +220,34 @@
     const topbar = document.querySelector('.topbar');
     const sentinel = document.createElement('div');
     sentinel.style.height = '1px';
+    document.querySelector('.highlight-box').after(sentinel);
 
-    const highlightBox = document.querySelector('.highlight-box');
-    highlightBox.parentNode.insertBefore(sentinel, highlightBox.nextSibling); // после highlight-box
+    const topbarPlaceholder = document.createElement('div');
+    topbarPlaceholder.style.height = topbar.offsetHeight + 'px';
+    topbarPlaceholder.style.display = 'none';
+    topbar.after(topbarPlaceholder);
+
+    topbar.classList.add('hidden');
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (!entry.isIntersecting) {
+          topbar.classList.remove('hidden');
           topbar.classList.add('sticky');
+          topbarPlaceholder.style.display = 'block';
         } else {
+          topbar.classList.add('hidden');
           topbar.classList.remove('sticky');
+          topbarPlaceholder.style.display = 'none';
         }
       },
       {
         rootMargin: "-30px 0px 0px 0px"
       }
-    );
+);
 
-    observer.observe(sentinel);
+observer.observe(sentinel);
+
   </script>
 </body>
 </html>
