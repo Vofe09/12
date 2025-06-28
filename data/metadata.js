@@ -9,6 +9,12 @@ export default {
     title: "Свадьба Саши и Вики",
     date: "12.05.2025",
     cover: "QaeiP3LVzmnE4Wu/wedding_001"
+  },
+
+    "emqmerokrpcyphxchfcg": {
+    title: "Фотоссесия аээээ",
+    date: "26.06.2025",
+    cover: "emqmerokrpcyphxchfcg/DSC_0208_oagtnp"
   }
 
   // Добавляй больше кодов по аналогии
