@@ -35,9 +35,6 @@
 
   /* Нижний белый хедер */
   .topbar {
-    position: sticky;
-    top: 0; /* Прилипнет к верху, когда достигнет */
-    z-index: 999;
     height: 45px;
     background: white;
     display: flex;
@@ -47,7 +44,6 @@
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
     font-family: sans-serif;
   }
-
 
   .topbar .left {
     font-size: 16px;
@@ -208,6 +204,27 @@
           console.error(err);
         });
     }
+
+    const topbar = document.querySelector('.topbar');
+    const sentinel = document.createElement('div');
+    sentinel.style.height = '1px';
+    document.body.insertBefore(sentinel, topbar);
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) {
+          topbar.classList.add('sticky');
+        } else {
+          topbar.classList.remove('sticky');
+        }
+      },
+      {
+        rootMargin: "-30px 0px 0px 0px" // как только topbar дотронется до notice-bar
+      }
+    );
+
+    observer.observe(sentinel);
+
   </script>
 </body>
 </html>
