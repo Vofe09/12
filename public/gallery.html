@@ -5,61 +5,124 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ваша галерея</title>
   <link rel="stylesheet" href="style.css" />
-<style>
- #photo-container {
-  column-count: 4;
-  column-gap: 12px;
-  padding: 10px;
-}
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background-color: #f9f9f9;
+    }
 
-.photo-box {
-  break-inside: avoid;
-  margin-bottom: 12px;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  position: relative;
-}
+    .notice-bar {
+      background-color: #201c1c;
+      color: #999;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      font-size: 14px;
+    }
 
-.photo-box img {
-  width: 100%;
-  height: auto;
-  display: block;
-  border-radius: 10px;
-}
+    .notice-bar strong {
+      color: white;
+      font-weight: 500;
+    }
 
-.download-button {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  text-align: center;
-  background: rgba(0, 0, 0, 0.6);
-  color: white;
-  padding: 10px;
-  font-size: 14px;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  text-decoration: none;
-}
+    .highlight-box {
+      position: relative;
+      height: 50vh;
+      width: 100%;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
 
-.photo-box:hover .download-button {
-  opacity: 1;
-}
+    .highlight-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(60%);
+    }
 
-</style>
+    .overlay-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      text-align: center;
+    }
 
+    .overlay-text h1 {
+      font-size: 32px;
+      margin: 0;
+    }
 
+    .overlay-text p {
+      font-size: 16px;
+      margin: 10px 0 0;
+    }
+
+    #photo-container {
+      column-count: 4;
+      column-gap: 12px;
+      padding: 10px;
+    }
+
+    .photo-box {
+      break-inside: avoid;
+      margin-bottom: 12px;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      position: relative;
+    }
+
+    .photo-box img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 10px;
+    }
+
+    .download-button {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.6);
+      color: white;
+      padding: 10px;
+      font-size: 14px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      text-decoration: none;
+    }
+
+    .photo-box:hover .download-button {
+      opacity: 1;
+    }
+  </style>
 </head>
 <body>
 
-  <h2>Ваши фотографии</h2>
+  <div class="notice-bar">
+    Фотографии доступны до <strong>01.09.2025</strong>
+  </div>
+
+  <div class="highlight-box">
+    <img id="cover-image" src="" alt="Обложка" />
+    <div class="overlay-text">
+      <h1 id="session-title">...</h1>
+      <p id="session-date">...</p>
+    </div>
+  </div>
+
   <div id="photo-container"></div>
 
   <script>
     const params = new URLSearchParams(window.location.search);
     const code = params.get("code");
-
     const container = document.getElementById("photo-container");
 
     if (!code) {
@@ -69,6 +132,12 @@
         .then(res => res.json())
         .then(data => {
           if (data.success) {
+            // Обложка и метаданные
+            document.getElementById("cover-image").src = data.cover || "";
+            document.getElementById("session-title").textContent = data.title || "Фотосессия";
+            document.getElementById("session-date").textContent = data.date || "";
+
+            // Фотографии
             data.urls.forEach(url => {
               const box = document.createElement("div");
               box.className = "photo-box";
@@ -86,15 +155,6 @@
               box.appendChild(img);
               box.appendChild(download);
               container.appendChild(box);
-
-              // После загрузки картинки — рассчитать, сколько строк нужно занять
-              img.addEventListener("load", () => {
-                const rowHeight = 8; // такой же как grid-auto-rows
-                const imgHeight = img.getBoundingClientRect().height;
-                const rowSpan = Math.ceil(imgHeight / rowHeight);
-                box.style.gridRow = `span ${rowSpan}`;
-              });
-
             });
           } else {
             container.innerHTML = "<p>Фотографии не найдены для этого кода.</p>";

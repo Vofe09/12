@@ -1,4 +1,5 @@
 import { v2 as cloudinary } from 'cloudinary';
+import metadata from '../data/metadata.js';
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -22,12 +23,22 @@ export default async function handler(req, res) {
 
     const urls = result.resources.map(file =>
       cloudinary.url(file.public_id, {
-        type: "upload",     // обязательно "upload", если фото не приватные
+        type: "upload",
         secure: true
       })
     );
 
-    res.json({ success: true, urls });
+    const meta = metadata[key];
+
+    res.json({
+      success: true,
+      urls,
+      title: meta?.title || "",
+      date: meta?.date || "",
+      cover: meta?.cover
+        ? cloudinary.url(meta.cover, { type: "upload", secure: true })
+        : ""
+    });
   } catch (error) {
     console.error("Ошибка Cloudinary:", error);
     res.status(500).json({ success: false, message: "Ошибка сервера" });
