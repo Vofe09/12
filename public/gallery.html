@@ -35,9 +35,12 @@
 
   /* Нижний белый хедер */
     .topbar {
-    position: sticky;
-    top: 30px; /* высота .notice-bar, чтобы не перекрывало */
-    z-index: 10;
+    display: none; /* по умолчанию скрыт */
+    position: fixed;
+    top: 30px;
+    left: 0;
+    width: 100%;
+    z-index: 999;
     height: 45px;
     background: white;
     display: flex;
@@ -46,6 +49,7 @@
     padding: 0 35px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
   }
+
 
   .topbar .left {
     font-size: 16px;
@@ -218,35 +222,28 @@
 
     // STICKY LOGIC
     const topbar = document.querySelector('.topbar');
+    const highlightBox = document.querySelector('.highlight-box');
+
+    // создаём невидимую точку после обложки
     const sentinel = document.createElement('div');
     sentinel.style.height = '1px';
-    document.querySelector('.highlight-box').after(sentinel);
-
-    const topbarPlaceholder = document.createElement('div');
-    topbarPlaceholder.style.height = topbar.offsetHeight + 'px';
-    topbarPlaceholder.style.display = 'none';
-    topbar.after(topbarPlaceholder);
-
-    topbar.classList.add('hidden');
+    highlightBox.after(sentinel);
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (!entry.isIntersecting) {
-          topbar.classList.remove('hidden');
-          topbar.classList.add('sticky');
-          topbarPlaceholder.style.display = 'block';
+          topbar.style.display = 'flex'; // показываем topbar
         } else {
-          topbar.classList.add('hidden');
-          topbar.classList.remove('sticky');
-          topbarPlaceholder.style.display = 'none';
+          topbar.style.display = 'none'; // скрываем topbar
         }
       },
       {
         rootMargin: "-30px 0px 0px 0px"
       }
-);
+    );
 
-observer.observe(sentinel);
+    observer.observe(sentinel);
+
 
   </script>
 </body>
