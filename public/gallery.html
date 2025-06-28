@@ -69,16 +69,18 @@
         .then(res => res.json())
         .then(data => {
           if (data.success) {
-            data.urls.forEach(url => {
+            data.urls.forEach((url, index) => {
               const box = document.createElement("div");
               box.className = "photo-box";
 
               const img = document.createElement("img");
               img.src = url;
+              img.alt = `Фотография ${index + 1}`;
+              img.title = "Нажмите, чтобы увеличить фото";
 
               const download = document.createElement("a");
               download.href = url;
-              download.download = ""; // Попросит скачать
+              download.download = "";
               download.textContent = "Скачать";
 
               box.appendChild(img);
