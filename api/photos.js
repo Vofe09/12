@@ -22,13 +22,14 @@ export default function handler(req, res) {
   // Генерация временных защищённых URL (на 5 минут)
   const signedUrls = ids.map(publicId =>
     cloudinary.url(publicId, {
-      type: "private",
+      type: "upload", // <--- ВАЖНО: было "private", стало "upload"
       resource_type: "image",
       sign_url: true,
       secure: true,
       expires_at: Math.floor(Date.now() / 1000) + 60 * 5
     })
   );
+
 
   res.json({ success: true, urls: signedUrls });
 }
