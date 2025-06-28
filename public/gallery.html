@@ -34,7 +34,10 @@
   }
 
   /* Нижний белый хедер */
-  .topbar {
+    .topbar {
+    position: sticky;
+    top: 30px; /* высота .notice-bar, чтобы не перекрывало */
+    z-index: 10;
     height: 45px;
     background: white;
     display: flex;
@@ -42,7 +45,6 @@
     justify-content: space-between;
     padding: 0 35px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-    font-family: sans-serif;
   }
 
   .topbar .left {
