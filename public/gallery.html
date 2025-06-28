@@ -7,11 +7,11 @@
   <link rel="stylesheet" href="style.css" />
   <style>
     body {
-    padding: 0;
-    margin: 0;
-    font-family: sans-serif;
-    background-color: #f9f9f9;
-  }
+      padding: 0px;
+      margin: 0;
+      font-family: sans-serif;
+      background-color: #f9f9f9;
+    }
 
   .notice-bar {
     background-color: #201c1c;
@@ -21,24 +21,19 @@
     align-items: center;
     justify-content: center;
     font-size: 14px;
+    font-family: sans-serif;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     z-index: 1000;
   }
-
   .notice-bar strong {
     color: white;
     font-weight: 500;
   }
 
-  /* Плейсхолдер под хедер */
-  #header-placeholder {
-    height: 45px; /* такая же как у .topbar */
-  }
-
-  /* Основной хедер */
+  /* Нижний белый хедер */
   .topbar {
     height: 45px;
     background: white;
@@ -48,55 +43,25 @@
     padding: 0 35px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
     font-family: sans-serif;
-    position: relative;
-    z-index: 998;
-    transition: all 0.2s ease;
-  }
-
-  /* Фиксированное состояние */
-  .topbar.fixed {
-    position: fixed;
-    top: 30px; /* высота notice-bar */
-    left: 0;
-    width: 100%;
     z-index: 999;
   }
 
-  /* Контент под обложкой */
-  .highlight-box {
+  .topbar.fixed {
+    position: fixed;
+    top: 30px;
+    left: 0;
+    width: 100%;
+    background: white;
+    z-index: 999;
+    display: none; /* скрыта по умолчанию */
+  }
+
+
+  .topbar.static {
     position: relative;
-    width: 100%;
-    height: 100vh;
-    max-height: 1080px;
-    overflow: hidden;
-    margin-bottom: 20px;
+    z-index: 1;
   }
 
-  .highlight-box img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: brightness(60%);
-  }
-
-  .overlay-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
-    text-align: center;
-  }
-
-  .overlay-text h1 {
-    font-size: 32px;
-    margin: 0;
-  }
-
-  .overlay-text p {
-    font-size: 16px;
-    margin: 10px 0 0;
-  }
 
   .topbar .left {
     font-size: 16px;
@@ -109,49 +74,95 @@
     vertical-align: middle;
   }
 
-  /* Галерея */
-  #photo-container {
-    column-count: 4;
-    column-gap: 12px;
-    padding: 10px;
-  }
-
-  .photo-box {
-    break-inside: avoid;
-    margin-bottom: 12px;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    position: relative;
-  }
-
-  .photo-box img {
-    width: 100%;
-    height: auto;
-    display: block;
-    border-radius: 10px;
-  }
-
-  .download-button {
-    position: absolute;
-    bottom: 0;
+    .topbar.sticky {
+    position: fixed;
+    top: 30px;
     left: 0;
-    right: 0;
-    text-align: center;
-    background: rgba(0, 0, 0, 0.6);
-    color: white;
-    padding: 10px;
-    font-size: 14px;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    text-decoration: none;
+    width: 100%;
+    z-index: 999;
+  }
+    .topbar.hidden {
+    visibility: hidden;
   }
 
-  .photo-box:hover .download-button {
-    opacity: 1;
-  }
+
+    .highlight-box {
+      position: relative;
+      width: 100%;
+      height: 100vh; /* адаптивная высота */
+      max-height: 1080px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .highlight-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(60%);
+    }
+
+
+    .overlay-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      text-align: center;
+    }
+
+    .overlay-text h1 {
+      font-size: 32px;
+      margin: 0;
+    }
+
+    .overlay-text p {
+      font-size: 16px;
+      margin: 10px 0 0;
+    }
+
+    #photo-container {
+      column-count: 4;
+      column-gap: 12px;
+      padding: 10px;
+    }
+
+    .photo-box {
+      break-inside: avoid;
+      margin-bottom: 12px;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      position: relative;
+    }
+
+    .photo-box img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 10px;
+    }
+
+    .download-button {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.6);
+      color: white;
+      padding: 10px;
+      font-size: 14px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      text-decoration: none;
+    }
+
+    .photo-box:hover .download-button {
+      opacity: 1;
+    }
   </style>
-
 </head>
 <body>
 
@@ -167,17 +178,17 @@
     </div>
   </div>
 
-  <!-- Акцентное фото -->
-  <div class="highlight-box">...</div>
+<!-- Фиксированная шапка (изначально скрыта) -->
+<div class="topbar fixed" id="fixedTopbar" style="display: none;">
+  <div class="left">Kovalev Nazar</div>
+  <div class="right"><img src="download.svg" alt="Скачать" /></div>
+</div>
 
-  <!-- Плейсхолдер под хедер (высота = header) -->
-  <div id="header-placeholder"></div>
-
-  <!-- Один хедер -->
-  <header class="header" id="main-header">
-    <div class="left">Kovalev Nazar</div>
-    <div class="right"><img src="download.svg" alt="Скачать"></div>
-  </header>
+<!-- Обычная (статичная) шапка под обложкой -->
+<div class="topbar static" id="staticTopbar">
+  <div class="left">Kovalev Nazar</div>
+  <div class="right"><img src="download.svg" alt="Скачать" /></div>
+</div>
 
   <div id="photo-container"></div>
 
@@ -225,24 +236,26 @@
         });
     }
 
-    const header = document.getElementById('main-header');
-    const placeholder = document.getElementById('header-placeholder');
+    const fixedTopbar = document.getElementById('fixedTopbar');
+    const staticTopbar = document.getElementById('staticTopbar');
 
-    // Устанавливаем высоту плейсхолдера = высоте хедера
-    placeholder.style.height = `${header.offsetHeight}px`;
+    // создаём наблюдаемый элемент над staticTopbar
+    const sentinel = document.createElement('div');
+    sentinel.style.height = '1px';
+    staticTopbar.before(sentinel);
 
     const observer = new IntersectionObserver(([entry]) => {
       if (!entry.isIntersecting) {
-        header.classList.add('fixed');
+        fixedTopbar.style.display = 'flex';
       } else {
-        header.classList.remove('fixed');
+        fixedTopbar.style.display = 'none';
       }
     }, {
       threshold: 0,
-      rootMargin: "-30px 0px 0px 0px" // учитываем notice-bar
+      rootMargin: "-30px 0px 0px 0px"
     });
 
-    observer.observe(placeholder);
+    observer.observe(sentinel);
 
   </script>
 </body>
