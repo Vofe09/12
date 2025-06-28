@@ -233,8 +233,8 @@
 
       // Ждём первой прокрутки, только тогда включаем observer
       window.addEventListener('scroll', () => {
-        if (!hasScrolled) {
-          hasScrolled = true;
+        if (!observerStarted && window.scrollY >= 300) {
+          observerStarted = true;
 
           const observer = new IntersectionObserver(([entry]) => {
             if (!entry.isIntersecting) {
