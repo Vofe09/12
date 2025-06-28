@@ -154,6 +154,30 @@
       opacity: 1;
     }
 
+      .lightbox-download {
+      display: none;
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 10px;
+      border-radius: 50%;
+      z-index: 10;
+    }
+
+    .lightbox-download img {
+      width: 24px;
+      height: 24px;
+      filter: invert(1);
+    }
+
+    @media (max-width: 768px) {
+      .lightbox-download {
+        display: block;
+      }
+    }
+
+
     /* 📱 Адаптивные стили для телефонов */
     @media (max-width: 768px) {
       .highlight-box {
@@ -313,6 +337,9 @@
       <button class="lightbox-close" id="lightboxClose">×</button>
       <button class="lightbox-arrow left" id="prevBtn"><img src="img/left.svg" alt="Назад"></button>
       <button class="lightbox-arrow right" id="nextBtn"><img src="img/right.svg" alt="Вперёд"></button>
+      <a id="lightboxDownload" class="lightbox-download" download>
+        <img src="img/download.svg" alt="Скачать">
+      </a>
     </div>
   </div>
 
@@ -352,6 +379,7 @@
       if (!allPhotoUrls[index]) return;
       currentIndex = index;
       zoomed = false;
+      document.getElementById("lightboxDownload").href = allPhotoUrls[index];
       const lightboxImage = document.getElementById("lightboxImage");
       lightboxImage.src = allPhotoUrls[index];
       lightboxImage.style.transform = "scale(1)";
@@ -454,6 +482,28 @@
         img.style.transform = zoomed ? "scale(2.5)" : "scale(1)";
         img.style.cursor = zoomed ? "zoom-out" : "zoom-in";
       });
+    });
+
+    const lightboxImage = document.getElementById("lightboxImage");
+
+    lightboxImage.addEventListener("mousemove", (e) => {
+      if (window.innerWidth <= 768) return; // Только на ПК
+      const rect = lightboxImage.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      lightboxImage.style.transformOrigin = `${x}% ${y}%`;
+      if (zoomed) {
+        lightboxImage.style.transform = "scale(2.5)";
+      }
+    });
+
+    lightboxImage.addEventListener("mouseleave", () => {
+      if (window.innerWidth <= 768) return;
+      if (zoomed) {
+        lightboxImage.style.transform = "scale(2.5)";
+      } else {
+        lightboxImage.style.transform = "scale(1)";
+      }
     });
   </script>
 </body>
