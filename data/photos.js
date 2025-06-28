@@ -1,8 +1,7 @@
 // data/photos.js
 const photos = {
   "key123": [
-    "gallery/photo1",
-    "gallery/photo2"
+    "ozcxfan27j08b_600_p6dr93"
   ]
 };
 
