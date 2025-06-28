@@ -47,11 +47,14 @@
   }
 
   .topbar.fixed {
-    position: fixed;
-    top: 30px;
-    left: 0;
-    width: 100%;
-  }
+  display: none;
+  position: fixed;
+  top: 30px;
+  left: 0;
+  width: 100%;
+  background: white;
+  z-index: 999;
+}
 
   .topbar.static {
     position: relative;
@@ -242,19 +245,19 @@
         });
     }
 
-    const topbar = document.querySelector('.topbar');
-    const highlightBox = document.querySelector('.highlight-box');
+    const fixedTopbar = document.querySelector('.topbar.fixed');
+    const staticTopbar = document.querySelector('#staticTopbar');
 
     // Точка отслеживания — после highlightBox
     const sentinel = document.createElement('div');
     sentinel.style.height = '1px';
-    highlightBox.after(sentinel);
+    document.querySelector('.highlight-box').after(sentinel);
 
     const observer = new IntersectionObserver(([entry]) => {
       if (!entry.isIntersecting) {
-        topbar.style.display = 'flex'; // показать topbar
+        fixedTopbar.style.display = 'flex'; // показать фиксированный topbar
       } else {
-        topbar.style.display = 'none'; // скрыть topbar
+        fixedTopbar.style.display = 'none'; // скрыть фиксированный topbar
       }
     }, {
       rootMargin: "-30px 0px 0px 0px"
