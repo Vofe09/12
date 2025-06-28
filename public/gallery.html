@@ -68,7 +68,6 @@
 
     .topbar .right img {
       height: 25px;
-      vertical-align: middle;
       cursor: pointer;
     }
 
@@ -118,7 +117,7 @@
       margin-bottom: 12px;
       border-radius: 10px;
       overflow: hidden;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       position: relative;
     }
 
@@ -146,13 +145,49 @@
     }
 
     .download-button img {
-      width: 28px;
-      height: 28px;
+      width: 16px;
+      height: 16px;
       filter: invert(1);
     }
 
     .photo-box:hover .download-button {
       opacity: 1;
+    }
+
+    /* 📱 Адаптивные стили для телефонов */
+    @media (max-width: 768px) {
+      .highlight-box {
+        height: 60vh;
+        max-height: none;
+      }
+
+      .overlay-text h1 {
+        font-size: 24px;
+      }
+
+      .overlay-text p {
+        font-size: 14px;
+      }
+
+      #photo-container {
+        column-count: 2;
+      }
+
+      .topbar {
+        padding: 0 16px;
+      }
+
+      .topbar .left {
+        font-size: 14px;
+      }
+
+      .topbar .right img {
+        height: 22px;
+      }
+
+      .notice-bar {
+        font-size: 12px;
+      }
     }
   </style>
 </head>
@@ -170,13 +205,12 @@
     </div>
   </div>
 
-  <!-- Topbar фиксированный -->
+  <!-- Topbars -->
   <div class="topbar fixed" id="fixedTopbar">
     <div class="left">Kovalev Nazar</div>
     <div class="right"><img id="download-all-btn-fixed" src="img/download.svg" alt="Скачать" /></div>
   </div>
 
-  <!-- Topbar обычный -->
   <div class="topbar static" id="staticTopbar">
     <div class="left">Kovalev Nazar</div>
     <div class="right"><img id="download-all-btn-static" src="img/download.svg" alt="Скачать" /></div>
@@ -215,6 +249,7 @@
       });
 
       await Promise.all(promises);
+
       const content = await zip.generateAsync({ type: "blob" });
       saveAs(content, "gallery.zip");
     }
@@ -270,6 +305,7 @@
           console.error(err);
         });
 
+      // Поведение topbar при скролле
       const fixedTopbar = document.getElementById('fixedTopbar');
       const staticTopbar = document.getElementById('staticTopbar');
 
@@ -298,8 +334,9 @@
         }
       });
 
-      document.getElementById('download-all-btn-fixed').addEventListener('click', downloadAllPhotos);
+      // Обработчики кнопок "Скачать все"
       document.getElementById('download-all-btn-static').addEventListener('click', downloadAllPhotos);
+      document.getElementById('download-all-btn-fixed').addEventListener('click', downloadAllPhotos);
     });
   </script>
 </body>
