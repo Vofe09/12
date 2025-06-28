@@ -47,14 +47,15 @@
   }
 
   .topbar.fixed {
-  display: none;
-  position: fixed;
-  top: 30px;
-  left: 0;
-  width: 100%;
-  background: white;
-  z-index: 999;
-}
+    position: fixed;
+    top: 30px;
+    left: 0;
+    width: 100%;
+    background: white;
+    z-index: 999;
+    display: none; /* скрыта по умолчанию */
+  }
+
 
   .topbar.static {
     position: relative;
@@ -177,27 +178,17 @@
     </div>
   </div>
 
-  <!-- Вот сюда JS добавит sentinel -->
-  <!-- <div class="topbar-placeholder" style="height:45px;"></div>
-  <div class="topbar">
-    <div class="left">Kovalev Nazar</div>
-    <div class="right">
-      <img src="download.svg" alt="Скачать" />
-    </div> -->
-  <!-- </div> -->
-
-    <!-- Фиксированный topbar, невидимый -->
-  <div class="topbar fixed" style="display: none;">
+  <!-- Фиксированная шапка (изначально скрыта) -->
+  <div class="topbar fixed" id="fixedTopbar" style="display: none;">
     <div class="left">Kovalev Nazar</div>
     <div class="right"><img src="download.svg" alt="Скачать" /></div>
   </div>
 
-  <!-- Topbar, расположенный под обложкой -->
+  <!-- Обычная (статичная) шапка под обложкой -->
   <div class="topbar static" id="staticTopbar">
     <div class="left">Kovalev Nazar</div>
     <div class="right"><img src="download.svg" alt="Скачать" /></div>
   </div>
-
 
   <div id="photo-container"></div>
 
@@ -245,27 +236,26 @@
         });
     }
 
-    const fixedTopbar = document.querySelector('.topbar.fixed');
-    const staticTopbar = document.querySelector('#staticTopbar');
+    const fixedTopbar = document.getElementById('fixedTopbar');
+    const staticTopbar = document.getElementById('staticTopbar');
 
-    // Точка отслеживания — после highlightBox
+    // создаём наблюдаемый элемент над staticTopbar
     const sentinel = document.createElement('div');
     sentinel.style.height = '1px';
-    document.querySelector('.highlight-box').after(sentinel);
+    staticTopbar.before(sentinel);
 
     const observer = new IntersectionObserver(([entry]) => {
       if (!entry.isIntersecting) {
-        fixedTopbar.style.display = 'flex'; // показать фиксированный topbar
+        fixedTopbar.style.display = 'flex';
       } else {
-        fixedTopbar.style.display = 'none'; // скрыть фиксированный topbar
+        fixedTopbar.style.display = 'none';
       }
     }, {
+      threshold: 0,
       rootMargin: "-30px 0px 0px 0px"
     });
 
     observer.observe(sentinel);
-
-
 
   </script>
 </body>
