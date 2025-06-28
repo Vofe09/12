@@ -176,7 +176,7 @@
 
   <div id="photo-container"></div>
 
-<script>
+  <script>
     window.addEventListener('load', () => {
       const params = new URLSearchParams(window.location.search);
       const code = params.get("code");
@@ -229,9 +229,8 @@
       sentinel.style.height = '1px';
       staticTopbar.before(sentinel);
 
-      let hasScrolled = false;
+      let observerStarted = false;
 
-      // Ждём первой прокрутки, только тогда включаем observer
       window.addEventListener('scroll', () => {
         if (!observerStarted && window.scrollY >= 300) {
           observerStarted = true;
@@ -252,5 +251,6 @@
       });
     });
   </script>
+
 </body>
 </html>
