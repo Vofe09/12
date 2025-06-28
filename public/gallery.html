@@ -58,6 +58,14 @@
     vertical-align: middle;
   }
 
+    .topbar.sticky {
+    position: fixed;
+    top: 30px;
+    left: 0;
+    width: 100%;
+    z-index: 999;
+  }
+
 
     .highlight-box {
       position: relative;
@@ -210,7 +218,8 @@
     const topbar = document.querySelector('.topbar');
     const sentinel = document.createElement('div');
     sentinel.style.height = '1px';
-    document.body.insertBefore(sentinel, topbar);
+    document.querySelector('.highlight-box').appendChild(sentinel);
+
 
     const observer = new IntersectionObserver(
       ([entry]) => {
