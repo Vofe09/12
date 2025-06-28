@@ -10,8 +10,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
   <style>
     body {
-      padding: 0px;
       margin: 0;
+      padding: 0;
       font-family: sans-serif;
       background-color: #f9f9f9;
     }
@@ -24,7 +24,6 @@
       align-items: center;
       justify-content: center;
       font-size: 14px;
-      font-family: sans-serif;
       position: fixed;
       top: 0;
       left: 0;
@@ -45,7 +44,6 @@
       justify-content: space-between;
       padding: 0 35px;
       box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-      font-family: sans-serif;
     }
 
     .topbar.fixed {
@@ -53,7 +51,6 @@
       top: 30px;
       left: 0;
       width: 100%;
-      background: white;
       z-index: 999;
       display: none;
     }
@@ -173,13 +170,13 @@
     </div>
   </div>
 
-  <!-- Фиксированная шапка -->
+  <!-- Topbar фиксированный -->
   <div class="topbar fixed" id="fixedTopbar">
     <div class="left">Kovalev Nazar</div>
     <div class="right"><img id="download-all-btn-fixed" src="img/download.svg" alt="Скачать" /></div>
   </div>
 
-  <!-- Статичная шапка -->
+  <!-- Topbar обычный -->
   <div class="topbar static" id="staticTopbar">
     <div class="left">Kovalev Nazar</div>
     <div class="right"><img id="download-all-btn-static" src="img/download.svg" alt="Скачать" /></div>
@@ -190,42 +187,37 @@
   <script>
     let allPhotoUrls = [];
 
-async function downloadAllPhotos() {
-  if (allPhotoUrls.length === 0) {
-    alert("Фотографии ещё не загружены.");
-    return;
-  }
+    async function downloadAllPhotos() {
+      if (allPhotoUrls.length === 0) {
+        alert("Фотографии ещё не загружены.");
+        return;
+      }
 
-  const zip = new JSZip();
+      const zip = new JSZip();
 
-  const promises = allPhotoUrls.map(async (url, index) => {
-    try {
-      const response = await fetch(url);
-      const blob = await response.blob();
+      const promises = allPhotoUrls.map(async (url, index) => {
+        try {
+          const response = await fetch(url);
+          const blob = await response.blob();
 
-      // Определяем расширение по Content-Type, если нужно
-      let ext = "";
-      const contentType = response.headers.get("Content-Type");
-      if (contentType === "image/jpeg") ext = "jpg";
-      else if (contentType === "image/png") ext = "png";
-      else if (contentType === "image/webp") ext = "webp";
-      else ext = "jpg"; // по умолчанию
+          let ext = "";
+          const contentType = response.headers.get("Content-Type");
+          if (contentType === "image/jpeg") ext = "jpg";
+          else if (contentType === "image/png") ext = "png";
+          else if (contentType === "image/webp") ext = "webp";
+          else ext = "jpg";
 
-      // Формируем имя файла
-      const fileName = `photo_${String(index + 1).padStart(3, '0')}.${ext}`;
+          const fileName = `photo_${String(index + 1).padStart(3, '0')}.${ext}`;
+          zip.file(fileName, blob);
+        } catch (e) {
+          console.error(`Ошибка при загрузке ${url}`, e);
+        }
+      });
 
-      zip.file(fileName, blob);
-    } catch (e) {
-      console.error(`Ошибка при загрузке ${url}`, e);
+      await Promise.all(promises);
+      const content = await zip.generateAsync({ type: "blob" });
+      saveAs(content, "gallery.zip");
     }
-  });
-
-  await Promise.all(promises);
-
-  const content = await zip.generateAsync({ type: "blob" });
-  saveAs(content, "gallery.zip");
-}
-
 
     window.addEventListener('load', () => {
       const params = new URLSearchParams(window.location.search);
@@ -248,13 +240,20 @@ async function downloadAllPhotos() {
             allPhotoUrls = data.urls;
 
             data.urls.forEach(url => {
+              const box = document.createElement("div");
+              box.className = "photo-box";
+
+              const img = document.createElement("img");
+              img.src = url;
+              img.alt = "Фото";
+
               const download = document.createElement("a");
               download.href = url;
               download.download = "";
               download.className = "download-button";
 
               const icon = document.createElement("img");
-              icon.src = "img/download.svg"; // не забудь положить download.svg в папку /img
+              icon.src = "img/download.svg";
               icon.alt = "Скачать";
 
               download.appendChild(icon);
@@ -271,7 +270,6 @@ async function downloadAllPhotos() {
           console.error(err);
         });
 
-      // Поведение topbar при скролле
       const fixedTopbar = document.getElementById('fixedTopbar');
       const staticTopbar = document.getElementById('staticTopbar');
 
@@ -300,11 +298,9 @@ async function downloadAllPhotos() {
         }
       });
 
-      // Обработчики для обеих кнопок
-      document.getElementById('download-all-btn-static').addEventListener('click', downloadAllPhotos);
       document.getElementById('download-all-btn-fixed').addEventListener('click', downloadAllPhotos);
+      document.getElementById('download-all-btn-static').addEventListener('click', downloadAllPhotos);
     });
   </script>
-
 </body>
 </html>
