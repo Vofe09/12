@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ваша галерея</title>
   <link rel="stylesheet" href="style.css" />
-  <!-- JSZip и FileSaver -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
   <style>
@@ -126,6 +125,7 @@
       height: auto;
       display: block;
       border-radius: 10px;
+      cursor: pointer;
     }
 
     .download-button {
@@ -154,7 +154,6 @@
       opacity: 1;
     }
 
-    /* 📱 Адаптивные стили для телефонов */
     @media (max-width: 768px) {
       .highlight-box {
         height: 60vh;
@@ -189,13 +188,79 @@
         font-size: 12px;
       }
     }
+
+    /* Lightbox styles */
+    #lightbox {
+      position: fixed;
+      z-index: 2000;
+      top: 0; left: 0; right: 0; bottom: 0;
+      display: none;
+    }
+
+    .lightbox-backdrop {
+      background: rgba(0, 0, 0, 0.85);
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+    }
+
+    .lightbox-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      max-width: 90vw;
+      max-height: 90vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lightbox-content img {
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: 10px;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 32px;
+      color: white;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .lightbox-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.2);
+      border: none;
+      cursor: pointer;
+      padding: 10px;
+      border-radius: 50%;
+    }
+
+    .lightbox-arrow.left {
+      left: 20px;
+    }
+
+    .lightbox-arrow.right {
+      right: 20px;
+    }
+
+    .lightbox-arrow img {
+      width: 24px;
+      height: 24px;
+      filter: invert(1);
+    }
   </style>
 </head>
 <body>
 
-  <div class="notice-bar">
-    Фотографии доступны до <strong>01.09.2025</strong>
-  </div>
+  <div class="notice-bar">Фотографии доступны до <strong>01.09.2025</strong></div>
 
   <div class="highlight-box">
     <img id="cover-image" src="" alt="Обложка" />
@@ -205,7 +270,6 @@
     </div>
   </div>
 
-  <!-- Topbars -->
   <div class="topbar fixed" id="fixedTopbar">
     <div class="left">Kovalev Nazar</div>
     <div class="right"><img id="download-all-btn-fixed" src="img/download.svg" alt="Скачать" /></div>
@@ -218,8 +282,41 @@
 
   <div id="photo-container"></div>
 
+  <!-- Lightbox -->
+  <div id="lightbox">
+    <div class="lightbox-backdrop" id="lightboxBackdrop"></div>
+    <div class="lightbox-content">
+      <img id="lightboxImage" src="" alt="Фото" />
+      <button class="lightbox-close" id="lightboxClose">×</button>
+      <button class="lightbox-arrow left" id="prevBtn"><img src="img/left.svg" alt="Назад"></button>
+      <button class="lightbox-arrow right" id="nextBtn"><img src="img/right.svg" alt="Вперёд"></button>
+    </div>
+  </div>
+
   <script>
     let allPhotoUrls = [];
+    let currentIndex = 0;
+
+    function showLightbox(index) {
+      if (!allPhotoUrls[index]) return;
+      currentIndex = index;
+      document.getElementById("lightboxImage").src = allPhotoUrls[index];
+      document.getElementById("lightbox").style.display = "block";
+    }
+
+    function closeLightbox() {
+      document.getElementById("lightbox").style.display = "none";
+    }
+
+    function nextImage() {
+      currentIndex = (currentIndex + 1) % allPhotoUrls.length;
+      showLightbox(currentIndex);
+    }
+
+    function prevImage() {
+      currentIndex = (currentIndex - 1 + allPhotoUrls.length) % allPhotoUrls.length;
+      showLightbox(currentIndex);
+    }
 
     async function downloadAllPhotos() {
       if (allPhotoUrls.length === 0) {
@@ -228,115 +325,98 @@
       }
 
       const zip = new JSZip();
-
       const promises = allPhotoUrls.map(async (url, index) => {
         try {
           const response = await fetch(url);
           const blob = await response.blob();
-
-          let ext = "";
           const contentType = response.headers.get("Content-Type");
-          if (contentType === "image/jpeg") ext = "jpg";
-          else if (contentType === "image/png") ext = "png";
-          else if (contentType === "image/webp") ext = "webp";
-          else ext = "jpg";
-
-          const fileName = `photo_${String(index + 1).padStart(3, '0')}.${ext}`;
-          zip.file(fileName, blob);
+          const ext = contentType.includes("jpeg") ? "jpg" : contentType.includes("png") ? "png" : "webp";
+          zip.file(`photo_${String(index + 1).padStart(3, '0')}.${ext}`, blob);
         } catch (e) {
           console.error(`Ошибка при загрузке ${url}`, e);
         }
       });
 
       await Promise.all(promises);
-
       const content = await zip.generateAsync({ type: "blob" });
       saveAs(content, "gallery.zip");
     }
 
     window.addEventListener('load', () => {
-      const params = new URLSearchParams(window.location.search);
-      const code = params.get("code");
+      const code = new URLSearchParams(window.location.search).get("code");
       const container = document.getElementById("photo-container");
 
-      if (!code) {
-        container.innerHTML = "<p>Код доступа не указан.</p>";
-        return;
-      }
+      if (!code) return container.innerHTML = "<p>Код доступа не указан.</p>";
 
       fetch(`/api/photos/${code}`)
         .then(res => res.json())
         .then(data => {
-          if (data.success) {
-            document.getElementById("cover-image").src = data.cover || "";
-            document.getElementById("session-title").textContent = data.title || "Фотосессия";
-            document.getElementById("session-date").textContent = data.date || "";
+          if (!data.success) return container.innerHTML = "<p>Фотографии не найдены.</p>";
 
-            allPhotoUrls = data.urls;
+          document.getElementById("cover-image").src = data.cover || "";
+          document.getElementById("session-title").textContent = data.title || "Фотосессия";
+          document.getElementById("session-date").textContent = data.date || "";
+          allPhotoUrls = data.urls;
 
-            data.urls.forEach(url => {
-              const box = document.createElement("div");
-              box.className = "photo-box";
+          data.urls.forEach((url, index) => {
+            const box = document.createElement("div");
+            box.className = "photo-box";
 
-              const img = document.createElement("img");
-              img.src = url;
-              img.alt = "Фото";
+            const img = document.createElement("img");
+            img.src = url;
+            img.alt = "Фото";
+            img.addEventListener("click", () => showLightbox(index));
 
-              const download = document.createElement("a");
-              download.href = url;
-              download.download = "";
-              download.className = "download-button";
+            const download = document.createElement("a");
+            download.href = url;
+            download.download = "";
+            download.className = "download-button";
+            const icon = document.createElement("img");
+            icon.src = "img/download.svg";
+            icon.alt = "Скачать";
+            download.appendChild(icon);
 
-              const icon = document.createElement("img");
-              icon.src = "img/download.svg";
-              icon.alt = "Скачать";
-
-              download.appendChild(icon);
-              box.appendChild(img);
-              box.appendChild(download);
-              container.appendChild(box);
-            });
-          } else {
-            container.innerHTML = "<p>Фотографии не найдены для этого кода.</p>";
-          }
+            box.appendChild(img);
+            box.appendChild(download);
+            container.appendChild(box);
+          });
         })
         .catch(err => {
-          container.innerHTML = "<p>Ошибка при загрузке фотографий.</p>";
           console.error(err);
+          container.innerHTML = "<p>Ошибка при загрузке фотографий.</p>";
         });
 
-      // Поведение topbar при скролле
       const fixedTopbar = document.getElementById('fixedTopbar');
       const staticTopbar = document.getElementById('staticTopbar');
-
       const sentinel = document.createElement('div');
       sentinel.style.height = '1px';
       staticTopbar.before(sentinel);
 
       let observerStarted = false;
-
       window.addEventListener('scroll', () => {
         if (!observerStarted && window.scrollY >= 300) {
           observerStarted = true;
-
           const observer = new IntersectionObserver(([entry]) => {
-            if (!entry.isIntersecting) {
-              fixedTopbar.style.display = 'flex';
-            } else {
-              fixedTopbar.style.display = 'none';
-            }
-          }, {
-            threshold: 0,
-            rootMargin: "-30px 0px 0px 0px"
-          });
-
+            fixedTopbar.style.display = entry.isIntersecting ? 'none' : 'flex';
+          }, { threshold: 0, rootMargin: "-30px 0px 0px 0px" });
           observer.observe(sentinel);
         }
       });
 
-      // Обработчики кнопок "Скачать все"
       document.getElementById('download-all-btn-static').addEventListener('click', downloadAllPhotos);
       document.getElementById('download-all-btn-fixed').addEventListener('click', downloadAllPhotos);
+
+      document.getElementById("lightboxClose").addEventListener("click", closeLightbox);
+      document.getElementById("lightboxBackdrop").addEventListener("click", closeLightbox);
+      document.getElementById("nextBtn").addEventListener("click", nextImage);
+      document.getElementById("prevBtn").addEventListener("click", prevImage);
+      document.addEventListener("keydown", e => {
+        if (document.getElementById("lightbox").style.display === "block") {
+          if (e.key === "ArrowRight") nextImage();
+          if (e.key === "ArrowLeft") prevImage();
+          if (e.key === "Escape") closeLightbox();
+        }
+      });
     });
   </script>
 </body>
