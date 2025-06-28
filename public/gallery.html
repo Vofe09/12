@@ -183,31 +183,42 @@
   <script>
     let allPhotoUrls = [];
 
-    async function downloadAllPhotos() {
-      if (allPhotoUrls.length === 0) {
-        alert("Фотографии ещё не загружены.");
-        return;
-      }
+async function downloadAllPhotos() {
+  if (allPhotoUrls.length === 0) {
+    alert("Фотографии ещё не загружены.");
+    return;
+  }
 
-      const zip = new JSZip();
-      const folder = zip.folder("photos");
+  const zip = new JSZip();
 
-      const promises = allPhotoUrls.map(async (url, index) => {
-        try {
-          const response = await fetch(url);
-          const blob = await response.blob();
-          const ext = url.split('.').pop().split('?')[0];
-          folder.file(`photo_${index + 1}.${ext}`, blob);
-        } catch (e) {
-          console.error(`Ошибка при загрузке ${url}`, e);
-        }
-      });
+  const promises = allPhotoUrls.map(async (url, index) => {
+    try {
+      const response = await fetch(url);
+      const blob = await response.blob();
 
-      await Promise.all(promises);
+      // Определяем расширение по Content-Type, если нужно
+      let ext = "";
+      const contentType = response.headers.get("Content-Type");
+      if (contentType === "image/jpeg") ext = "jpg";
+      else if (contentType === "image/png") ext = "png";
+      else if (contentType === "image/webp") ext = "webp";
+      else ext = "jpg"; // по умолчанию
 
-      const content = await zip.generateAsync({ type: "blob" });
-      saveAs(content, "gallery.zip");
+      // Формируем имя файла
+      const fileName = `photo_${String(index + 1).padStart(3, '0')}.${ext}`;
+
+      zip.file(fileName, blob);
+    } catch (e) {
+      console.error(`Ошибка при загрузке ${url}`, e);
     }
+  });
+
+  await Promise.all(promises);
+
+  const content = await zip.generateAsync({ type: "blob" });
+  saveAs(content, "gallery.zip");
+}
+
 
     window.addEventListener('load', () => {
       const params = new URLSearchParams(window.location.search);
