@@ -20,34 +20,46 @@
       margin-top: 30px;
       display: flex;
       flex-wrap: wrap;
-      gap: 20px;
+      gap: 10px; /* Уменьшили отступ между фото */
       justify-content: center;
     }
 
     .photo-box {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      position: relative;
+      overflow: hidden;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
     }
 
     .photo-box img {
+      display: block;
       max-width: 300px;
+      height: auto;
       border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      transition: transform 0.3s ease;
     }
 
-    .photo-box a {
-      margin-top: 10px;
-      padding: 8px 12px;
-      background-color: #4CAF50;
+    .photo-box:hover img {
+      transform: scale(1.03);
+    }
+
+    .download-button {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.6);
       color: white;
-      border-radius: 8px;
-      text-decoration: none;
+      padding: 10px;
       font-size: 14px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      text-decoration: none;
     }
 
-    .photo-box a:hover {
-      background-color: #45a049;
+    .photo-box:hover .download-button {
+      opacity: 1;
     }
   </style>
 </head>
@@ -69,19 +81,19 @@
         .then(res => res.json())
         .then(data => {
           if (data.success) {
-            data.urls.forEach((url, index) => {
+            data.urls.forEach(url => {
               const box = document.createElement("div");
               box.className = "photo-box";
 
               const img = document.createElement("img");
               img.src = url;
-              img.alt = `Фотография ${index + 1}`;
-              img.title = "Нажмите, чтобы увеличить фото";
+              img.alt = "Фото";
 
               const download = document.createElement("a");
               download.href = url;
               download.download = "";
-              download.textContent = "Скачать";
+              download.className = "download-button";
+              download.textContent = "📥 Скачать";
 
               box.appendChild(img);
               box.appendChild(download);
