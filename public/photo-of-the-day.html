@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Фото дня</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 0;
+      background: #242424;
+      color: #fff;
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
+    h1 {
+      margin: 30px 0 10px;
+    }
+
+    .wheel-wrapper {
+      position: relative;
+      width: 320px;
+      height: 320px;
+      margin-top: 50px;
+    }
+
+    svg {
+      transform: rotate(0deg);
+      transition: transform 5s cubic-bezier(0.33, 1, 0.68, 1);
+    }
+
+    .pointer {
+      position: absolute;
+      top: -35px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 15px solid transparent;
+      border-right: 15px solid transparent;
+      border-bottom: 30px solid red;
+      z-index: 10;
+    }
+
+    .spin-btn {
+      margin-top: 40px;
+      font-weight: bold;
+      font-size: 18px;
+      width: 90px;
+      height: 90px;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      background: linear-gradient(135deg, #ff6ec4, #7873f5, #4ADEDE);
+      background-size: 300%;
+      background-position: left;
+      color: white;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      transition: transform 0.3s ease, background-position 0.7s ease;
+    }
+
+    .spin-btn:hover {
+      transform: scale(1.05);
+      background-position: right;
+    }
+
+    .photo-display {
+      width: 100%;
+      padding: 50px;
+      margin-top: 40px;
+      background: #222;
+      border-radius: 16px;
+      display: none;
+    }
+
+    .photo-display img {
+      width: auto;
+      height: auto;
+      max-height: 730px;
+      object-fit: cover;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      display: block;
+      margin: auto;
+    }
+
+    canvas#confetti {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    header {
+      margin: 1px 20px 0 20px;
+      box-sizing: border-box;
+      background-color: #333;
+      padding: 20px;
+      border-bottom-left-radius: 30px;
+      border-bottom-right-radius: 30px;
+      border-top-left-radius: 30px;
+      border-top-right-radius: 30px;
+    }
+    .container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: calc(100vh - 100px); 
+    }
+    nav {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
+    nav a {
+        color:white;
+        text-decoration: none;
+        background-color: #555;
+        padding: 10px 20px;
+        border-radius: 20px;
+        transition: all 0.4s ease;    
+    }
+    nav a:hover {
+        background-color: #777;
+    }
+
+    nav a {
+        opacity: 0;
+        transform: translateY(-10px);
+        animation: fadeIn 0.6s forwards;
+    }
+
+    /* Задержки для поочерёдного появления */
+    nav a:nth-child(1) { animation-delay: 0.6s; }
+    nav a:nth-child(2) { animation-delay: 0.2s; }
+    nav a:nth-child(3) { animation-delay: 0.6s; }
+
+    @keyframes fadeIn {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @media (max-width: 768px) {
+      .photo-display img {
+        width: 100%;
+        max-height: 80vh;
+      }
+      .spin-btn {
+        width: 80px;
+        height: 80px;
+        font-size: 16px;
+      }
+      .wheel-wrapper {
+        transform: scale(0.9);
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+      <nav>
+          <a href="index.html"> Главная </a>
+          <a href="take-photo.html"> Забрать фото </a>
+          <a href="#"> Фото дня </a>
+      </nav>
+  </header>
+
+  <h1> Сектор фото на барабане 🎉🎉🎉</h1>
+
+  <div class="wheel-wrapper">
+    <div class="pointer"></div>
+    <svg id="wheel" width="320" height="320" viewBox="0 0 320 320">
+      <g id="sectors"></g>
+    </svg>
+  </div>
+
+  <audio id="spinSound" src="sounds/spin.mp3" preload="auto"></audio>
+  <audio id="fireworkSound" src="sounds/firework.mp3" preload="auto"></audio>
+
+
+  <button class="spin-btn" onclick="spin()">SPIN</button>
+
+  <div class="photo-display" id="photoDisplay">
+    <img id="resultPhoto" src="" alt="Фото дня">
+  </div>
+
+  <canvas id="confetti"></canvas>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script>
+    const photos = [
+      'img/photo1.jpg', 'img/photo2.jpg', 'img/photo3.jpg', 'img/photo4.jpg',
+      'img/photo5.jpg', 'img/photo6.jpg', 'img/photo7.jpg', 'img/photo8.jpg'
+    ];
+
+    const sectorColors = ['#f94144', '#f3722c', '#f8961e', '#f9844a',
+                          '#43aa8b', '#577590', '#277da1', '#9c89b8'];
+
+    const sectorGroup = document.getElementById('sectors');
+    const wheel = document.getElementById('wheel');
+    const confettiCanvas = document.getElementById('confetti');
+    const center = 160;
+    const radius = 150;
+    const sectorAngle = (2 * Math.PI) / 8;
+
+    const spin_audio = document.querySelector("#spinSound");
+    spin_audio.volume = 0.3;
+    const firework_audio = document.querySelector("#fireworkSound");
+    firework_audio.volume = 0.3;
+
+
+    for (let i = 0; i < 8; i++) {
+      const startAngle = i * sectorAngle;
+      const endAngle = (i + 1) * sectorAngle;
+      const x1 = center + radius * Math.cos(startAngle);
+      const y1 = center + radius * Math.sin(startAngle);
+      const x2 = center + radius * Math.cos(endAngle);
+      const y2 = center + radius * Math.sin(endAngle);
+
+      const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      const d = `M${center},${center} L${x1},${y1} A${radius},${radius} 0 0,1 ${x2},${y2} Z`;
+      path.setAttribute("d", d);
+      path.setAttribute("fill", sectorColors[i]);
+      sectorGroup.appendChild(path);
+
+      const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      const angle = startAngle + sectorAngle / 2;
+      const tx = center + (radius / 1.8) * Math.cos(angle);
+      const ty = center + (radius / 1.8) * Math.sin(angle);
+      text.setAttribute("x", tx);
+      text.setAttribute("y", ty);
+      text.setAttribute("fill", "white");
+      text.setAttribute("font-size", "18");
+      text.setAttribute("text-anchor", "middle");
+      text.setAttribute("dominant-baseline", "middle");
+      text.textContent = i + 1;
+      sectorGroup.appendChild(text);
+    }
+
+
+    let angle = 0;
+    let spinning = false;
+
+    function spin() {
+      if (spinning) return;
+      spinning = true;
+      document.getElementById('photoDisplay').style.display = 'none';
+      spinSound.play();
+      const randomSector = Math.floor(Math.random() * 8);
+      const fullSpins = 5 * 360;
+      const stopAngle = 360 - (randomSector * 45 + 22.5);
+      angle += fullSpins + stopAngle;
+
+      wheel.style.transition = 'transform 5s cubic-bezier(0.33, 1, 0.68, 1)';
+      wheel.style.transform = `rotate(${angle}deg)`;
+
+      setTimeout(() => {
+        const img = document.getElementById('resultPhoto');
+        img.src = photos[randomSector];
+        const photoBlock = document.getElementById('photoDisplay');
+        photoBlock.style.display = 'block';
+        spinning = false;
+        setTimeout(() => {
+          photoBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          launchConfetti();
+        }, 300);
+      }, 5200);
+    }
+
+    function launchConfetti() {
+    fireworkSound.play();
+    const duration = 2500;
+    const animationEnd = Date.now() + duration;
+    const defaults = {
+      startVelocity: 45,
+      spread: 360,
+      ticks: 90,
+      zIndex: 9999
+    };
+
+    function randomInRange(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
+    const interval = setInterval(function() {
+      const timeLeft = animationEnd - Date.now();
+
+      if (timeLeft <= 0) {
+        return clearInterval(interval);
+      }
+
+      const particleCount = 200 * (timeLeft / duration);
+      confetti(Object.assign({}, defaults, {
+        particleCount,
+        origin: {
+          x: randomInRange(0, 1),
+          y: randomInRange(0, 1)
+        }
+      }));
+    }, 150);
+  }
+
+
+
+  </script>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p></p>
+  <p></p>
+</body>
+</html>
