@@ -197,10 +197,10 @@
     }
 
 
-      .modal-overlay {
+    .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.6);
+      background: rgba(0,0,0,0.5);
       display: none;
       align-items: center;
       justify-content: center;
@@ -212,14 +212,15 @@
       border-radius: 16px;
       padding: 20px;
       text-align: center;
-      max-width: 320px;
+      max-width: 300px;
+      position: relative;
       box-shadow: 0 10px 30px rgba(0,0,0,0.3);
       animation: fadeIn 0.3s ease;
     }
 
     .modal-content img {
       width: 100%;
-      max-width: 260px;
+      max-width: 240px;
       border-radius: 12px;
       margin-bottom: 12px;
     }
@@ -231,10 +232,26 @@
       font-weight: 500;
     }
 
+    .modal-close {
+      position: absolute;
+      top: 6px;
+      right: 8px;
+      background: transparent;
+      border: none;
+      font-size: 22px;
+      color: #999;
+      cursor: pointer;
+    }
+
+    .modal-close:hover {
+      color: #444;
+    }
+
     @keyframes fadeIn {
       from { transform: scale(0.95); opacity: 0; }
       to { transform: scale(1); opacity: 1; }
     }
+
 
 
 
@@ -417,11 +434,13 @@
 
 
     <div id="thanksModal" class="modal-overlay">
-    <div class="modal-content">
-      <img src="img/kittie1.jpg" alt="Котик" />
-      <p>Спасибо за прекрасную фотосессию</p>
+      <div class="modal-content">
+        <button class="modal-close" id="modalCloseBtn">×</button>
+        <img src="img/kittie1.jpg" alt="Котик" />
+        <p>Спасибо за прекрасную фотосессию</p>
+      </div>
     </div>
-  </div>
+
 
 
   <script>
@@ -434,6 +453,16 @@
         alert("Фотографии ещё не загружены.");
         return;
       }
+      // Показать окно с котиком
+      const modal = document.getElementById("thanksModal");
+      modal.style.display = "flex";
+
+      // Кнопка закрытия
+      document.getElementById("modalCloseBtn").onclick = () => {
+        clearTimeout(autoHide);
+        modal.style.display = "none";
+      };
+
 
       const zip = new JSZip();
       const promises = allPhotoUrls.map(async (url, index) => {
@@ -615,16 +644,6 @@
         }, 10000); // исчезнет через 10 секунд
       }
     });
-
-
-    // Показать модальное окно благодарности
-    const modal = document.getElementById("thanksModal");
-    modal.style.display = "flex";
-
-    // Автоматическое скрытие через 4 сек
-    setTimeout(() => {
-      modal.style.display = "none";
-    }, 4000);
 
 
 
