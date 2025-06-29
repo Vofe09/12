@@ -197,6 +197,48 @@
     }
 
 
+      .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 3000;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      text-align: center;
+      max-width: 320px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      animation: fadeIn 0.3s ease;
+    }
+
+    .modal-content img {
+      width: 100%;
+      max-width: 260px;
+      border-radius: 12px;
+      margin-bottom: 12px;
+    }
+
+    .modal-content p {
+      margin: 0;
+      font-size: 16px;
+      color: #333;
+      font-weight: 500;
+    }
+
+    @keyframes fadeIn {
+      from { transform: scale(0.95); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+
+
+
 
     @media (max-width: 768px) {
       .lightbox-download {
@@ -373,9 +415,13 @@
     </div>
   </div>
 
-  <div id="downloadHintOverlay" class="hint-overlay"></div>
-  <div id="hintText" class="hint-text">Скачайте все фото одним нажатием</div>
 
+    <div id="thanksModal" class="modal-overlay">
+    <div class="modal-content">
+      <img src="img/kittie1.jpg" alt="Котик" />
+      <p>Спасибо за прекрасную фотосессию</p>
+    </div>
+  </div>
 
 
   <script>
@@ -569,6 +615,17 @@
         }, 10000); // исчезнет через 10 секунд
       }
     });
+
+
+    // Показать модальное окно благодарности
+    const modal = document.getElementById("thanksModal");
+    modal.style.display = "flex";
+
+    // Автоматическое скрытие через 4 сек
+    setTimeout(() => {
+      modal.style.display = "none";
+    }, 4000);
+
 
 
   </script>
