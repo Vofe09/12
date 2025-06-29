@@ -457,11 +457,6 @@
       const modal = document.getElementById("thanksModal");
       modal.style.display = "flex";
 
-      // Кнопка закрытия
-      document.getElementById("modalCloseBtn").onclick = () => {
-        clearTimeout(autoHide);
-        modal.style.display = "none";
-      };
 
 
       const zip = new JSZip();
@@ -514,6 +509,10 @@
       const params = new URLSearchParams(window.location.search);
       const code = params.get("code");
       const container = document.getElementById("photo-container");
+
+      document.getElementById("modalCloseBtn").addEventListener("click", () => {
+      document.getElementById("thanksModal").style.display = "none";
+      });
 
       if (!code) {
         container.innerHTML = "<p>Код доступа не указан.</p>";
