@@ -33,7 +33,7 @@
       border-radius: 20px;
       color: white;
       text-align: center;
-      margin: auto;
+      margin: 20px;
       position: relative;
       animation: fadeZoomIn 1.5s ease forwards;
       opacity: 0;
@@ -101,6 +101,12 @@
       .card {
         padding: 30px 20px;
         font-size: 1rem;
+        margin: 20px;
+        transform: scale(0.9);
+      }
+
+      .card h1 {
+        font-size: 1.4rem;
       }
 
       .intro-text {
@@ -112,21 +118,16 @@
 </head>
 <body>
 
-  <!-- Intro-блюр -->
   <div id="intro-overlay">
     <div class="intro-text">enter?</div>
   </div>
 
-  <!-- Музыка -->
   <audio id="birthday-audio" autoplay loop>
     <source src="sounds/birthday.mp3" type="audio/mpeg">
-    Твой браузер не поддерживает аудио.
   </audio>
 
-  <!-- Звук фейерверка -->
   <audio id="fireworkSound" src="sounds/fireworks.mp3" preload="auto" loop></audio>
 
-  <!-- Карточка -->
   <div class="card">
     <h1>С Днём Рождения!</h1>
     <p>Желаю счастья, здоровья</p>
@@ -134,18 +135,16 @@
     <p>Ещё счастья и ещё здоровья</p>
   </div>
 
-  <!-- Конфетти -->
   <canvas id="confetti"></canvas>
 
-  <!-- Библиотека конфетти -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
   <script>
     function launchConfettiRainForever() {
       const colors = ['#ff0a54', '#ff477e', '#ff85a1', '#fbb1bd', '#f9bec7'];
       setInterval(() => {
-        confetti({ particleCount: 20, angle: 60, spread: 55, origin: { x: 0 }, colors });
-        confetti({ particleCount: 20, angle: 120, spread: 55, origin: { x: 1 }, colors });
+        confetti({ particleCount: 20, angle: 60, spread: 55, origin: { x: 0.1 }, colors });
+        confetti({ particleCount: 20, angle: 120, spread: 55, origin: { x: 0.9 }, colors });
       }, 200);
     }
 
@@ -161,13 +160,13 @@
       }
       setInterval(() => {
         confetti(Object.assign({}, defaults, {
-          particleCount: 250,
+          particleCount: 200,
           origin: {
-            x: randomInRange(0.1, 0.9),
-            y: randomInRange(0.1, 0.9)
+            x: randomInRange(0.2, 0.8),
+            y: randomInRange(0.2, 0.8)
           }
         }));
-      }, 800);
+      }, 900);
     }
 
     function fadeOutAudio(audio, duration = 3000) {
@@ -209,6 +208,5 @@
       });
     });
   </script>
-
 </body>
 </html>
