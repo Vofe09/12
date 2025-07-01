@@ -35,11 +35,14 @@
       text-align: center;
       margin: 20px;
       position: relative;
-      animation: fadeZoomIn 1.5s ease forwards;
       opacity: 0;
-      opacity: 0; /* Скрыта изначально */
       pointer-events: none;
-      transition: opacity 1s ease; /* Плавное появление */
+      transition: opacity 1s ease;
+    }
+
+    .card.show-card {
+      animation: fadeZoomIn 1.5s ease forwards;
+      pointer-events: auto;
     }
 
     .card p {
@@ -154,7 +157,6 @@
     function launchConfettiExplosionForever() {
       const defaults = {
         startVelocity: 45,
-        scalar: 0.4,
         spread: 3600,
         ticks: 90,
         zIndex: 9999
@@ -192,6 +194,7 @@
       const music = document.getElementById("birthday-audio");
       const firework = document.getElementById("fireworkSound");
       const overlay = document.getElementById("intro-overlay");
+      const card = document.querySelector('.card');
 
       music.volume = 0.5;
       firework.volume = 0.4;
@@ -207,10 +210,8 @@
         launchConfettiExplosionForever();
 
         setTimeout(() => {
-        const card = document.querySelector('.card');
-        card.style.opacity = '1';
-        card.style.pointerEvents = 'auto';
-        }, 8000); // ⏱ Показываем через 8 секунд
+          card.classList.add('show-card');
+        }, 1000);
 
         setTimeout(() => {
           fadeOutAudio(firework, 4000);
