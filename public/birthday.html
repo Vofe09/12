@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>С Днём Рождения!</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #555;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(15px);
+      max-width: 90vw;
+      width: 600px;
+      padding: 60px;
+      font-size: 1.3rem;
+      border-radius: 20px;
+      color: white;
+      text-align: center;
+      margin: auto;
+      position: relative;
+      animation: fadeZoomIn 1.5s ease forwards;
+      opacity: 0;
+    }
+
+    @keyframes fadeZoomIn {
+      from {
+        transform: scale(0.8);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    canvas#confetti {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Музыка -->
+  <audio id="birthday-audio" autoplay loop>
+    <source src="sounds/birthday.mp3" type="audio/mpeg">
+    Твой браузер не поддерживает аудио.
+  </audio>
+
+  <!-- Звук фейерверка -->
+  <audio id="fireworkSound" src="sounds/fireworks.mp3" preload="auto" loop></audio>
+
+  <!-- Карточка -->
+  <div class="card">
+    <h1>С Днём Рождения!</h1>
+    <p>Желаю счастья, здоровья и ярких моментов 🎉</p>
+  </div>
+
+  <!-- Конфетти -->
+  <canvas id="confetti"></canvas>
+
+  <!-- Библиотека конфетти -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <script>
+    function launchConfettiRainForever() {
+      const colors = ['#ff0a54', '#ff477e', '#ff85a1', '#fbb1bd', '#f9bec7'];
+
+      setInterval(() => {
+        confetti({
+          particleCount: 4,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 },
+          colors: colors
+        });
+
+        confetti({
+          particleCount: 4,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 },
+          colors: colors
+        });
+      }, 200);
+    }
+
+    function launchConfettiExplosionForever() {
+      const defaults = {
+        startVelocity: 45,
+        spread: 360,
+        ticks: 90,
+        zIndex: 9999
+      };
+
+      function randomInRange(min, max) {
+        return Math.random() * (max - min) + min;
+      }
+
+      setInterval(() => {
+        confetti(Object.assign({}, defaults, {
+          particleCount: 50,
+          origin: {
+            x: randomInRange(0.1, 0.9),
+            y: randomInRange(0.1, 0.9)
+          }
+        }));
+      }, 800);
+    }
+
+    function fadeOutAudio(audio, duration = 3000) {
+      const steps = 30;
+      const stepTime = duration / steps;
+      const volumeStep = audio.volume / steps;
+
+      const fade = setInterval(() => {
+        if (audio.volume - volumeStep > 0) {
+          audio.volume -= volumeStep;
+        } else {
+          audio.volume = 0;
+          audio.pause(); // Останавливаем воспроизведение
+          clearInterval(fade);
+        }
+      }, stepTime);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      // Конфетти
+      launchConfettiRainForever();
+      launchConfettiExplosionForever();
+
+      // Аудио
+      const music = document.getElementById("birthday-audio");
+      const firework = document.getElementById("fireworkSound");
+
+      music.volume = 0.5;
+      firework.volume = 0.4;
+
+      music.play().catch(() => {
+        document.body.addEventListener("click", () => music.play(), { once: true });
+      });
+
+      firework.play().catch(() => {
+        document.body.addEventListener("click", () => firework.play(), { once: true });
+      });
+
+      // 🔇 Затухание звука фейерверков через 10 секунд
+      setTimeout(() => {
+        fadeOutAudio(firework, 4000);
+      }, 10000);
+    });
+  </script>
+
+</body>
+</html>
