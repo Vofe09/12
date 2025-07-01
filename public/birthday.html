@@ -37,6 +37,9 @@
       position: relative;
       animation: fadeZoomIn 1.5s ease forwards;
       opacity: 0;
+      opacity: 0; /* Скрыта изначально */
+      pointer-events: none;
+      transition: opacity 1s ease; /* Плавное появление */
     }
 
     .card p {
@@ -151,7 +154,8 @@
     function launchConfettiExplosionForever() {
       const defaults = {
         startVelocity: 45,
-        spread: 170,
+        scalar: 0.4,
+        spread: 3600,
         ticks: 90,
         zIndex: 9999
       };
@@ -201,6 +205,12 @@
 
         launchConfettiRainForever();
         launchConfettiExplosionForever();
+
+        setTimeout(() => {
+        const card = document.querySelector('.card');
+        card.style.opacity = '1';
+        card.style.pointerEvents = 'auto';
+        }, 8000); // ⏱ Показываем через 8 секунд
 
         setTimeout(() => {
           fadeOutAudio(firework, 4000);
