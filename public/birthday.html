@@ -32,6 +32,10 @@
       animation: fadeZoomIn 1.5s ease forwards;
       opacity: 0;
     }
+    .card p {
+        margin: 6px 0;
+        line-height: 1.3;
+    }
 
     @keyframes fadeZoomIn {
       from {
@@ -53,9 +57,45 @@
       pointer-events: none;
       z-index: 9999;
     }
+
+        #intro-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(85, 85, 85, 0.8);
+    backdrop-filter: blur(20px);
+    z-index: 10000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 1s ease;
+    }
+
+    .intro-text {
+    font-size: 2rem;
+    color: white;
+    font-weight: bold;
+    letter-spacing: 2px;
+    cursor: pointer;
+    user-select: none;
+    animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+    0%   { transform: scale(1); opacity: 0.8; }
+    50%  { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.8; }
+    }
+
+
   </style>
 </head>
 <body>
+    <div id="intro-overlay">
+  <div class="intro-text">enter?</div>
+    </div>
 
   <!-- Музыка -->
   <audio id="birthday-audio" autoplay loop>
@@ -69,7 +109,9 @@
   <!-- Карточка -->
   <div class="card">
     <h1>С Днём Рождения!</h1>
-    <p>Желаю счастья, здоровья и ярких моментов 🎉</p>
+    <p>Желаю счастья, здоровья</p>
+    <p>счастья, здоровья</p>
+    <p>Еще счастья и еще здоровья</p>
   </div>
 
   <!-- Конфетти -->
@@ -84,7 +126,7 @@
 
       setInterval(() => {
         confetti({
-          particleCount: 4,
+          particleCount: 10,
           angle: 60,
           spread: 55,
           origin: { x: 0 },
@@ -92,7 +134,7 @@
         });
 
         confetti({
-          particleCount: 4,
+          particleCount: 10,
           angle: 120,
           spread: 55,
           origin: { x: 1 },
@@ -100,6 +142,12 @@
         });
       }, 200);
     }
+
+    const birthday_audio = document.querySelector("#birthday-audio");
+    birthday_audio.volume = 0.2;
+    const fireworks_audio = document.querySelector("#fireworkSound");
+    fireworks_audio.volume = 1;
+
 
     function launchConfettiExplosionForever() {
       const defaults = {
@@ -115,7 +163,7 @@
 
       setInterval(() => {
         confetti(Object.assign({}, defaults, {
-          particleCount: 50,
+          particleCount: 100,
           origin: {
             x: randomInRange(0.1, 0.9),
             y: randomInRange(0.1, 0.9)
@@ -141,30 +189,33 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-      // Конфетти
-      launchConfettiRainForever();
-      launchConfettiExplosionForever();
+    const music = document.getElementById("birthday-audio");
+    const firework = document.getElementById("fireworkSound");
+    const overlay = document.getElementById("intro-overlay");
 
-      // Аудио
-      const music = document.getElementById("birthday-audio");
-      const firework = document.getElementById("fireworkSound");
+    music.volume = 0.5;
+    firework.volume = 0.4;
 
-      music.volume = 0.5;
-      firework.volume = 0.4;
+    // Ждём клика по enter?
+    overlay.addEventListener("click", () => {
+        overlay.style.opacity = "0";
+        setTimeout(() => overlay.remove(), 1000); // убираем через 1 сек
 
-      music.play().catch(() => {
-        document.body.addEventListener("click", () => music.play(), { once: true });
-      });
+        // Запускаем аудио
+        music.play();
+        firework.play();
 
-      firework.play().catch(() => {
-        document.body.addEventListener("click", () => firework.play(), { once: true });
-      });
+        // Конфетти
+        launchConfettiRainForever();
+        launchConfettiExplosionForever();
 
-      // 🔇 Затухание звука фейерверков через 10 секунд
-      setTimeout(() => {
+        // Затухание звука фейерверков через 10 сек
+        setTimeout(() => {
         fadeOutAudio(firework, 4000);
-      }, 10000);
+        }, 10000);
     });
+    });
+
   </script>
 
 </body>
