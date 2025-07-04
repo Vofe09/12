@@ -20,7 +20,7 @@ export default {
   "mdomlukvbieerpdpfqfh": {
     title: "Предметная фотосъемка (без цветокора)",
     date: "04.07.2025",
-    cover: "mdomlukvbieerpdpfqfh/DSC_0326_iuapa9"
+    cover: "DSC_0326_iuapa9"
   },
 
 
