@@ -20,12 +20,12 @@ export default {
     "mdomlukvbieerpdpfqfh": {
     title: "Предметная фотосъемка (без цветокора)",
     date: "26.06.2025",
-    cover: "mdomlukvbieerpdpfqfh/DSC_301"
+    cover: "mdomlukvbieerpdpfqfh/DSC_0301_fs4crt"
   },
 
     "plvqaormzwpsqfmcacma": {
     title: "Предметная фотосъемка (с цветокором)",
     date: "26.06.2025",
-    cover: "plvqaormzwpsqfmcacma/DSC_301"
+    cover: "plvqaormzwpsqfmcacma/DSC_0301_fs4crt"
   }
 };
