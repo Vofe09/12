@@ -27,6 +27,6 @@ export default {
     "plvqaormzwpsqfmcacma": {
     title: "Предметная фотосъемка (с цветокором)",
     date: "04.07.2025",
-    cover: "plvqaormzwpsqfmcacma/DSC_0294_pj0jrs"
+    cover: "DSC_0301_vulvuv"
   }
 };
