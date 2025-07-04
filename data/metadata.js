@@ -20,12 +20,12 @@ export default {
     "mdomlukvbieerpdpfqfh": {
     title: "Предметная фотосъемка (без цветокора)",
     date: "04.07.2025",
-    cover: "https://res.cloudinary.com/dabf6iiza/image/upload/v1751636364/acent.jpg"
+    cover: "dabf6iiza/acent.jpg"
   },
 
     "plvqaormzwpsqfmcacma": {
     title: "Предметная фотосъемка (с цветокором)",
     date: "04.07.2025",
-    cover: "plvqaormzwpsqfmcacma/acent"
+    cover: "plvqaormzwpsqfmcacma/acent.jpg"
   }
 };
