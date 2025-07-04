@@ -20,7 +20,7 @@ export default {
     "mdomlukvbieerpdpfqfh": {
     title: "Предметная фотосъемка (без цветокора)",
     date: "04.07.2025",
-    cover: "dabf6iiza/acent.jpg"
+    cover: "mdomlukvbieerpdpfqfh/acent.jpg"
   },
 
     "plvqaormzwpsqfmcacma": {
