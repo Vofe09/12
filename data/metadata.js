@@ -15,7 +15,17 @@ export default {
     title: "Фотоссесия аээээ",
     date: "26.06.2025",
     cover: "emqmerokrpcyphxchfcg/DSC_0208_oagtnp"
-  }
+  },
 
-  // Добавляй больше кодов по аналогии
+    "mdomlukvbieerpdpfqfh": {
+    title: "Предметная фотосъемка (без цветокора)",
+    date: "26.06.2025",
+    cover: "mdomlukvbieerpdpfqfh/DSC_301"
+  },
+
+    "plvqaormzwpsqfmcacma": {
+    title: "Предметная фотосъемка (с цветокором)",
+    date: "26.06.2025",
+    cover: "plvqaormzwpsqfmcacma/DSC_301"
+  }
 };
