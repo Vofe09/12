@@ -20,7 +20,7 @@ export default {
     "mdomlukvbieerpdpfqfh": {
     title: "Предметная фотосъемка (без цветокора)",
     date: "04.07.2025",
-    cover: "https://res.cloudinary.com/dabf6iiza/image/upload/acent.jpg"
+    cover: "https://res.cloudinary.com/dabf6iiza/image/upload/v1751636364/acent.jpg"
   },
 
     "plvqaormzwpsqfmcacma": {
