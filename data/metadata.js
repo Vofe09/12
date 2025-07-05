@@ -23,10 +23,15 @@ export default {
     cover: "acent"
   },
 
-
     "plvqaormzwpsqfmcacma": {
     title: "Предметная фотосъемка (с цветокором)",
     date: "04.07.2025",
     cover: "DSC_0301_vulvuv"
+  },
+
+    "yivkluectrkapqzxqvpy": {
+    title: "ACK",
+    date: "05.07.2025",
+    cover: "DSC_0481_f5nsax"
   }
 };
