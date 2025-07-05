@@ -33,5 +33,11 @@ export default {
     title: "ACK",
     date: "05.07.2025",
     cover: "DSC_0481_f5nsax"
+  },
+
+    "sbbyqvkrxpupxshwgqap": {
+    title: "all photos",
+    date: "05.07.2025",
+    cover: "DSC_0571_fqvfzo"
   }
 };
