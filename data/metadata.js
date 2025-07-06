@@ -45,5 +45,11 @@ export default {
     title: "Фотоссесия",
     date: "05.07.2025",
     cover: "DSC_0572_vb9bcs"
-  }
+  },
+
+    "wrkjgtorgxbhukficibt": {
+    title: "all photos",
+    date: "05.07.2025",
+    cover: "DSC_0775_ajvqoy"
+  },
 };
