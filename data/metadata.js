@@ -52,4 +52,16 @@ export default {
     date: "06.07.2025",
     cover: "DSC_0775_ajvqoy"
   },
+
+    "uvzcckichpgoqylxhaib": { 
+    title: "семейная фотосессия",
+    date: "06.07.2025",
+    cover: "DSC_0730_v47431"
+  },
+
+    "onuayrumgqemgkkerftx": { 
+    title: "фотосессия", 
+    date: "06.07.2025",
+    cover: "DSC_0763_ky4rvq"
+  },
 };
