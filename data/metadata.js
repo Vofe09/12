@@ -42,14 +42,14 @@ export default {
   },
 
     "nvzhxjqtwelpbqmlqbaw": {
-    title: "Фотоссесия",
+    title: "Фотосессия",
     date: "05.07.2025",
     cover: "DSC_0572_vb9bcs"
   },
 
     "wrkjgtorgxbhukficibt": {
-    title: "all photos",
-    date: "05.07.2025",
+    title: "фотосессия",
+    date: "06.07.2025",
     cover: "DSC_0775_ajvqoy"
   },
 };
