@@ -136,15 +136,15 @@ export default {
     cover: "DSC_0898_usgsjp" //// vintage
   },
 
-    "": { 
-    title: "", 
+    "rtfedycnvetseqmdxryygnsxm": { 
+    title: "Церемония награждения", 
     date: "07.07.2025",
-    cover: "DSC_0763_ky4rvq" ////
+    cover: "DSC_0045_ub7aow" 
   },
 
     "": { 
     title: "", 
     date: "07.07.2025",
-    cover: "DSC_0763_ky4rvq" ////
+    cover: "" ////
   },
 };
