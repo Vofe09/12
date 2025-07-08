@@ -675,6 +675,21 @@
       });
 
       document.getElementById("lightboxImage").addEventListener("click", () => {
+        document.querySelectorAll(".mode-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const mode = btn.dataset.mode;
+          const keyMap = {
+            original: "avecfplcluttyikwkenfrcske",
+            filtered: "icdluhxislzhofnugbfhtvkac",
+            vintage: "ucnshzwbskeujgrdazmxcgwbn"
+          };
+          const code = keyMap[mode];
+          if (code) {
+            // Перенаправляем пользователя с нужным кодом
+            window.location.href = `${window.location.pathname}?code=${code}`;
+          }
+        });
+      });
         const img = document.getElementById("lightboxImage");
         zoomed = !zoomed;
         img.style.transform = zoomed ? "scale(2.5)" : "scale(1)";
