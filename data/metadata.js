@@ -121,19 +121,19 @@ export default {
     "txllntcechyxfqheyncxvhase": { 
     title: "фотоальбом Алины", 
     date: "07.07.2025",
-    cover: "DSC_0763_ky4rvq" //// org
+    cover: "DSC_0898_dcdfpk" //// org
   },
 
     "axxsxwmtuspvpaozqqwjqrmsn": { 
     title: "фотоальбом Алины", 
     date: "07.07.2025",
-    cover: "DSC_0763_ky4rvq" //// filtr
+    cover: "DSC_0898_dudkko" //// filtr
   },
 
     "waqzhgeguhkgbwixgzfeuosqk": { 
     title: "фотоальбом Алины", 
     date: "07.07.2025",
-    cover: "DSC_0763_ky4rvq" //// vintage
+    cover: "DSC_0898_usgsjp" //// vintage
   },
 
     "": { 
