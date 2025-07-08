@@ -551,17 +551,25 @@
         .then(data => {
           if (data.success) {
             document.getElementById("cover-image").src = data.cover || "";
-            document.getElementById("session-title").textContent = data.title || "Фотосессия";
+            document.getElementById("session-title").textContent = data.title || "Photoshoot";
             document.getElementById("session-date").textContent = data.date || "";
-            allPhotoUrls = data.urls;
 
-            data.urls.forEach((url, index) => {
+            // Функция извлечения рейтинга из имени файла (первая цифра перед DSC)
+            function extractRating(url) {
+              const match = url.match(/\/(\d)[^\/]*\.(jpg|jpeg|png|webp)/i);
+              return match ? parseInt(match[1], 10) : 0;
+            }
+
+            // Сортируем по убыванию рейтинга
+            allPhotoUrls = data.urls.sort((a, b) => extractRating(b) - extractRating(a));
+
+            allPhotoUrls.forEach((url, index) => {
               const box = document.createElement("div");
               box.className = "photo-box";
 
               const img = document.createElement("img");
               img.src = url;
-              img.alt = "Фото";
+              img.alt = "Photo";
               img.addEventListener("click", () => showLightbox(index));
 
               const download = document.createElement("a");
@@ -571,7 +579,7 @@
 
               const icon = document.createElement("img");
               icon.src = "img/download.svg";
-              icon.alt = "Скачать";
+              icon.alt = "Download";
               download.appendChild(icon);
 
               box.appendChild(img);
@@ -579,7 +587,7 @@
               container.appendChild(box);
             });
           } else {
-            container.innerHTML = "<p>Фотографии не найдены для этого кода.</p>";
+            container.innerHTML = "<p>No photos found for this code.</p>";
           }
         });
 

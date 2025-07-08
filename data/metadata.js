@@ -53,6 +53,11 @@ export default {
     cover: "DSC_0775_ajvqoy"
   },
 
+
+// Лана jsfabmthkoanqcehoxocsfgwg +-
+// Дарина fbeovendrlkqbwzrjotazwijb +- 
+// Алина kbadviyryhutebkfhpdzkavdo +-
+
     "uvzcckichpgoqylxhaib": { 
     title: "семейная фотосессия",
     date: "06.07.2025",
@@ -63,5 +68,47 @@ export default {
     title: "фотосессия", 
     date: "06.07.2025",
     cover: "DSC_0763_ky4rvq"
+  },
+
+    "jsfabmthkoanqcehoxocsfgwg": {
+    title: "Лана",
+    date: "07.07.2025",
+    cover: "DSC_0775_ajvqoy" /////
+  },
+
+    "fbeovendrlkqbwzrjotazwijb": { 
+    title: "Дарина", 
+    date: "07.07.2025",
+    cover: "DSC_0763_ky4rvq" ////
+  },
+
+    "kbadviyryhutebkfhpdzkavdo": { 
+    title: "Алина", 
+    date: "07.07.2025",
+    cover: "DSC_0763_ky4rvq" ////
+  },
+
+    "cohopenemgyoxmqmnvqfocmac": { 
+    title: "Адия", 
+    date: "07.07.2025",
+    cover: "DSC_0763_ky4rvq" ////
+  },
+
+    "taethaajmyhjgvwvkdoghfvnp": { 
+    title: "Агнесса", 
+    date: "07.07.2025",
+    cover: "DSC_0763_ky4rvq" ////
+  },
+
+    "avecfplcluttyikwkenfrcske": { 
+    title: "Все общие фотографии", 
+    date: "07.07.2025",
+    cover: "DSC_0763_ky4rvq" ////
+  },
+
+    "": { 
+    title: "", 
+    date: "07.07.2025",
+    cover: "DSC_0763_ky4rvq" ////
   },
 };
