@@ -73,19 +73,19 @@ export default {
     "jsfabmthkoanqcehoxocsfgwg": {
     title: "Лана",
     date: "07.07.2025",
-    cover: "DSC_0775_ajvqoy" /////
+    cover: "DSC_0287_c5eumd" 
   },
 
     "fbeovendrlkqbwzrjotazwijb": { 
     title: "Дарина", 
     date: "07.07.2025",
-    cover: "DSC_0763_ky4rvq" ////
+    cover: "DSC_0969_udyai8" 
   },
 
     "kbadviyryhutebkfhpdzkavdo": { 
     title: "Алина", 
     date: "07.07.2025",
-    cover: "DSC_0763_ky4rvq" ////
+    cover: "DSC_0835_eyy6p8" 
   },
 
     "cohopenemgyoxmqmnvqfocmac": { 
@@ -101,7 +101,7 @@ export default {
   },
 
     "avecfplcluttyikwkenfrcske": { 
-    title: "Все общие фотографии", 
+    title: "Leadership School 2025", 
     date: "07.07.2025",
     cover: "2DSC_0902_ex55ps" 
   },
