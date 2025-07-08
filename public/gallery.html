@@ -574,9 +574,14 @@
       const container = document.getElementById("photo-container");
       const key = params.get("code");
       const validKeys = {
+        // Первый альбом
         avecfplcluttyikwkenfrcske: "original",
         icdluhxislzhofnugbfhtvkac: "filtered",
-        ucnshzwbskeujgrdazmxcgwbn: "vintage"
+        ucnshzwbskeujgrdazmxcgwbn: "vintage",
+        // Второй альбом
+        txllntcechyxfqheyncxvhase: "original",
+        axxsxwmtuspvpaozqqwjqrmsn: "filtered",
+        waqzhgeguhkgbwixgzfeuosqk: "vintage"
       };
 
       if (key in validKeys) {
@@ -678,16 +683,46 @@
       // Обработка переключения режимов
       document.querySelectorAll(".mode-btn").forEach(btn => {
         btn.addEventListener("click", () => {
-          const mode = btn.dataset.mode;
-          const keyMap = {
-            original: "avecfplcluttyikwkenfrcske",
-            filtered: "icdluhxislzhofnugbfhtvkac",
-            vintage: "ucnshzwbskeujgrdazmxcgwbn"
+          // Группировка ключей по альбомам
+          const keyGroups = {
+            // Альбом 1
+            avecfplcluttyikwkenfrcske: "group1",
+            icdluhxislzhofnugbfhtvkac: "group1",
+            ucnshzwbskeujgrdazmxcgwbn: "group1",
+            // Альбом 2
+            txllntcechyxfqheyncxvhase: "group2",
+            axxsxwmtuspvpaozqqwjqrmsn: "group2",
+            waqzhgeguhkgbwixgzfeuosqk: "group2"
           };
-          const code = keyMap[mode];
-          if (code) {
-            window.location.href = `${window.location.pathname}?code=${code}`;
-          }
+
+          // Набор ключей по группам
+          const keySets = {
+            group1: {
+              original: "avecfplcluttyikwkenfrcske",
+              filtered: "icdluhxislzhofnugbfhtvkac",
+              vintage: "ucnshzwbskeujgrdazmxcgwbn"
+            },
+            group2: {
+              original: "txllntcechyxfqheyncxvhase",
+              filtered: "axxsxwmtuspvpaozqqwjqrmsn",
+              vintage: "waqzhgeguhkgbwixgzfeuosqk"
+            }
+          };
+
+          // Определяем группу по текущему ключу
+          const currentGroup = keyGroups[code];
+
+          // Обработка переключения режимов с учётом группы
+          document.querySelectorAll(".mode-btn").forEach(btn => {
+            btn.addEventListener("click", () => {
+              const mode = btn.dataset.mode;
+              const codeMap = keySets[currentGroup];
+              if (codeMap && codeMap[mode]) {
+                window.location.href = `${window.location.pathname}?code=${codeMap[mode]}`;
+              }
+            });
+          });
+
         });
       });
 

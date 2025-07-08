@@ -118,6 +118,24 @@ export default {
     cover: "2DSC_0902_aeauzh" 
   },
 
+    "txllntcechyxfqheyncxvhase": { 
+    title: "фотоальбом Алины", 
+    date: "07.07.2025",
+    cover: "DSC_0763_ky4rvq" //// org
+  },
+
+    "axxsxwmtuspvpaozqqwjqrmsn": { 
+    title: "фотоальбом Алины", 
+    date: "07.07.2025",
+    cover: "DSC_0763_ky4rvq" //// filtr
+  },
+
+    "waqzhgeguhkgbwixgzfeuosqk": { 
+    title: "фотоальбом Алины", 
+    date: "07.07.2025",
+    cover: "DSC_0763_ky4rvq" //// vintage
+  },
+
     "": { 
     title: "", 
     date: "07.07.2025",
