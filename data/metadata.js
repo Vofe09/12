@@ -100,10 +100,28 @@ export default {
     cover: "5DSC_0003_ha9vts"
   },
 
-    "avecfplcluttyikwkenfrcske": { 
+    "avecfplcluttyikwkenfrcske": {    
     title: "Leadership School 2025", 
     date: "07.07.2025",
     cover: "2DSC_0902_ex55ps" 
+  },
+
+    "icdluhxislzhofnugbfhtvkac": { 
+    title: "Leadership School 2025", 
+    date: "07.07.2025",
+    cover: "2DSC_0902_mylvpc" 
+  },
+
+    "ucnshzwbskeujgrdazmxcgwbn": { 
+    title: "Leadership School 2025", 
+    date: "07.07.2025",
+    cover: "2DSC_0902_aeauzh" 
+  },
+
+    "": { 
+    title: "", 
+    date: "07.07.2025",
+    cover: "DSC_0763_ky4rvq" ////
   },
 
     "": { 
