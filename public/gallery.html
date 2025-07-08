@@ -278,6 +278,28 @@
         font-size: 15px;
       }
 }
+        .mode-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin: 30px 0;
+    }
+
+    .mode-btn {
+      background-color: #201c1c;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 30px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .mode-btn:hover {
+      background-color: #333;
+    }
+
 
 
 
@@ -443,6 +465,12 @@
     <div class="right"><img id="download-all-btn-static" src="img/download.svg" alt="Скачать" /></div>
   </div>
 
+  <div id="modeButtons" class="mode-buttons" style="display: none;">
+    <button class="mode-btn" data-mode="original">Оригинал</button>
+    <button class="mode-btn" data-mode="filtered">С фильтром</button>
+    <button class="mode-btn" data-mode="vintage">Винтаж</button>
+  </div>
+
   <div id="photo-container"></div>
 
   <!-- Lightbox -->
@@ -536,6 +564,10 @@
       const params = new URLSearchParams(window.location.search);
       const code = params.get("code");
       const container = document.getElementById("photo-container");
+      const key = params.get("code");
+      if (key === "avecfplcluttyikwkenfrcske") {
+        document.getElementById("modeButtons").style.display = "flex";
+      }
 
       document.getElementById("modalCloseBtn").addEventListener("click", () => {
       document.getElementById("thanksModal").style.display = "none";
