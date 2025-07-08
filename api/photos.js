@@ -18,7 +18,7 @@ export default async function handler(req, res) {
     const result = await cloudinary.search
       .expression(`folder:${key}`)
       .sort_by('public_id', 'asc')
-      .max_results(200)
+      .max_results(500)
       .execute();
 
     const urls = result.resources.map(file =>

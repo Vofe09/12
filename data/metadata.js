@@ -91,19 +91,19 @@ export default {
     "cohopenemgyoxmqmnvqfocmac": { 
     title: "Адия", 
     date: "07.07.2025",
-    cover: "DSC_0763_ky4rvq" ////
+    cover: "DSC_0829_iwiwjk" 
   },
 
     "taethaajmyhjgvwvkdoghfvnp": { 
     title: "Агнесса", 
     date: "07.07.2025",
-    cover: "DSC_0763_ky4rvq" ////
+    cover: "5DSC_0003_ha9vts"
   },
 
     "avecfplcluttyikwkenfrcske": { 
     title: "Все общие фотографии", 
     date: "07.07.2025",
-    cover: "DSC_0763_ky4rvq" ////
+    cover: "2DSC_0902_ex55ps" 
   },
 
     "": { 
