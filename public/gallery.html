@@ -288,16 +288,24 @@
     .mode-btn {
       background-color: white;
       color: #201c1c;
-      border: none;
-      padding: 8px 16px;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      padding: 10px 20px;
       border-radius: 30px;
       font-size: 14px;
+      font-weight: 500;
       cursor: pointer;
-      transition: background-color 0.3s ease;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+      transition: all 0.2s ease-in-out;
     }
 
     .mode-btn:hover {
-      background-color: #333;
+      background-color: #f3f3f3;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+    }
+
+    .mode-btn.active-mode {
+      background-color: #ececec;
+      font-weight: 600;
     }
 
 
@@ -564,9 +572,23 @@
       const params = new URLSearchParams(window.location.search);
       const code = params.get("code");
       const container = document.getElementById("photo-container");
-      const key = params.get("code");
-      if (key === "avecfplcluttyikwkenfrcske") {
+      const key = params.get("key");
+      const validKeys = {
+        avecfplcluttyikwkenfrcske: "original",
+        icdluhxislzhofnugbfhtvkac: "filtered",
+        ucnshzwbskeujgrdazmxcgwbn: "vintage"
+      };
+
+      if (key in validKeys) {
         document.getElementById("modeButtons").style.display = "flex";
+
+        // Активная кнопка
+        const mode = validKeys[key];
+        document.querySelectorAll('.mode-btn').forEach(btn => {
+          if (btn.dataset.mode === mode) {
+            btn.classList.add("active-mode");
+          }
+        });
       }
 
       document.getElementById("modalCloseBtn").addEventListener("click", () => {
