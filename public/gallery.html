@@ -674,8 +674,9 @@
         }
       });
 
-      document.getElementById("lightboxImage").addEventListener("click", () => {
-        document.querySelectorAll(".mode-btn").forEach(btn => {
+
+      // Обработка переключения режимов
+      document.querySelectorAll(".mode-btn").forEach(btn => {
         btn.addEventListener("click", () => {
           const mode = btn.dataset.mode;
           const keyMap = {
@@ -685,11 +686,14 @@
           };
           const code = keyMap[mode];
           if (code) {
-            // Перенаправляем пользователя с нужным кодом
             window.location.href = `${window.location.pathname}?code=${code}`;
           }
         });
       });
+
+
+      document.getElementById("lightboxImage").addEventListener("click", () => {
+        
         const img = document.getElementById("lightboxImage");
         zoomed = !zoomed;
         img.style.transform = zoomed ? "scale(2.5)" : "scale(1)";
