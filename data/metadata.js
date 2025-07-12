@@ -145,7 +145,7 @@ export default {
     "onuayrumgqemgkkerftx": { 
     title: "Фотосессия", 
     date: "10.07.2025",
-    cover: "onuayrumgqemgkkerftx"
+    cover: "DSC_0332_eumsu4"
   },
 
     "cwghcuzrxkspqosnhpqjkmjpy": { 
