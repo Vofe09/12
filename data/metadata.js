@@ -139,7 +139,37 @@ export default {
     "rtfedycnvetseqmdxryygnsxm": { 
     title: "Церемония награждения", 
     date: "07.07.2025",
-    cover: "DSC_0045_ub7aow" 
+    cover: "DSC_0045_ub7aow"  
+  },
+
+    "onuayrumgqemgkkerftx": { 
+    title: "Фотосессия", 
+    date: "10.07.2025",
+    cover: "onuayrumgqemgkkerftx"
+  },
+
+    "cwghcuzrxkspqosnhpqjkmjpy": { 
+    title: "Фотосессия", 
+    date: "12.07.2025",
+    cover: "DSC_0402_prht0x" 
+  },
+
+    "": { 
+    title: "", 
+    date: "07.07.2025",
+    cover: "" ////
+  },
+
+    "": { 
+    title: "", 
+    date: "07.07.2025",
+    cover: "" ////
+  },
+
+    "": { 
+    title: "", 
+    date: "07.07.2025",
+    cover: "" ////
   },
 
     "": { 
