@@ -154,10 +154,10 @@ export default {
     cover: "DSC_0402_prht0x" 
   },
 
-    "": { 
-    title: "", 
-    date: "07.07.2025",
-    cover: "" ////
+    "lvyurlxkprwjqawvtbgatbkmc": { 
+    title: "Фотоальбом Алины и Томирис", 
+    date: "13.07.2025",
+    cover: "1DSC_0736_aqcfvj" ////
   },
 
     "": { 
