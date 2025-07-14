@@ -157,13 +157,13 @@ export default {
     "lvyurlxkprwjqawvtbgatbkmc": { 
     title: "Фотоальбом Алины и Томирис", 
     date: "13.07.2025",
-    cover: "1DSC_0736_aqcfvj" ////
+    cover: "1DSC_0736_aqcfvj" 
   },
 
-    "": { 
-    title: "", 
-    date: "07.07.2025",
-    cover: "" ////
+    "wpcthfozldsdssmnjmgylavol": { 
+    title: "Пикник", 
+    date: "13.07.2025",
+    cover: "DSC_0784_nk0cg5" 
   },
 
     "": { 
