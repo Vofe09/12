@@ -166,10 +166,10 @@ export default {
     cover: "DSC_0784_nk0cg5" 
   },
 
-    "": { 
-    title: "", 
-    date: "07.07.2025",
-    cover: "" ////
+    "gzniclwevphiaoqpgdyxuqeqt": { 
+    title: "Пикник", 
+    date: "13.07.2025",
+    cover: "DSC_0784_galujx" 
   },
 
     "": { 
