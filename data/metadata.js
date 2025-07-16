@@ -172,6 +172,30 @@ export default {
     cover: "DSC_0784_galujx" 
   },
 
+    "opdogplsaobnfrygickdhqnpl": { 
+    title: "Урок ACK", 
+    date: "15.07.2025",
+    cover: "DSC_0851_iaqvyv" 
+  },
+
+    "": { 
+    title: "", 
+    date: "07.07.2025",
+    cover: "" ////
+  },
+
+    "": { 
+    title: "", 
+    date: "07.07.2025",
+    cover: "" ////
+  },
+
+    "": { 
+    title: "", 
+    date: "07.07.2025",
+    cover: "" ////
+  },
+
     "": { 
     title: "", 
     date: "07.07.2025",
