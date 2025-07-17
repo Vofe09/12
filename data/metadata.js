@@ -178,16 +178,16 @@ export default {
     cover: "DSC_0851_iaqvyv" 
   },
 
-    "": { 
-    title: "", 
-    date: "07.07.2025",
-    cover: "" ////
+    "offtifuliygawqnrleuydxgf": { 
+    title: "Надеюсь, вам понравился Костанай ;)", 
+    date: "17.07.2025",
+    cover: "DSC_0366_jkgmix" 
   },
 
-    "": { 
-    title: "", 
-    date: "07.07.2025",
-    cover: "" ////
+    "slefeyinuehqdqrzjowclnki": { 
+    title: "Зарубимся брат?", 
+    date: "17.07.2025",
+    cover: "DSC_0374_x59e63" 
   },
 
     "": { 
