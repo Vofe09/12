@@ -193,7 +193,7 @@ export default {
     "": { 
     title: "", 
     date: "07.07.2025",
-    cover: "" ////
+    cover: "" ////  //
   },
 
     "": { 
