@@ -190,10 +190,10 @@ export default {
     cover: "DSC_0374_x59e63" 
   },
 
-    "": { 
-    title: "", 
-    date: "07.07.2025",
-    cover: "" ////  //
+    "qdgqjsahawhfjrnvktveakga": { 
+    title: "матер класс по фотошопу ACK", 
+    date: "17.07.2025",
+    cover: "IMG_0138_irwfdh" 
   },
 
     "": { 
