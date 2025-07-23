@@ -196,10 +196,10 @@ export default {
     cover: "IMG_0138_irwfdh" 
   },
 
-    "": { 
-    title: "", 
-    date: "07.07.2025",
-    cover: "" ////
+    "kiopueuimnuaucrjmjdyjafcs": { 
+    title: "лабубо", 
+    date: "23.07.2025",
+    cover: "DSC_0611_i9hi7r"
   },
 
     "": { 
