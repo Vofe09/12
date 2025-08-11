@@ -202,10 +202,10 @@ export default {
     cover: "DSC_0611_i9hi7r"
   },
 
-    "": { 
-    title: "", 
-    date: "07.07.2025",
-    cover: "" ////
+    "nnnnleershdrtlfdhqor": { 
+    title: "Она прекрасна", 
+    date: "11.08.2025",
+    cover: "DSC_0882_f460kt" 
   },
 
     "": { 
