@@ -208,16 +208,16 @@ export default {
     cover: "DSC_0882_f460kt" 
   },
 
-    "": { 
-    title: "", 
-    date: "07.07.2025",
-    cover: "" ////
+    "ifucqaxudffxlqtmgpfjanoef": { 
+    title: "День города", 
+    date: "15.08.2025",
+    cover: "DSC_0981_a4mscb" 
   },
 
-    "": { 
-    title: "", 
-    date: "07.07.2025",
-    cover: "" ////
+    "hzfubiphfnsjozirmhlywbgxp": { 
+    title: "день города", 
+    date: "15.08.2025",
+    cover: "DSC_0965_dpo6qx" 
   },
 
     "": { 
