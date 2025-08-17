@@ -277,19 +277,19 @@ export default {
     "kvkkyrcuadyrvbczpnllwclyy": { 
     title: "С днем города!", 
     date: "16.08.2025",
-    cover: "DSC_0070_e62dqc" ////
+    cover: "DSC_0070_e62dqc" 
   },
 
     "xffuwfcakhzhqoqksfzruqlpm": { 
     title: "С днем города!", 
     date: "16.08.2025",
-    cover: "DSC_0052_t32fth" ////
+    cover: "DSC_0052_t32fth" 
   },
 
-    "": { 
-    title: "С днем города!", 
+    "skmojfcfwagasigpfysmhspnf": { 
+    title: "ВЕСЬ АЛЬБОМ", 
     date: "16.08.2025",
-    cover: "" ////
+    cover: "DSC_0054_khqu11" ////
   },
 
     "": { 
