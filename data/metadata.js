@@ -256,10 +256,10 @@ export default {
     cover: "DSC_0062_s8qbby" 
   },
 
-    "": { 
-    title: "", 
+    "nwnvitsjjfreqwmvbbedgkkkl": { 
+    title: "С днем города!", 
     date: "16.08.2025",
-    cover: "" ////
+    cover: "DSC_0056_fluyds" 
   },
 
     "": { 
