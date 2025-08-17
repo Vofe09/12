@@ -274,10 +274,10 @@ export default {
     cover: "DSC_0076_piscwz" 
   },
 
-    "": { 
+    "kvkkyrcuadyrvbczpnllwclyy": { 
     title: "С днем города!", 
     date: "16.08.2025",
-    cover: "" ////
+    cover: "DSC_0070_e62dqc" ////
   },
 
     "": { 
