@@ -226,10 +226,10 @@ export default {
     cover: "DSC_0034_dibkqw" 
   },
 
-    "": { 
-    title: "", 
+    "fjjsbqlbtmnutjiyyybfbmhwt": { 
+    title: "С днем города!", 
     date: "16.08.2025",
-    cover: "" ////
+    cover: "DSC_0039_gidaeh" 
   },
 
     "": { 
