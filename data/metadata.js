@@ -220,21 +220,57 @@ export default {
     cover: "DSC_0965_dpo6qx" 
   },
 
+    "zzcjolquwmoxizfyfqzyzmuvf": { 
+    title: "С днем города!", 
+    date: "16.08.2025",
+    cover: "DSC_0034_dibkqw" 
+  },
+
     "": { 
     title: "", 
-    date: "07.07.2025",
+    date: "16.08.2025",
     cover: "" ////
   },
 
     "": { 
     title: "", 
-    date: "07.07.2025",
+    date: "16.08.2025",
     cover: "" ////
   },
 
     "": { 
     title: "", 
-    date: "07.07.2025",
+    date: "16.08.2025",
+    cover: "" ////
+  },
+
+    "": { 
+    title: "", 
+    date: "16.08.2025",
+    cover: "" ////
+  },
+
+    "": { 
+    title: "", 
+    date: "16.08.2025",
+    cover: "" ////
+  },
+
+    "": { 
+    title: "", 
+    date: "16.08.2025",
+    cover: "" ////
+  },
+
+    "": { 
+    title: "", 
+    date: "16.08.2025",
+    cover: "" ////
+  },
+
+    "": { 
+    title: "", 
+    date: "16.08.2025",
     cover: "" ////
   },
 };
