@@ -244,10 +244,10 @@ export default {
     cover: "DSC_0151_igkj05" 
   },
 
-    "": { 
-    title: "", 
+    "wglnzadatnnirpyjcadkrjbaz": { 
+    title: "C днем города!", 
     date: "16.08.2025",
-    cover: "" ////
+    cover: "wglnzadatnnirpyjcadkrjbaz" 
   },
 
     "": { 
