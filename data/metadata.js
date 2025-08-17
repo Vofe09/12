@@ -250,10 +250,10 @@ export default {
     cover: "wglnzadatnnirpyjcadkrjbaz" 
   },
 
-    "": { 
-    title: "", 
+    "mlzptzbpaqdqrzwhzwrpqkgeg": { 
+    title: "С днем города!", 
     date: "16.08.2025",
-    cover: "" ////
+    cover: "DSC_0062_s8qbby" 
   },
 
     "": { 
