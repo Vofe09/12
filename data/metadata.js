@@ -289,19 +289,19 @@ export default {
     "skmojfcfwagasigpfysmhspnf": { 
     title: "ВЕСЬ АЛЬБОМ", 
     date: "16.08.2025",
-    cover: "DSC_0054_khqu11" ////
+    cover: "DSC_0054_khqu11" 
   },
 
-    "": { 
-    title: "С днем города!", 
-    date: "16.08.2025",
-    cover: "" ////
+    "lbuxtdlakwhbgljuucwgdnprv": { 
+    title: "Фотоальбом Глеба Евгеньевича", 
+    date: "20.08.2025",
+    cover: "DSC_0254_olu9al" 
   },
 
-    "": { 
-    title: "С днем города!", 
-    date: "16.08.2025",
-    cover: "" ////
+    "switoqrqafkgrndafubgcbnqb": { 
+    title: "😭", 
+    date: "20.08.2025",
+    cover: "DSC_0211_rilppm" 
   },
 
     "": { 
