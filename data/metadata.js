@@ -304,10 +304,10 @@ export default {
     cover: "DSC_0211_rilppm" 
   },
 
-    "": { 
-    title: "С днем города!", 
-    date: "16.08.2025",
-    cover: "" ////
+    "tkothasixdeoreqluuxxxjgw": { 
+    title: "Подписка ваша - Игра наша", 
+    date: "24.08.2025",
+    cover: "DSC_0344_fbuzdu" 
   },
 
     "": { 
