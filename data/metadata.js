@@ -310,16 +310,16 @@ export default {
     cover: "DSC_0344_fbuzdu" 
   },
 
-    "": { 
-    title: "С днем города!", 
-    date: "16.08.2025",
-    cover: "" ////
+    "qvzocotvnlcahdutdezaivutc": { 
+    title: " ", 
+    date: "29.08.2025",
+    cover: "DSC_0383_wtroi8" ////
   },
 
-    "": { 
-    title: "С днем города!", 
-    date: "16.08.2025",
-    cover: "" ////
+    "trjndihxkkwntkqqfqgjokmwj": { 
+    title: "Котяра", 
+    date: "29.08.2025",
+    cover: "DSC_0414_hrrwyl" ////
   },
 
     "": { 
