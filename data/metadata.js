@@ -325,7 +325,7 @@ export default {
     "scksjtptyamoqvgnjrozambky": { 
     title: "Алёна", 
     date: "05.09.2025",
-    cover: "1DSC_0465-Улучшено-Ум._шума_vqdsj5" ////
+    cover: "1DSC_0555-Улучшено-Ум._шума_vhbrqy" ////
   },
 
     "lhslwrtpquekvpdvbdfubtkbs": { 
