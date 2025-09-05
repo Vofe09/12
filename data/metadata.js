@@ -313,24 +313,24 @@ export default {
     "qvzocotvnlcahdutdezaivutc": { 
     title: " ", 
     date: "29.08.2025",
-    cover: "DSC_0383_wtroi8" ////
+    cover: "DSC_0383_wtroi8" 
   },
 
     "trjndihxkkwntkqqfqgjokmwj": { 
     title: "Котяра", 
     date: "29.08.2025",
-    cover: "DSC_0414_hrrwyl" ////
+    cover: "DSC_0414_hrrwyl" 
   },
 
-    "": { 
-    title: "С днем города!", 
-    date: "16.08.2025",
-    cover: "" ////
+    "scksjtptyamoqvgnjrozambky": { 
+    title: "Алёна", 
+    date: "05.09.2025",
+    cover: "1DSC_0465-Улучшено-Ум._шума_vqdsj5" ////
   },
 
-    "": { 
-    title: "С днем города!", 
-    date: "16.08.2025",
-    cover: "" ////
+    "lhslwrtpquekvpdvbdfubtkbs": { 
+    title: "13 лд", 
+    date: "05.09.2025",
+    cover: "DSC_0433-Улучшено-Ум._шума_he9pbl" ////
   },
 };
