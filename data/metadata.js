@@ -325,12 +325,90 @@ export default {
     "scksjtptyamoqvgnjrozambky": { 
     title: "Алёна", 
     date: "05.09.2025",
-    cover: "1DSC_0555-Улучшено-Ум._шума_vhbrqy" ////
+    cover: "1DSC_0555-Улучшено-Ум._шума_vhbrqy" 
   },
 
     "lhslwrtpquekvpdvbdfubtkbs": { 
     title: "13 лд", 
     date: "05.09.2025",
-    cover: "DSC_0433-Улучшено-Ум._шума_he9pbl" ////
+    cover: "DSC_0433-Улучшено-Ум._шума_he9pbl" 
+  },
+
+    "xwfztmxpzlfzqwtyfweyauote": { 
+    title: "Step to english", 
+    date: "07.09.2025",
+    cover: "DSC_0923-Улучшено-Ум._шума_rbty43" ////
+  },
+
+    "": { 
+    title: "", 
+    date: "05.09.2025",
+    cover: "" ////
+  },
+
+    "": { 
+    title: "", 
+    date: "05.09.2025",
+    cover: "" ////
+  },
+
+    "": { 
+    title: "", 
+    date: "05.09.2025",
+    cover: "" ////
+  },
+
+    "": { 
+    title: "", 
+    date: "05.09.2025",
+    cover: "" ////
+  },
+
+    "": { 
+    title: "", 
+    date: "05.09.2025",
+    cover: "" ////
+  },
+
+    "": { 
+    title: "", 
+    date: "05.09.2025",
+    cover: "" ////
+  },
+
+    "": { 
+    title: "", 
+    date: "05.09.2025",
+    cover: "" ////
+  },
+
+    "": { 
+    title: "", 
+    date: "05.09.2025",
+    cover: "" ////
+  },
+
+    "": { 
+    title: "", 
+    date: "05.09.2025",
+    cover: "" ////
+  },
+
+    "": { 
+    title: "", 
+    date: "05.09.2025",
+    cover: "" ////
+  },
+
+    "": { 
+    title: "", 
+    date: "05.09.2025",
+    cover: "" ////
+  },
+
+    "": { 
+    title: "", 
+    date: "05.09.2025",
+    cover: "" ////
   },
 };
