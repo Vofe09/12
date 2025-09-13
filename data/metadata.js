@@ -337,13 +337,13 @@ export default {
     "xwfztmxpzlfzqwtyfweyauote": { 
     title: "Step to english", 
     date: "07.09.2025",
-    cover: "DSC_0923-Улучшено-Ум._шума_rbty43" ////
+    cover: "DSC_0923-Улучшено-Ум._шума_rbty43" 
   },
 
-    "": { 
-    title: "", 
-    date: "05.09.2025",
-    cover: "" ////
+    "gznykdolywdwzapqynckafmpp": { 
+    title: "Step to english", 
+    date: "13.09.2025",
+    cover: "DSC_0174_duwlov" 
   },
 
     "": { 
