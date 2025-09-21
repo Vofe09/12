@@ -453,7 +453,7 @@
     .loading-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.5); /* полупрозрачное затемнение */
+      background: rgba(0,0,0,0.5);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -496,11 +496,13 @@
     <div class="right"><img id="download-all-btn-fixed" src="img/download.svg" alt="Скачать" /></div>
   </div>
 
-  <div id="loadingOverlay" class="loading-overlay">
+  <div id="loadingOverlay" class="loading-overlay hidden">
     <div class="loading-box">
-      Идёт загрузка…
+      <p id="loadingText">Идёт загрузка</p>
     </div>
   </div>
+
+
 
 
   <div class="topbar static" id="staticTopbar">
@@ -603,6 +605,23 @@
       showLightbox(currentIndex);
     }
 
+    let loadingInterval;
+    function startLoadingAnimation() {
+      const loadingText = document.getElementById("loadingText");
+      let dotCount = 0;
+      loadingInterval = setInterval(() => {
+        dotCount = (dotCount + 1) % 4; // 0–3 точки
+        loadingText.textContent = "Идёт загрузка" + ".".repeat(dotCount);
+      }, 500);
+    }
+
+    function stopLoadingAnimation() {
+      clearInterval(loadingInterval);
+      const loadingText = document.getElementById("loadingText");
+      if (loadingText) loadingText.textContent = "Идёт загрузка";
+    }
+
+
     window.addEventListener('load', () => {
       const params = new URLSearchParams(window.location.search);
       const code = params.get("code");
@@ -651,6 +670,7 @@
     // показываем оверлей загрузки
     const overlay = document.getElementById("loadingOverlay");
     overlay?.classList.remove("hidden"); // hidden = display:none в CSS
+    startLoadingAnimation();
 
     // заполняем заголовок, обложку, дату
     document.getElementById("cover-image").src = data.cover || "";
@@ -687,6 +707,7 @@
         }
         // когда всё загрузилось — скрываем оверлей
         if (loadedCount === total && overlay) {
+          stopLoadingAnimation();
           overlay.classList.add("hidden");
         }
       });
