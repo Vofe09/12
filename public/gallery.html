@@ -722,6 +722,7 @@
       const match = url.match(/\/(\d)[^\/]*\.(jpg|jpeg|png|webp)/i);
       return match ? parseInt(match[1], 10) : 0;
     }
+    allPhotoUrls = data.urls.sort((a, b) => extractRating(b) - extractRating(a)); // <— этой строки у тебя сейчас нет
 
     // Сортируем по убыванию рейтинга
     container.innerHTML = ""; // очищаем контейнер
