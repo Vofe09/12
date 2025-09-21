@@ -156,7 +156,7 @@
     }
 
     .lightbox-download {
-      display: block; /* чтобы показать */
+      display: inline-flex; /* чтобы показать */
       position: absolute;
       bottom: 10px; /* от нижнего края картинки */
       right: 10px;  /* от правого края картинки */
@@ -164,6 +164,11 @@
       padding: 8px;
       border-radius: 50%;
       z-index: 20;
+
+      align-items: center;
+      justify-content: center;
+      width: 48px;               /* фиксированный размер кнопки */
+      height: 48px;
     }
 
 
@@ -315,9 +320,12 @@
 
     @media (max-width: 768px) {
       .lightbox-download {
-        top: 15px;
+        top: 15px;    /* поднимем выше */
+        bottom: auto; /* отключаем нижнюю привязку */
         right: 15px;
-        padding: 12px; /* больше область нажатия */
+        width: 56px;   /* чуть больше для пальца */
+        height: 56px;
+        padding: 12px;
       }
     }
 
