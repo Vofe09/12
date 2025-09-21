@@ -315,7 +315,9 @@
 
     @media (max-width: 768px) {
       .lightbox-download {
-        display: block;
+        top: 15px;
+        right: 15px;
+        padding: 12px; /* больше область нажатия */
       }
     }
 
@@ -594,9 +596,18 @@
       if (!allPhotoUrls[index]) return;
       currentIndex = index;
       zoomed = false;
-      document.getElementById("lightboxDownload").href = allPhotoUrls[index];
+
+      // Обновляем href + download сразу
+      const url = allPhotoUrls[index];
+      const downloadBtn = document.getElementById("lightboxDownload");
+      downloadBtn.href = url;
+
+      // Вытащим имя файла из URL (или дадим своё)
+      const filename = url.split('/').pop() || `photo_${index + 1}.jpg`;
+      downloadBtn.setAttribute("download", filename);
+
       const lightboxImage = document.getElementById("lightboxImage");
-      lightboxImage.src = allPhotoUrls[index];
+      lightboxImage.src = url;
       lightboxImage.style.transform = "scale(1)";
       document.getElementById("lightbox").style.display = "block";
     }
