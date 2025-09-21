@@ -154,21 +154,17 @@
     .photo-box:hover .download-button {
       opacity: 1;
     }
-
     .lightbox-download {
-      display: inline-flex; /* чтобы показать */
-      position: absolute;
-      bottom: 10px; /* от нижнего края картинки */
-      right: 10px;  /* от правого края картинки */
+      margin-top: 8px; /* чуть ниже картинки */
       background: rgba(255, 255, 255, 0.2);
-      padding: 8px;
+      padding: 6px;
       border-radius: 50%;
       z-index: 20;
-
+      display: inline-flex;  /* маленький кружок */
       align-items: center;
       justify-content: center;
-      width: 48px;               /* фиксированный размер кнопки */
-      height: 48px;
+      width: 36px;           /* небольшой размер */
+      height: 36px;
     }
 
 
@@ -393,7 +389,8 @@
       max-width: 90vw;
       max-height: 90vh;
       display: flex;
-      align-items: center;
+      flex-direction: column; /* картинка сверху, кнопка снизу */
+      align-items: flex-end;  /* кнопка прижата к правому краю */
       justify-content: center;
     }
 
@@ -451,13 +448,20 @@
         max-width: none;
         max-height: none;
         border-radius: 0;
+        flex-direction: column; /* картинка сверху, кнопка снизу */
+        align-items: flex-end;  /* кнопка справа */
       }
 
       .lightbox-content img {
         width: 100%;
-        height: 100%;
+        height: auto;
         object-fit: contain;
-        border-radius: 0;
+      }
+      .lightbox-download {
+        margin-top: 6px;
+        width: 44px;
+        height: 44px;
+        padding: 10px;
       }
     }
 
