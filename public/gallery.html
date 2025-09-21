@@ -107,11 +107,8 @@
     }
 
     #photo-container {
-      column-count: 4;
-      column-gap: 12px;
-      padding: 0 35px;
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* адаптивная сетка */
+      grid-template-columns: repeat(4, 1fr); /* строго 4 колонки на десктопе */
       gap: 12px;
       padding: 0 35px;
     }
@@ -352,8 +349,8 @@
       }
 
       #photo-container {
-        column-count: 2;
-        padding: 0 5px;
+      grid-template-columns: repeat(2, 1fr); /* 2 колонки на телефоне */
+      padding: 0 5px;
 
       }
 
@@ -732,43 +729,64 @@
     let loadedCount = 0;
     const total = allPhotoUrls.length;
 
-    allPhotoUrls.forEach((url, index) => {
-      const box = document.createElement("div");
-      box.className = "photo-box";
+    // определяем количество колонок (жёсткое правило: <=768px => 2, иначе 4)
+    const columnsCount = window.innerWidth <= 768 ? 2 : 4;
 
-      const img = document.createElement("img");
-      img.src = url;
-      img.alt = "Photo";
+    // создаём массив колонок
+    const columns = Array.from({ length: columnsCount }, () => []);
 
-      // считаем загруженные
-      img.addEventListener("load", () => {
-        loadedCount++;
-        const progressEl = document.getElementById("loadingProgress");
-        if (progressEl) {
-          progressEl.textContent = `Загружено ${loadedCount} из ${total}…`;
-        }
-        if (loadedCount === total && overlay) {
-          stopLoadingAnimation();
-          overlay.classList.add("hidden");
-        }
-      });
+// создаём все боксы, распределяем по колонкам (index % columnsCount)
+  allPhotoUrls.forEach((url, index) => {
+    const box = document.createElement("div");
+    box.className = "photo-box";
 
-      img.addEventListener("click", () => showLightbox(index));
+    const img = document.createElement("img");
+    img.src = url;
+    img.alt = "Photo";
 
-      const download = document.createElement("a");
-      download.href = url;
-      download.download = "";
-      download.className = "download-button";
-
-      const icon = document.createElement("img");
-      icon.src = "img/download.svg";
-      icon.alt = "Download";
-      download.appendChild(icon);
-
-      box.appendChild(img);
-      box.appendChild(download);
-      container.appendChild(box);
+    // считаем загруженные
+    img.addEventListener("load", () => {
+      loadedCount++;
+      const progressEl = document.getElementById("loadingProgress");
+      if (progressEl) {
+        progressEl.textContent = `Загружено ${loadedCount} из ${total}…`;
+      }
+      if (loadedCount === total && overlay) {
+        stopLoadingAnimation();
+        overlay.classList.add("hidden");
+      }
     });
+
+    img.addEventListener("click", () => showLightbox(index));
+
+    const download = document.createElement("a");
+    download.href = url;
+    download.download = "";
+    download.className = "download-button";
+
+    const icon = document.createElement("img");
+    icon.src = "img/download.svg";
+    icon.alt = "Download";
+    download.appendChild(icon);
+
+    box.appendChild(img);
+    box.appendChild(download);
+
+    // push в соответствующую колонку
+    columns[index % columnsCount].push(box);
+  });
+
+  // теперь вставляем элементы в контейнер в порядке по строкам:
+  // вычисляем максимальное число рядов
+  container.innerHTML = "";
+  const rows = Math.ceil(allPhotoUrls.length / columnsCount);
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < columnsCount; c++) {
+      const item = columns[c][r];
+      if (item) container.appendChild(item);
+    }
+  }
+
   });
 
 
