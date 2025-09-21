@@ -469,6 +469,13 @@
       font-size: 18px;
       font-weight: 500;
       box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+
+      display: flex;           /* новое */
+      flex-direction: column;  /* новое */
+      gap: 8px;                /* новое: расстояние между строками */
+      min-width: 260px;        /* можно расширить */
+      min-height: 100px;       /* можно расширить */
+      text-align: center;      /* красиво */
     }
 
     /* изначально скрыть */
@@ -702,14 +709,10 @@
       // считаем загруженные
       img.addEventListener("load", () => {
         loadedCount++;
-        // обновляем текст прогресса, если нужен
-        if (overlay) {
-          const p = overlay.querySelector("p");
-          if (progressEl) {
-            progressEl.textContent = `Загружено ${loadedCount} из ${total}…`;
-          }
+        const progressEl = document.getElementById("loadingProgress");
+        if (progressEl) {
+          progressEl.textContent = `Загружено ${loadedCount} из ${total}…`;
         }
-        // когда всё загрузилось — скрываем оверлей
         if (loadedCount === total && overlay) {
           stopLoadingAnimation();
           overlay.classList.add("hidden");
