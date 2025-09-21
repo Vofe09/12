@@ -349,7 +349,7 @@ export default {
     "zpvscdnrqhadbomnvlqsxtjlc": { 
     title: "FANFEST 2025", 
     date: "20.09.2025",
-    cover: "" ////
+    cover: "1_DSC0685_nyao1l" ////
   },
 
     "": { 
