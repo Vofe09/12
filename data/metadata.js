@@ -346,9 +346,9 @@ export default {
     cover: "DSC_0174_duwlov" 
   },
 
-    "": { 
-    title: "", 
-    date: "05.09.2025",
+    "zpvscdnrqhadbomnvlqsxtjlc": { 
+    title: "FANFEST 2025", 
+    date: "20.09.2025",
     cover: "" ////
   },
 

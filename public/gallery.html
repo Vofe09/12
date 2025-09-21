@@ -110,11 +110,21 @@
       column-count: 4;
       column-gap: 12px;
       padding: 0 35px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* адаптивная сетка */
+      gap: 12px;
+      padding: 0 35px;
     }
 
     .photo-box {
       break-inside: avoid;
       margin-bottom: 12px;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      position: relative;
+
+      margin-bottom: 0; /* gap у grid уже делает отступы */
       border-radius: 10px;
       overflow: hidden;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
