@@ -705,7 +705,9 @@
         // обновляем текст прогресса, если нужен
         if (overlay) {
           const p = overlay.querySelector("p");
-          if (p) p.textContent = `Загружено ${loadedCount} из ${total}…`;
+          if (progressEl) {
+            progressEl.textContent = `Загружено ${loadedCount} из ${total}…`;
+          }
         }
         // когда всё загрузилось — скрываем оверлей
         if (loadedCount === total && overlay) {
