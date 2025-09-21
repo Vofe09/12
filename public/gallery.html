@@ -107,25 +107,22 @@
     }
 
     #photo-container {
-      display: grid;
+      column-count: 4;       /* 4 колонки на десктопе */
+      column-gap: 12px;      /* расстояние между колонками */
+      padding: 0 35px;
       grid-template-columns: repeat(4, 1fr); /* строго 4 колонки на десктопе */
       gap: 12px;
       padding: 0 35px;
     }
 
     .photo-box {
-      break-inside: avoid;
-      margin-bottom: 12px;
+      display: inline-block; /* чтобы можно было в колонку */
+      width: 100%;           /* растягивается по ширине колонки */
+      margin-bottom: 12px;   /* отступ между фотками */
       border-radius: 10px;
       overflow: hidden;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      position: relative;
-
-      margin-bottom: 0; /* gap у grid уже делает отступы */
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      position: relative;
+      break-inside: avoid;   /* чтобы не рвало блоки */
     }
 
     .photo-box img {
@@ -349,7 +346,7 @@
       }
 
       #photo-container {
-      grid-template-columns: repeat(2, 1fr); /* 2 колонки на телефоне */
+        column-count: 2;     /* 2 колонки на телефоне */
       padding: 0 5px;
 
       }
