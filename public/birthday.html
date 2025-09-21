@@ -1,223 +1,922 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <title>С Днём Рождения!</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ваша галерея</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
   <style>
     body {
       margin: 0;
       padding: 0;
-      background-color: #555;
-      background-image: url('img/Nastya.png');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
+      font-family: sans-serif;
+      background-color: #f9f9f9;
+    }
 
-      font-family: 'Segoe UI', sans-serif;
+    .notice-bar {
+      background-color: #201c1c;
+      color: #999;
+      height: 30px;
       display: flex;
-      justify-content: center;
       align-items: center;
-      height: 100vh;
-      overflow: hidden;
-    }
-
-    .card {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(15px);
-      max-width: 90vw;
-      width: 600px;
-      padding: 40px;
-      font-size: 1.3rem;
-      border-radius: 20px;
-      color: white;
-      text-align: center;
-      margin: 20px;
-      position: relative;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 1s ease;
-    }
-
-    .card.show-card {
-      animation: fadeZoomIn 1.5s ease forwards;
-      pointer-events: auto;
-    }
-
-    .card p {
-      margin: 6px 0;
-      line-height: 1.3;
-    }
-
-    @keyframes fadeZoomIn {
-      from {
-        transform: scale(0.8);
-        opacity: 0;
-      }
-      to {
-        transform: scale(1);
-        opacity: 1;
-      }
-    }
-
-    canvas#confetti {
+      justify-content: center;
+      font-size: 14px;
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
+      z-index: 1000;
+    }
+
+    .notice-bar strong {
+      color: white;
+      font-weight: 500;
+    }
+
+    .topbar {
+      height: 45px;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 35px;
+      box-sizing: border-box;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .topbar.fixed {
+      position: fixed;
+      top: 30px;
+      left: 0;
+      width: 100%;
+      z-index: 999;
+      display: none;
+    }
+
+    .topbar.static {
+      position: relative;
+      z-index: 1;
+    }
+
+    .topbar .left {
+      font-size: 16px;
+      color: #333;
+      font-weight: 500;
+    }
+
+    .topbar .right img {
+      height: 25px;
+      cursor: pointer;
+    }
+
+    .highlight-box {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      max-height: 1080px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .highlight-box img {
+      width: 100%;
       height: 100%;
+      object-fit: cover;
+      filter: brightness(60%);
+    }
+
+    .overlay-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      text-align: center;
+    }
+
+    .overlay-text h1 {
+      font-size: 32px;
+      margin: 0;
+    }
+
+    .overlay-text p {
+      font-size: 16px;
+      margin: 10px 0 0;
+    }
+
+    #photo-container {
+      column-count: 4;
+      column-gap: 12px;
+      padding: 0 35px;
+    }
+
+    .photo-box {
+      break-inside: avoid;
+      margin-bottom: 12px;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+
+    .photo-box img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 10px;
+      cursor: zoom-in;
+    }
+
+    .download-button {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      width: 28px;
+      height: 28px;
+      background-color: rgba(0, 0, 0, 0.6);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      text-decoration: none;
+    }
+
+    .download-button img {
+      width: 16px;
+      height: 16px;
+      filter: invert(1);
+    }
+
+    .photo-box:hover .download-button {
+      opacity: 1;
+    }
+    .lightbox-download {
+      margin-top: 8px; /* чуть ниже картинки */
+      background: rgba(255, 255, 255, 0.2);
+      padding: 6px;
+      border-radius: 50%;
+      z-index: 20;
+      display: inline-flex;  /* маленький кружок */
+      align-items: center;
+      justify-content: center;
+      width: 36px;           /* небольшой размер */
+      height: 36px;
+    }
+
+
+    .lightbox-download img {
+      width: 24px;
+      height: 24px;
+      filter: invert(1);
+    }
+
+    .hint-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
       pointer-events: none;
+      z-index: 2000;
+      display: none;
+      clip-path: circle(80px at var(--x, 50%) var(--y, 50%));
+      transition: opacity 0.3s ease;
+    }
+
+    .hint-text {
+      position: fixed;
+      color: white;
+      font-size: 16px;
+      font-weight: 500;
+      background: rgba(0,0,0,0.5);
+      padding: 6px 12px;
+      border-radius: 8px;
+      z-index: 2001;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      display: none;
+    }
+
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 3000;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 20px;
+      padding: 25px 15px;
+      text-align: center;
+      width: 100%;
+      max-width: 480px;
+      position: relative;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      animation: fadeIn 0.7s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* центрируем контент по горизонтали */
+    }
+
+    .modal-content img {
+      width: 450px;
+      height: 450px;
+      object-fit: cover;
+      border-radius: 16px;
+      margin-bottom: 16px;
+    }
+
+
+
+    .modal-content p {
+      margin: 0;
+      font-size: 16px;
+      color: #333;
+      font-weight: 500;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 6px;
+      right: 8px;
+      background: transparent;
+      border: none;
+      font-size: 22px;
+      color: #999;
+      cursor: pointer;
+    }
+
+    .modal-close:hover {
+      color: #444;
+    }
+
+    @keyframes fadeIn {
+      from { transform: scale(0.95); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+
+    @media (max-width: 768px) {
+      .modal-content {
+        max-width: calc(100% - 40px); /* по 20px отступа слева и справа */
+        padding: 20px 15px;
+      }
+
+      .modal-content img {
+        width: 100%;
+        height: auto;
+        max-height: 300px;
+        object-fit: contain;
+      }
+
+      .modal-content p {
+        font-size: 15px;
+      }
+}
+        .mode-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin: 30px 0;
+    }
+
+    .mode-btn {
+      background-color: white;
+      color: #201c1c;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      padding: 10px 20px;
+      border-radius: 30px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+      transition: all 0.2s ease-in-out;
+    }
+
+    .mode-btn:hover {
+      background-color: #f3f3f3;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+    }
+
+    .mode-btn.active-mode {
+      background-color: #ececec;
+      font-weight: 600;
+    }
+
+
+
+
+
+    @media (max-width: 768px) {
+      .lightbox-download {
+        top: 15px;    /* поднимем выше */
+        bottom: auto; /* отключаем нижнюю привязку */
+        right: 15px;
+        width: 56px;   /* чуть больше для пальца */
+        height: 56px;
+        padding: 12px;
+      }
+    }
+
+
+    /* 📱 Адаптивные стили для телефонов */
+    @media (max-width: 768px) {
+      .highlight-box {
+        height: 60vh;
+        max-height: none;
+      }
+
+      .overlay-text h1 {
+        font-size: 24px;
+      }
+
+      .overlay-text p {
+        font-size: 14px;
+      }
+
+      #photo-container {
+        column-count: 2;
+        padding: 0 5px;
+
+      }
+
+      .topbar {
+        padding: 0 16px;
+      }
+
+      .topbar .left {
+        font-size: 14px;
+      }
+
+      .topbar .right img {
+        height: 25px;
+        vertical-align: middle;
+        cursor: pointer;
+      }
+
+      .notice-bar {
+        font-size: 12px;
+      }
+    }
+
+
+    /* 🌌 Lightbox */
+    #lightbox {
+      position: fixed;
+      z-index: 2000;
+      top: 0; left: 0; right: 0; bottom: 0;
+      display: none;
+    }
+
+    .lightbox-backdrop {
+      background: rgba(0, 0, 0, 0.85);
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+    }
+
+    .lightbox-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      max-width: 90vw;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column; /* картинка сверху, кнопка снизу */
+      align-items: flex-end;  /* кнопка прижата к правому краю */
+      justify-content: center;
+    }
+
+    .lightbox-content img {
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: 10px;
+      transition: transform 0.2s ease;
+      cursor: zoom-in;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 32px;
+      color: white;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .lightbox-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.2);
+      border: none;
+      cursor: pointer;
+      padding: 10px;
+      border-radius: 50%;
+    }
+
+    .lightbox-arrow.left {
+      left: 20px;
+    }
+
+    .lightbox-arrow.right {
+      right: 20px;
+    }
+
+    .lightbox-arrow img {
+      width: 24px;
+      height: 24px;
+      filter: invert(1);
+    }
+
+    @media (max-width: 768px) {
+      .lightbox-content {
+        top: 0;
+        left: 0;
+        transform: none;
+        width: 100vw;
+        height: 100vh;
+        max-width: none;
+        max-height: none;
+        border-radius: 0;
+        flex-direction: column; /* картинка сверху, кнопка снизу */
+        align-items: flex-end;  /* кнопка справа */
+      }
+
+      .lightbox-content img {
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+      }
+      .lightbox-download {
+        margin-top: 6px;
+        width: 31px;
+        height: 31px;
+        padding: 10px;
+      }
+    }
+
+    .loading-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       z-index: 9999;
     }
 
-    #intro-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(85, 85, 85, 0.8);
-      backdrop-filter: blur(20px);
-      z-index: 10000;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      transition: opacity 1s ease;
+    /* прямоугольник по центру */
+    .loading-box {
+      background: #fff;
+      color: #000;
+      padding: 20px 40px;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: 500;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+
+      display: flex;           /* новое */
+      flex-direction: column;  /* новое */
+      gap: 8px;                /* новое: расстояние между строками */
+      min-width: 260px;        /* можно расширить */
+      min-height: 100px;       /* можно расширить */
+      text-align: center;      /* красиво */
     }
 
-    .intro-text {
-      font-size: 2rem;
-      color: white;
-      font-weight: bold;
-      letter-spacing: 2px;
-      cursor: pointer;
-      user-select: none;
-      animation: pulse 2s infinite;
-      text-align: center;
+    /* изначально скрыть */
+    #loadingOverlay.hidden {
+      display: none;
     }
 
-    @keyframes pulse {
-      0% { transform: scale(1); opacity: 0.8; }
-      50% { transform: scale(1.1); opacity: 1; }
-      100% { transform: scale(1); opacity: 0.8; }
-    }
-
-    @media (max-width: 480px) {
-      .card {
-        padding: 30px 20px;
-        font-size: 1rem;
-        margin: 20px;
-        transform: scale(0.9);
-      }
-
-      .card h1 {
-        font-size: 1.4rem;
-      }
-
-      .intro-text {
-        font-size: 1.5rem;
-        padding: 0 20px;
-      }
-    }
   </style>
 </head>
 <body>
 
-  <div id="intro-overlay">
-    <div class="intro-text">enter?</div>
+
+  <div class="notice-bar">Фотографии доступны до <strong> 01.12.2025</strong></div>
+
+  <div class="highlight-box">
+    <img id="cover-image" src="" alt="Обложка" />
+    <div class="overlay-text">
+      <h1 id="session-title">...</h1>
+      <p id="session-date">...</p>
+    </div>
   </div>
 
-  <audio id="birthday-audio" autoplay loop>
-    <source src="sounds/birthday.mp3" type="audio/mpeg">
-  </audio>
-
-  <audio id="fireworkSound" src="sounds/fireworks.mp3" preload="auto" loop></audio>
-
-  <div class="card">
-    <h1>С Днём Рождения!</h1>
-    <p>Желаю счастья, здоровья</p>
-    <p>счастья, здоровья</p>
-    <p>Ещё счастья и ещё здоровья</p>
+  <div class="topbar fixed" id="fixedTopbar">
+    <div class="left">Kovalev Nazar</div>
+    <div class="right"><img id="download-all-btn-fixed" src="img/download.svg" alt="Скачать" /></div>
   </div>
 
-  <canvas id="confetti"></canvas>
+  <div id="loadingOverlay" class="loading-overlay hidden">
+    <div class="loading-box">
+      <p id="loadingText">Идёт загрузка</p>
+      <p id="loadingProgress"></p> <!-- сюда выводим прогресс -->
+    </div>
+  </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+
+
+
+  <div class="topbar static" id="staticTopbar">
+    <div class="left">Kovalev Nazar</div>
+    <div class="right"><img id="download-all-btn-static" src="img/download.svg" alt="Скачать" /></div>
+  </div>
+
+  <div id="modeButtons" class="mode-buttons" style="display: none;">
+    <button class="mode-btn" data-mode="original">Оригинал</button>
+    <button class="mode-btn" data-mode="filtered">С фильтром</button>
+    <button class="mode-btn" data-mode="vintage">Винтаж</button>
+  </div>
+
+  <div id="photo-container"></div>
+
+  <!-- Lightbox -->
+  <div id="lightbox">
+    <div class="lightbox-backdrop" id="lightboxBackdrop"></div>
+    <div class="lightbox-content">
+      <img id="lightboxImage" src="" alt="Фото" />
+      <button class="lightbox-close" id="lightboxClose">×</button>
+      <button class="lightbox-arrow left" id="prevBtn"><img src="img/left.svg" alt="Назад"></button>
+      <button class="lightbox-arrow right" id="nextBtn"><img src="img/right.svg" alt="Вперёд"></button>
+      <a id="lightboxDownload" class="lightbox-download" download>
+        <img src="img/download.svg" alt="Скачать">
+      </a>
+    </div>
+  </div>
+
+
+    <div id="thanksModal" class="modal-overlay">
+      <div class="modal-content">
+        <button class="modal-close" id="modalCloseBtn">×</button>
+        <img src="img/kittie1.jpg" alt="Котик" />
+        <p><b> >спасибо за фотосессию! </b> <br> сейчас начнется загрузка..</p>
+      </div>
+    </div>
+
+
 
   <script>
-    function launchConfettiRainForever() {
-      const colors = ['#ff0a54', '#ff477e', '#ff85a1', '#fbb1bd', '#f9bec7'];
-      setInterval(() => {
-        confetti({ particleCount: 10, angle: 60, spread: 20, origin: { x: 0.1 }, colors });
-        confetti({ particleCount: 10, angle: 120, spread: 20, origin: { x: 0.9 }, colors });
-      }, 200);
-    }
+    let allPhotoUrls = [];
+    let currentIndex = 0;
+    let zoomed = false;
 
-    function launchConfettiExplosionForever() {
-      const defaults = {
-        startVelocity: 45,
-        spread: 3600,
-        ticks: 90,
-        zIndex: 9999
-      };
-      function randomInRange(min, max) {
-        return Math.random() * (max - min) + min;
+    async function downloadAllPhotos() {
+      if (allPhotoUrls.length === 0) {
+        alert("Фотографии ещё не загружены.");
+        return;
       }
-      setInterval(() => {
-        confetti(Object.assign({}, defaults, {
-          particleCount: 400,
-          origin: {
-            x: randomInRange(0.2, 0.8),
-            y: randomInRange(0.2, 0.8)
-          }
-        }));
-      }, 900);
-    }
+      // Показать окно с котиком
+      const modal = document.getElementById("thanksModal");
+      modal.style.display = "flex";
 
-    function fadeOutAudio(audio, duration = 3000) {
-      const steps = 30;
-      const stepTime = duration / steps;
-      const volumeStep = audio.volume / steps;
-      const fade = setInterval(() => {
-        if (audio.volume - volumeStep > 0) {
-          audio.volume -= volumeStep;
-        } else {
-          audio.volume = 0;
-          audio.pause();
-          clearInterval(fade);
+
+
+      const zip = new JSZip();
+      const promises = allPhotoUrls.map(async (url, index) => {
+        try {
+          const response = await fetch(url);
+          const blob = await response.blob();
+          const contentType = response.headers.get("Content-Type");
+          let ext = contentType.includes("jpeg") ? "jpg" :
+                    contentType.includes("png") ? "png" :
+                    contentType.includes("webp") ? "webp" : "jpg";
+          const fileName = `photo_${String(index + 1).padStart(3, '0')}.${ext}`;
+          zip.file(fileName, blob);
+        } catch (e) {
+          console.error(`Ошибка при загрузке ${url}`, e);
         }
-      }, stepTime);
+      });
+
+      await Promise.all(promises);
+      const content = await zip.generateAsync({ type: "blob" });
+      saveAs(content, "gallery.zip");
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
-      const music = document.getElementById("birthday-audio");
-      const firework = document.getElementById("fireworkSound");
-      const overlay = document.getElementById("intro-overlay");
-      const card = document.querySelector('.card');
+    function showLightbox(index) {
+      if (!allPhotoUrls[index]) return;
+      currentIndex = index;
+      zoomed = false;
 
-      music.volume = 0.5;
-      firework.volume = 0.4;
+      // Обновляем href + download сразу
+      const url = allPhotoUrls[index];
+      const downloadBtn = document.getElementById("lightboxDownload");
+      downloadBtn.href = url;
 
-      overlay.addEventListener("click", () => {
-        overlay.style.opacity = "0";
-        setTimeout(() => overlay.remove(), 1000);
+      // Вытащим имя файла из URL (или дадим своё)
+      const filename = url.split('/').pop() || `photo_${index + 1}.jpg`;
+      downloadBtn.setAttribute("download", filename);
 
-        music.play();
-        firework.play();
+      const lightboxImage = document.getElementById("lightboxImage");
+      lightboxImage.src = url;
+      lightboxImage.style.transform = "scale(1)";
+      document.getElementById("lightbox").style.display = "block";
+    }
 
-        launchConfettiRainForever();
-        launchConfettiExplosionForever();
+    function closeLightbox() {
+      document.getElementById("lightbox").style.display = "none";
+    }
 
-        setTimeout(() => {
-          card.classList.add('show-card');
-        }, 1000);
+    function nextImage() {
+      currentIndex = (currentIndex + 1) % allPhotoUrls.length;
+      showLightbox(currentIndex);
+    }
 
-        setTimeout(() => {
-          fadeOutAudio(firework, 4000);
-        }, 10000);
+    function prevImage() {
+      currentIndex = (currentIndex - 1 + allPhotoUrls.length) % allPhotoUrls.length;
+      showLightbox(currentIndex);
+    }
+
+    let loadingInterval;
+    function startLoadingAnimation() {
+      const loadingText = document.getElementById("loadingText");
+      let dotCount = 0;
+      loadingInterval = setInterval(() => {
+        dotCount = (dotCount + 1) % 4; // 0–3 точки
+        loadingText.textContent = "Идёт загрузка" + ".".repeat(dotCount);
+      }, 500);
+    }
+
+    function stopLoadingAnimation() {
+      clearInterval(loadingInterval);
+      const loadingText = document.getElementById("loadingText");
+      if (loadingText) loadingText.textContent = "Идёт загрузка";
+    }
+
+
+    window.addEventListener('load', () => {
+      const params = new URLSearchParams(window.location.search);
+      const code = params.get("code");
+      const container = document.getElementById("photo-container");
+      const key = params.get("code");
+      const validKeys = {
+        // Первый альбом
+        avecfplcluttyikwkenfrcske: "original",
+        icdluhxislzhofnugbfhtvkac: "filtered",
+        ucnshzwbskeujgrdazmxcgwbn: "vintage",
+        // Второй альбом
+        txllntcechyxfqheyncxvhase: "original",
+        axxsxwmtuspvpaozqqwjqrmsn: "filtered",
+        waqzhgeguhkgbwixgzfeuosqk: "vintage"
+      };
+
+      if (key in validKeys) {
+        document.getElementById("modeButtons").style.display = "flex";
+
+        // Активная кнопка
+        const mode = validKeys[key];
+        document.querySelectorAll('.mode-btn').forEach(btn => {
+          if (btn.dataset.mode === mode) {
+            btn.classList.add("active-mode");
+          }
+        });
+      }
+
+      document.getElementById("modalCloseBtn").addEventListener("click", () => {
+      document.getElementById("thanksModal").style.display = "none";
+      });
+
+      if (!code) {
+        container.innerHTML = "<p>Код доступа не указан.</p>";
+        return;
+      }
+
+ fetch(`/api/photos/${code}`)
+  .then(res => res.json())
+  .then(data => {
+    if (!data.success) {
+      container.innerHTML = "<p>No photos found for this code.</p>";
+      return;
+    }
+
+    // показываем оверлей загрузки
+    const overlay = document.getElementById("loadingOverlay");
+    overlay?.classList.remove("hidden"); // hidden = display:none в CSS
+    startLoadingAnimation();
+
+    // заполняем заголовок, обложку, дату
+    document.getElementById("cover-image").src = data.cover || "";
+    document.getElementById("session-title").textContent = data.title || "Photoshoot";
+    document.getElementById("session-date").textContent = data.date || "";
+
+    // Функция извлечения рейтинга из имени файла
+    function extractRating(url) {
+      const match = url.match(/\/(\d)[^\/]*\.(jpg|jpeg|png|webp)/i);
+      return match ? parseInt(match[1], 10) : 0;
+    }
+
+    // Сортируем по убыванию рейтинга
+    allPhotoUrls = data.urls.sort((a, b) => extractRating(b) - extractRating(a));
+
+    let loadedCount = 0;
+    const total = allPhotoUrls.length;
+
+    allPhotoUrls.forEach((url, index) => {
+      const box = document.createElement("div");
+      box.className = "photo-box";
+
+      const img = document.createElement("img");
+      img.src = url;
+      img.alt = "Photo";
+
+      // считаем загруженные
+      img.addEventListener("load", () => {
+        loadedCount++;
+        const progressEl = document.getElementById("loadingProgress");
+        if (progressEl) {
+          progressEl.textContent = `Загружено ${loadedCount} из ${total}…`;
+        }
+        if (loadedCount === total && overlay) {
+          stopLoadingAnimation();
+          overlay.classList.add("hidden");
+        }
+      });
+
+      img.addEventListener("click", () => showLightbox(index));
+
+      const download = document.createElement("a");
+      download.href = url;
+      download.download = "";
+      download.className = "download-button";
+
+      const icon = document.createElement("img");
+      icon.src = "img/download.svg";
+      icon.alt = "Download";
+      download.appendChild(icon);
+
+      box.appendChild(img);
+      box.appendChild(download);
+      container.appendChild(box);
+    });
+  });
+
+
+
+      const sentinel = document.createElement('div');
+      sentinel.style.height = '1px';
+      document.getElementById('staticTopbar').before(sentinel);
+      let observerStarted = false;
+
+      window.addEventListener('scroll', () => {
+        if (!observerStarted && window.scrollY >= 300) {
+          observerStarted = true;
+          const observer = new IntersectionObserver(([entry]) => {
+            document.getElementById('fixedTopbar').style.display = entry.isIntersecting ? 'none' : 'flex';
+          }, { rootMargin: "-30px 0px 0px 0px" });
+          observer.observe(sentinel);
+        }
+      });
+
+      document.getElementById('download-all-btn-static').addEventListener('click', downloadAllPhotos);
+      document.getElementById('download-all-btn-fixed').addEventListener('click', downloadAllPhotos);
+      document.getElementById("lightboxClose").addEventListener("click", closeLightbox);
+      document.getElementById("lightboxBackdrop").addEventListener("click", closeLightbox);
+      document.getElementById("nextBtn").addEventListener("click", nextImage);
+      document.getElementById("prevBtn").addEventListener("click", prevImage);
+      document.addEventListener("keydown", e => {
+        if (document.getElementById("lightbox").style.display === "block") {
+          if (e.key === "ArrowRight") nextImage();
+          if (e.key === "ArrowLeft") prevImage();
+          if (e.key === "Escape") closeLightbox();
+        }
+      });
+        
+        document.getElementById("lightboxDownload").addEventListener("click", async (e) => {
+          e.preventDefault();
+          const url = allPhotoUrls[currentIndex];
+          const response = await fetch(url);
+          const blob = await response.blob();
+          const link = document.createElement("a");
+          link.href = URL.createObjectURL(blob);
+          link.download = url.split('/').pop() || `photo_${currentIndex + 1}.jpg`;
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+          URL.revokeObjectURL(link.href);
+
+      });
+
+
+      // Обработка переключения режимов
+      document.querySelectorAll(".mode-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          // Группировка ключей по альбомам
+          const keyGroups = {
+            // Альбом 1
+            avecfplcluttyikwkenfrcske: "group1",
+            icdluhxislzhofnugbfhtvkac: "group1",
+            ucnshzwbskeujgrdazmxcgwbn: "group1",
+            // Альбом 2
+            txllntcechyxfqheyncxvhase: "group2",
+            axxsxwmtuspvpaozqqwjqrmsn: "group2",
+            waqzhgeguhkgbwixgzfeuosqk: "group2"
+          };
+
+          // Набор ключей по группам
+          const keySets = {
+            group1: {
+              original: "avecfplcluttyikwkenfrcske",
+              filtered: "icdluhxislzhofnugbfhtvkac",
+              vintage: "ucnshzwbskeujgrdazmxcgwbn"
+            },
+            group2: {
+              original: "txllntcechyxfqheyncxvhase",
+              filtered: "axxsxwmtuspvpaozqqwjqrmsn",
+              vintage: "waqzhgeguhkgbwixgzfeuosqk"
+            }
+          };
+
+          // Определяем группу по текущему ключу
+          const currentGroup = keyGroups[code];
+
+          // Обработка переключения режимов с учётом группы
+          document.querySelectorAll(".mode-btn").forEach(btn => {
+            btn.addEventListener("click", () => {
+              const mode = btn.dataset.mode;
+              const codeMap = keySets[currentGroup];
+              if (codeMap && codeMap[mode]) {
+                window.location.href = `${window.location.pathname}?code=${codeMap[mode]}`;
+              }
+            });
+          });
+
+        });
+      });
+
+
+      document.getElementById("lightboxImage").addEventListener("click", () => {
+        
+        const img = document.getElementById("lightboxImage");
+        zoomed = !zoomed;
+        img.style.transform = zoomed ? "scale(2.5)" : "scale(1)";
+        img.style.cursor = zoomed ? "zoom-out" : "zoom-in";
       });
     });
+
+    const lightboxImage = document.getElementById("lightboxImage");
+
+    lightboxImage.addEventListener("mousemove", (e) => {
+      if (window.innerWidth <= 768) return; // Только на ПК
+      const rect = lightboxImage.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      lightboxImage.style.transformOrigin = `${x}% ${y}%`;
+      if (zoomed) {
+        lightboxImage.style.transform = "scale(2.5)";
+      }
+    });
+
+    lightboxImage.addEventListener("mouseleave", () => {
+      if (window.innerWidth <= 768) return;
+      if (zoomed) {
+        lightboxImage.style.transform = "scale(2.5)";
+      } else {
+        lightboxImage.style.transform = "scale(1)";
+      }
+    });
+
+    let hintShown = false;
+
+    window.addEventListener('scroll', () => {
+      if (!hintShown && window.scrollY > 500) {
+        hintShown = true;
+
+        const overlay = document.getElementById('downloadHintOverlay');
+        const hintText = document.getElementById('hintText');
+        const btn = document.getElementById('download-all-btn-fixed');
+
+        const rect = btn.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+
+        overlay.style.setProperty('--x', `${centerX}px`);
+        overlay.style.setProperty('--y', `${centerY}px`);
+        overlay.style.display = 'block';
+
+        hintText.style.left = `${centerX}px`;
+        hintText.style.top = `${centerY + 90}px`;
+        hintText.style.display = 'block';
+
+        setTimeout(() => {
+          overlay.style.display = 'none';
+          hintText.style.display = 'none';
+        }, 10000); // исчезнет через 10 секунд
+      }
+    });
+
+
+
   </script>
 </body>
 </html>
