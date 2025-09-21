@@ -778,7 +778,8 @@
           if (e.key === "ArrowLeft") prevImage();
           if (e.key === "Escape") closeLightbox();
         }
-
+      });
+        
         document.getElementById("lightboxDownload").addEventListener("click", async (e) => {
           e.preventDefault();
           const url = allPhotoUrls[currentIndex];
@@ -791,7 +792,6 @@
           link.click();
           link.remove();
           URL.revokeObjectURL(link.href);
-        });
 
       });
 
