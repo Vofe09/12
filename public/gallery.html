@@ -448,36 +448,34 @@
         object-fit: contain;
         border-radius: 0;
       }
-
-
-      .loading-overlay {
-        position: fixed;
-        inset: 0;
-        background: rgba(0,0,0,0.5); /* полупрозрачное затемнение */
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 9999;
-      }
-
-      /* прямоугольник по центру */
-      .loading-box {
-        background: #fff;
-        color: #000;
-        padding: 20px 40px;
-        border-radius: 8px;
-        font-size: 18px;
-        font-weight: 500;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      }
-
-      /* изначально скрыть */
-      #loadingOverlay.hidden {
-        display: none;
-      }
-
-
     }
+
+    .loading-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5); /* полупрозрачное затемнение */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    /* прямоугольник по центру */
+    .loading-box {
+      background: #fff;
+      color: #000;
+      padding: 20px 40px;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: 500;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    /* изначально скрыть */
+    #loadingOverlay.hidden {
+      display: none;
+    }
+
   </style>
 </head>
 <body>
