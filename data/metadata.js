@@ -349,13 +349,13 @@ export default {
     "zpvscdnrqhadbomnvlqsxtjlc": { 
     title: "FANFEST 2025", 
     date: "20.09.2025",
-    cover: "1_DSC0685_nyao1l" ////
+    cover: "1_DSC0685_nyao1l" 
   },
 
-    "": { 
-    title: "", 
-    date: "05.09.2025",
-    cover: "" ////
+    "rrkxeqbucmzuyelwgowbeufqt": { 
+    title: "Станция скорой помощи", 
+    date: "22.09.2025",
+    cover: "_DSC0880_t85zyt" ////
   },
 
     "": { 
