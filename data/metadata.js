@@ -358,10 +358,10 @@ export default {
     cover: "_DSC0880_t85zyt" ////
   },
 
-    "": { 
-    title: "", 
-    date: "05.09.2025",
-    cover: "" ////
+    "ryrktcfvoslmfmsbwcqwoqtae": { 
+    title: "Алёна", 
+    date: "22.09.2025",
+    cover: "_DSC0899_noffp6" ////
   },
 
     "": { 
