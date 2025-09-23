@@ -364,10 +364,10 @@ export default {
     cover: "_DSC0899_noffp6" ////
   },
 
-    "": { 
-    title: "", 
-    date: "05.09.2025",
-    cover: "" ////
+    "vmcbbjwmqcfgcnedrmfgkokby": { 
+    title: "Станция скорой помощи (архив)", 
+    date: "22.09.2025",
+    cover: "_DSC0880_zjqzky" ////
   },
 
     "": { 
