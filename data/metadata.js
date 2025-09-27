@@ -376,10 +376,10 @@ export default {
     cover: "DSC_0348-Улучшено-Ум._шума_otgc73" ////
   },
 
-    "": { 
-    title: "", 
-    date: "05.09.2025",
-    cover: "" ////
+    "eflhjpnwvyzmiwvwbkvollqjl": { 
+    title: "hangout", 
+    date: "27.09.2025",
+    cover: "DSC_0413-Улучшено-Ум._шума_r2aw6j" ////
   },
 
     "": { 
