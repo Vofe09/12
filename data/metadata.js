@@ -370,10 +370,10 @@ export default {
     cover: "_DSC0880_zjqzky" ////
   },
 
-    "": { 
-    title: "", 
-    date: "05.09.2025",
-    cover: "" ////
+    "qaqyvqxspynfbnpeaxqxtjqwx": { 
+    title: "Аля", 
+    date: "27.09.2025",
+    cover: "DSC_0348-Улучшено-Ум._шума_otgc73" ////
   },
 
     "": { 
