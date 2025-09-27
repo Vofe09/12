@@ -379,7 +379,7 @@ export default {
     "eflhjpnwvyzmiwvwbkvollqjl": { 
     title: "hangout", 
     date: "27.09.2025",
-    cover: "DSC_0413-Улучшено-Ум._шума_r2aw6j" ////
+    cover: "DSC_0490-Улучшено-Ум._шума_qrjqbh" ////
   },
 
     "": { 
