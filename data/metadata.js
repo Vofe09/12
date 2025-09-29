@@ -382,10 +382,10 @@ export default {
     cover: "DSC_0490-Улучшено-Ум._шума_qrjqbh" ////
   },
 
-    "": { 
-    title: "", 
-    date: "05.09.2025",
-    cover: "" ////
+    "jzcitgzgxnyvyjgdqacmxionk": { 
+    title: "ждем степендию", 
+    date: "29.09.2025",
+    cover: "DSC_0760_hjv5fy" ////
   },
 
     "": { 
