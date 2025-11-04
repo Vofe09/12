@@ -3,6 +3,10 @@
     {
       "source": "/api/photos/:key",
       "destination": "/api/photos.js"
+    },
+    {
+      "source": "/abc",
+      "destination": "/birthday.html"
     }
   ]
 }
