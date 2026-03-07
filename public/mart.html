@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>С Днём Рождения!</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #555;
+      background-image: url('img/mart.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(15px);
+      max-width: 90vw;
+      width: 600px;
+      padding: 40px;
+      font-size: 1.3rem;
+      border-radius: 20px;
+      color: white;
+      text-align: center;
+      margin: 20px;
+      position: relative;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 1s ease;
+    }
+
+    .card.show-card {
+      animation: fadeZoomIn 1.5s ease forwards;
+      pointer-events: auto;
+    }
+
+    .card p {
+      margin: 6px 0;
+      line-height: 1.3;
+    }
+
+    @keyframes fadeZoomIn {
+      from {
+        transform: scale(0.8);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    canvas#confetti {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    #intro-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(85, 85, 85, 0.8);
+      backdrop-filter: blur(20px);
+      z-index: 10000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 1s ease;
+    }
+
+    .intro-text {
+      font-size: 2rem;
+      color: white;
+      font-weight: bold;
+      letter-spacing: 2px;
+      cursor: pointer;
+      user-select: none;
+      animation: pulse 2s infinite;
+      text-align: center;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 0.8; }
+      50% { transform: scale(1.1); opacity: 1; }
+      100% { transform: scale(1); opacity: 0.8; }
+    }
+
+    @media (max-width: 480px) {
+      .card {
+        padding: 30px 20px;
+        font-size: 1rem;
+        margin: 20px;
+        transform: scale(0.9);
+      }
+
+      .card h1 {
+        font-size: 1.4rem;
+      }
+
+      .intro-text {
+        font-size: 1.5rem;
+        padding: 0 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="intro-overlay">
+    <div class="intro-text">enter?</div>
+  </div>
+
+  <audio id="birthday-audio" autoplay loop>
+    <source src="sounds/mart.mp3" type="audio/mpeg">
+ o- </audio>
+0
+  <!-- <audio id="fireworkSound" src="sounds/fireworks.mp3" preload="auto" loop></audio> -->
+
+  <div class="card">
+    <h1>Марина Маратовна, с 8 марта!</h1>
+    <p>Желаю счастья, здоровья</p>
+    <p>Счастья, здоровья</p>
+    <p>Ещё счастья и ещё здоровья</p>
+    <p>И всего самого доброго, светлого, и хорошего)</p>
+  </div>
+
+  <canvas id="confetti"></canvas>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <script>
+    function launchConfettiRainForever() {
+      const colors = ['#ff0a54', '#ff477e', '#ff85a1', '#fbb1bd', '#f9bec7'];
+      setInterval(() => {
+        confetti({ particleCount: 10, angle: 60, spread: 20, origin: { x: 0.1 }, colors });
+        confetti({ particleCount: 10, angle: 120, spread: 20, origin: { x: 0.9 }, colors });
+      }, 200);
+    }
+
+    function launchConfettiExplosionForever() {
+      const defaults = {
+        startVelocity: 45,
+        spread: 3600,
+        ticks: 90,
+        zIndex: 9999
+      };
+      function randomInRange(min, max) {
+        return Math.random() * (max - min) + min;
+      }
+      setInterval(() => {
+        confetti(Object.assign({}, defaults, {
+          particleCount: 400,
+          origin: {
+            x: randomInRange(0.2, 0.8),
+            y: randomInRange(0.2, 0.8)
+          }
+        }));
+      }, 900);
+    }
+
+    function fadeOutAudio(audio, duration = 3000) {
+      const steps = 30;
+      const stepTime = duration / steps;
+      const volumeStep = audio.volume / steps;
+      const fade = setInterval(() => {
+        if (audio.volume - volumeStep > 0) {
+          audio.volume -= volumeStep;
+        } else {
+          audio.volume = 0;
+          audio.pause();
+          clearInterval(fade);
+        }
+      }, stepTime);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const music = document.getElementById("birthday-audio");
+      const firework = document.getElementById("fireworkSound");
+      const overlay = document.getElementById("intro-overlay");
+      const card = document.querySelector('.card');
+
+      music.volume = 0.5;
+      firework.volume = 0.4;
+
+      overlay.addEventListener("click", () => {
+        overlay.style.opacity = "0";
+        setTimeout(() => overlay.remove(), 1000);
+
+        music.play();
+        firework.play();
+
+        launchConfettiRainForever();
+        launchConfettiExplosionForever();
+
+        setTimeout(() => {
+          card.classList.add('show-card');
+        }, 1000);
+
+        setTimeout(() => {
+          fadeOutAudio(firework, 4000);
+        }, 10000);
+      });
+    });
+  </script>
+</body>
+</html>
