@@ -132,7 +132,7 @@
     <source src="sounds/mart.mp3" type="audio/mpeg">
  </audio>
 
-  <!-- <audio id="fireworkSound" src="sounds/fireworks.mp3" preload="auto" loop></audio> -->
+  <audio id="fireworkSound" src="sounds/fireworks.mp3" preload="auto" loop></audio>
 
   <div class="card">
     <h1>Марина Маратовна, с 8 марта!</h1>
@@ -219,6 +219,39 @@
         }, 10000);
       });
     });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        startAnimation();
+      }
+    });
+
+    function startAnimation() {
+    overlay.style.opacity = "0";
+    setTimeout(() => overlay.remove(), 1000);
+
+    music.play();
+    firework.play();
+
+    launchConfettiRainForever();
+    launchConfettiExplosionForever();
+
+    setTimeout(() => {
+      card.classList.add('show-card');
+    }, 1000);
+
+    setTimeout(() => {
+      fadeOutAudio(firework, 4000);
+    }, 10000);
+  }
+
+  overlay.addEventListener("click", startAnimation);
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      startAnimation();
+    }
+  });
   </script>
 </body>
 </html>
