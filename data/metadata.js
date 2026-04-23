@@ -394,10 +394,10 @@ export default {
     cover: "DSC_0171_xfr5p4" ////
   },
 
-    "": { 
-    title: "", 
-    date: "05.09.2025",
-    cover: "" ////
+    "eEulMiWJOd": { 
+    title: "American Corner guests ;)", 
+    date: "23.04.2026",
+    cover: "1DSC_4346-Улучшено-Ум._шума_mkhkby" ////
   },
 
     "": { 
