@@ -388,10 +388,10 @@ export default {
     cover: "DSC_0760_hjv5fy" ////
   },
 
-    "": { 
-    title: "", 
-    date: "05.09.2025",
-    cover: "" ////
+    "test": { 
+    title: "Test", 
+    date: "23.04.2026",
+    cover: "DSC_0171_xfr5p4" ////
   },
 
     "": { 
