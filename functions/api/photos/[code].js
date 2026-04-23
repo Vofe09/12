@@ -1,58 +1,49 @@
-import { v2 as cloudinary } from 'cloudinary';
-import metadata from '../../../../data/metadata.js';
-
-export async function onRequestGet({ env, params }) {
+export async function onRequestGet({ params, env }) {
   const code = params.code;
 
   if (!code) {
-    return new Response(JSON.stringify({ success: false, message: "Код не указан" }), {
+    return new Response(JSON.stringify({ success: false }), {
       status: 400,
-      headers: { "Content-Type": "application/json; charset=utf-8" },
+      headers: { "Content-Type": "application/json" }
     });
   }
 
-  cloudinary.config({
-    cloud_name: env.CLOUDINARY_CLOUD_NAME,
-    api_key: env.CLOUDINARY_API_KEY,
-    api_secret: env.CLOUDINARY_API_SECRET,
-  });
-
   try {
-    const result = await cloudinary.search
-      .expression(`folder:${code}`)
-      .sort_by('public_id', 'asc')
-      .max_results(500)
-      .execute();
+    const auth = btoa(`${env.CLOUDINARY_API_KEY}:${env.CLOUDINARY_API_SECRET}`);
 
-    const urls = result.resources.map((file) =>
-      cloudinary.url(file.public_id, {
-        type: "upload",
-        secure: true,
-      })
-    );
-
-    const meta = metadata[code];
-
-    return new Response(
-      JSON.stringify({
-        success: true,
-        urls,
-        title: meta?.title || "",
-        date: meta?.date || "",
-        cover: meta?.cover
-          ? cloudinary.url(meta.cover, { type: "upload", secure: true })
-          : "",
-      }),
+    const res = await fetch(
+      `https://api.cloudinary.com/v1_1/${env.CLOUDINARY_CLOUD_NAME}/resources/search`,
       {
-        headers: { "Content-Type": "application/json; charset=utf-8" },
+        method: "POST",
+        headers: {
+          "Authorization": `Basic ${auth}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          expression: `folder:${code}`,
+          sort_by: [{ public_id: "asc" }],
+          max_results: 100
+        })
       }
     );
-  } catch (error) {
-    console.error("Ошибка Cloudinary:", error);
 
-    return new Response(JSON.stringify({ success: false, message: "Ошибка сервера" }), {
+    const result = await res.json();
+
+    const urls = result.resources.map(r => r.secure_url);
+
+    return new Response(JSON.stringify({
+      success: true,
+      urls
+    }), {
+      headers: { "Content-Type": "application/json" }
+    });
+
+  } catch (err) {
+    console.error(err);
+
+    return new Response(JSON.stringify({ success: false }), {
       status: 500,
-      headers: { "Content-Type": "application/json; charset=utf-8" },
+      headers: { "Content-Type": "application/json" }
     });
   }
 }
