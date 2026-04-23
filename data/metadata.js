@@ -397,7 +397,7 @@ export default {
     "eEulMiWJOd": { 
     title: "American Corner guests ;)", 
     date: "23.04.2026",
-    cover: "1DSC_4346-Улучшено-Ум._шума_mkhkby" ////
+    cover: "5DSC_4346-Улучшено-Ум._шума_ymw4z2" ////
   },
 
     "": { 
