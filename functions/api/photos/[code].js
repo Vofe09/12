@@ -30,6 +30,7 @@ export async function onRequestGet({ params, env }) {
     const result = await res.json();
 
     const urls = result.resources.map(r => r.secure_url);
+    console.log(result);
 
     return new Response(JSON.stringify({
       success: true,
