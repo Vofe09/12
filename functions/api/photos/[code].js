@@ -1,77 +1,131 @@
+import metadata from '../../../data/metadata.js';
+
+function CreateJsonResponse(body, status = 200) {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+    },
+  });
+}
+
 export async function onRequestGet({ params, env }) {
-  const code = params.code;
+  const code = (params?.code || '').trim();
 
   if (!code) {
-    return new Response(JSON.stringify({ success: false }), {
-      status: 400,
-      headers: { "Content-Type": "application/json" }
-    });
+    return CreateJsonResponse(
+      { success: false, message: 'Код не указан', urls: [] },
+      400
+    );
   }
 
-  try {
-    const auth = btoa(`${env.CLOUDINARY_API_KEY}:${env.CLOUDINARY_API_SECRET}`);
+  const cloudName = env.CLOUDINARY_CLOUD_NAME;
+  const apiKey = env.CLOUDINARY_API_KEY;
+  const apiSecret = env.CLOUDINARY_API_SECRET;
 
-    const res = await fetch(
-      `https://api.cloudinary.com/v1_1/${env.CLOUDINARY_CLOUD_NAME}/resources/search`,
+  if (!cloudName || !apiKey || !apiSecret) {
+    return CreateJsonResponse(
+      { success: false, message: 'Cloudinary env vars are not configured', urls: [] },
+      500
+    );
+  }
+
+  const authHeader = `Basic ${btoa(`${apiKey}:${apiSecret}`)}`;
+
+  const abortController = new AbortController();
+  const timeoutId = setTimeout(() => abortController.abort(), 10000);
+
+  try {
+    const response = await fetch(
+      `https://api.cloudinary.com/v1_1/${cloudName}/resources/search`,
       {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Authorization": `Basic ${auth}`,
-          "Content-Type": "application/json"
+          Authorization: authHeader,
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           expression: `folder="${code}"`,
-          sort_by: [{ public_id: "asc" }],
-          max_results: 100
-        })
+          sort_by: [{ public_id: 'asc' }],
+          max_results: 100,
+        }),
+        signal: abortController.signal,
       }
     );
 
-    // ❗ ВАЖНО
-    const text = await res.text();
-    console.log("RAW RESPONSE:", text);
+    const responseText = await response.text();
 
-    if (!res.ok) {
-      return new Response(JSON.stringify({
-        success: false,
-        error: text
-      }), {
-        status: res.status,
-        headers: { "Content-Type": "application/json" }
-      });
+    if (!response.ok) {
+      return CreateJsonResponse(
+        {
+          success: false,
+          message: 'Cloudinary search failed',
+          details: responseText,
+          urls: [],
+        },
+        response.status
+      );
     }
 
     let result;
     try {
-      result = JSON.parse(text);
+      result = JSON.parse(responseText);
     } catch {
-      return new Response(JSON.stringify({
-        success: false,
-        error: "Cloudinary вернул не JSON"
-      }), {
-        status: 500,
-        headers: { "Content-Type": "application/json" }
-      });
+      return CreateJsonResponse(
+        {
+          success: false,
+          message: 'Cloudinary returned non-JSON response',
+          urls: [],
+        },
+        500
+      );
     }
 
-    const urls = (result.resources || []).map(r => r.secure_url);
+    const resources = Array.isArray(result.resources) ? result.resources : [];
+    const urls = resources
+      .map((resource) => resource.secure_url)
+      .filter(Boolean);
 
-    return new Response(JSON.stringify({
+    if (urls.length === 0) {
+      return CreateJsonResponse(
+        {
+          success: false,
+          message: 'Фотографии не найдены',
+          urls: [],
+          title: '',
+          date: '',
+          cover: '',
+        },
+        404
+      );
+    }
+
+    const meta = metadata[code] || {};
+
+    return CreateJsonResponse({
       success: true,
-      urls
-    }), {
-      headers: { "Content-Type": "application/json" }
+      urls,
+      title: meta.title || '',
+      date: meta.date || '',
+      cover: meta.cover
+        ? `https://res.cloudinary.com/${cloudName}/image/upload/${encodeURI(meta.cover)}`
+        : '',
     });
+  } catch (error) {
+    const message =
+      error?.name === 'AbortError'
+        ? 'Cloudinary request timed out'
+        : (error?.message || 'Unknown server error');
 
-  } catch (err) {
-    console.error("ERROR:", err);
-
-    return new Response(JSON.stringify({
-      success: false,
-      error: err.message
-    }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" }
-    });
+    return CreateJsonResponse(
+      {
+        success: false,
+        message,
+        urls: [],
+      },
+      500
+    );
+  } finally {
+    clearTimeout(timeoutId);
   }
 }
