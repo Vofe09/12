@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
   <style>
     body {
       margin: 0;
@@ -107,22 +108,21 @@
     }
 
     #photo-container {
-      column-count: 4;       /* 4 колонки на десктопе */
-      column-gap: 12px;      /* расстояние между колонками */
-      padding: 0 35px;
-      grid-template-columns: repeat(4, 1fr); /* строго 4 колонки на десктопе */
-      gap: 12px;
+      column-count: 4;
+      column-gap: 12px;
       padding: 0 35px;
     }
 
     .photo-box {
-      display: inline-block; /* чтобы можно было в колонку */
-      width: 100%;           /* растягивается по ширине колонки */
-      margin-bottom: 12px;   /* отступ между фотками */
+      display: inline-block;
+      width: 100%;
+      margin-bottom: 12px;
       border-radius: 10px;
       overflow: hidden;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      break-inside: avoid;   /* чтобы не рвало блоки */
+      break-inside: avoid;
+      position: relative;
+      background: white;
     }
 
     .photo-box img {
@@ -158,133 +158,8 @@
     .photo-box:hover .download-button {
       opacity: 1;
     }
-    .lightbox-download {
-      margin-top: 8px; /* чуть ниже картинки */
-      background: rgba(255, 255, 255, 0.2);
-      padding: 6px;
-      border-radius: 50%;
-      z-index: 20;
-      display: inline-flex;  /* маленький кружок */
-      align-items: center;
-      justify-content: center;
-      width: 36px;           /* небольшой размер */
-      height: 36px;
-    }
 
-
-    .lightbox-download img {
-      width: 24px;
-      height: 24px;
-      filter: invert(1);
-    }
-
-    .hint-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.6);
-      pointer-events: none;
-      z-index: 2000;
-      display: none;
-      clip-path: circle(80px at var(--x, 50%) var(--y, 50%));
-      transition: opacity 0.3s ease;
-    }
-
-    .hint-text {
-      position: fixed;
-      color: white;
-      font-size: 16px;
-      font-weight: 500;
-      background: rgba(0,0,0,0.5);
-      padding: 6px 12px;
-      border-radius: 8px;
-      z-index: 2001;
-      pointer-events: none;
-      transform: translate(-50%, -50%);
-      display: none;
-    }
-
-
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.5);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 3000;
-    }
-
-    .modal-content {
-      background: white;
-      border-radius: 20px;
-      padding: 25px 15px;
-      text-align: center;
-      width: 100%;
-      max-width: 480px;
-      position: relative;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-      animation: fadeIn 0.7s ease;
-      display: flex;
-      flex-direction: column;
-      align-items: center; /* центрируем контент по горизонтали */
-    }
-
-    .modal-content img {
-      width: 450px;
-      height: 450px;
-      object-fit: cover;
-      border-radius: 16px;
-      margin-bottom: 16px;
-    }
-
-
-
-    .modal-content p {
-      margin: 0;
-      font-size: 16px;
-      color: #333;
-      font-weight: 500;
-    }
-
-    .modal-close {
-      position: absolute;
-      top: 6px;
-      right: 8px;
-      background: transparent;
-      border: none;
-      font-size: 22px;
-      color: #999;
-      cursor: pointer;
-    }
-
-    .modal-close:hover {
-      color: #444;
-    }
-
-    @keyframes fadeIn {
-      from { transform: scale(0.95); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
-
-
-    @media (max-width: 768px) {
-      .modal-content {
-        max-width: calc(100% - 40px); /* по 20px отступа слева и справа */
-        padding: 20px 15px;
-      }
-
-      .modal-content img {
-        width: 100%;
-        height: auto;
-        max-height: 300px;
-        object-fit: contain;
-      }
-
-      .modal-content p {
-        font-size: 15px;
-      }
-}
-        .mode-buttons {
+    .mode-buttons {
       display: flex;
       justify-content: center;
       gap: 12px;
@@ -314,75 +189,54 @@
       font-weight: 600;
     }
 
-
-
-
-
-    @media (max-width: 768px) {
-      .lightbox-download {
-        top: 15px;    /* поднимем выше */
-        bottom: auto; /* отключаем нижнюю привязку */
-        right: 15px;
-        width: 56px;   /* чуть больше для пальца */
-        height: 56px;
-        padding: 12px;
-      }
+    .loading-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
     }
 
-
-    /* 📱 Адаптивные стили для телефонов */
-    @media (max-width: 768px) {
-      .highlight-box {
-        height: 60vh;
-        max-height: none;
-      }
-
-      .overlay-text h1 {
-        font-size: 24px;
-      }
-
-      .overlay-text p {
-        font-size: 14px;
-      }
-
-      #photo-container {
-        column-count: 2;     /* 2 колонки на телефоне */
-      padding: 0 5px;
-
-      }
-
-      .topbar {
-        padding: 0 16px;
-      }
-
-      .topbar .left {
-        font-size: 14px;
-      }
-
-      .topbar .right img {
-        height: 25px;
-        vertical-align: middle;
-        cursor: pointer;
-      }
-
-      .notice-bar {
-        font-size: 12px;
-      }
+    .loading-box {
+      background: #fff;
+      color: #000;
+      padding: 20px 40px;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: 500;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-width: 260px;
+      min-height: 100px;
+      text-align: center;
     }
 
+    #loadingOverlay.hidden {
+      display: none;
+    }
 
-    /* 🌌 Lightbox */
+    /* Lightbox */
     #lightbox {
       position: fixed;
       z-index: 2000;
-      top: 0; left: 0; right: 0; bottom: 0;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
       display: none;
     }
 
     .lightbox-backdrop {
       background: rgba(0, 0, 0, 0.85);
       position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
     }
 
     .lightbox-content {
@@ -393,8 +247,8 @@
       max-width: 90vw;
       max-height: 90vh;
       display: flex;
-      flex-direction: column; /* картинка сверху, кнопка снизу */
-      align-items: flex-end;  /* кнопка прижата к правому краю */
+      flex-direction: column;
+      align-items: flex-end;
       justify-content: center;
     }
 
@@ -428,13 +282,8 @@
       border-radius: 50%;
     }
 
-    .lightbox-arrow.left {
-      left: 20px;
-    }
-
-    .lightbox-arrow.right {
-      right: 20px;
-    }
+    .lightbox-arrow.left { left: 20px; }
+    .lightbox-arrow.right { right: 20px; }
 
     .lightbox-arrow img {
       width: 24px;
@@ -442,7 +291,117 @@
       filter: invert(1);
     }
 
+    .lightbox-download {
+      margin-top: 8px;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 6px;
+      border-radius: 50%;
+      z-index: 20;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+    }
+
+    .lightbox-download img {
+      width: 24px;
+      height: 24px;
+      filter: invert(1);
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 3000;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 20px;
+      padding: 25px 15px;
+      text-align: center;
+      width: 100%;
+      max-width: 480px;
+      position: relative;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      animation: fadeIn 0.7s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .modal-content img {
+      width: 450px;
+      height: 450px;
+      object-fit: cover;
+      border-radius: 16px;
+      margin-bottom: 16px;
+    }
+
+    .modal-content p {
+      margin: 0;
+      font-size: 16px;
+      color: #333;
+      font-weight: 500;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 6px;
+      right: 8px;
+      background: transparent;
+      border: none;
+      font-size: 22px;
+      color: #999;
+      cursor: pointer;
+    }
+
+    @keyframes fadeIn {
+      from { transform: scale(0.95); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
     @media (max-width: 768px) {
+      .highlight-box {
+        height: 60vh;
+        max-height: none;
+      }
+
+      .overlay-text h1 {
+        font-size: 24px;
+      }
+
+      .overlay-text p {
+        font-size: 14px;
+      }
+
+      #photo-container {
+        column-count: 2;
+        padding: 0 5px;
+      }
+
+      .topbar {
+        padding: 0 16px;
+      }
+
+      .topbar .left {
+        font-size: 14px;
+      }
+
+      .topbar .right img {
+        height: 25px;
+        cursor: pointer;
+      }
+
+      .notice-bar {
+        font-size: 12px;
+      }
+
       .lightbox-content {
         top: 0;
         left: 0;
@@ -452,8 +411,8 @@
         max-width: none;
         max-height: none;
         border-radius: 0;
-        flex-direction: column; /* картинка сверху, кнопка снизу */
-        align-items: flex-end;  /* кнопка справа */
+        flex-direction: column;
+        align-items: flex-end;
       }
 
       .lightbox-content img {
@@ -461,53 +420,34 @@
         height: auto;
         object-fit: contain;
       }
+
       .lightbox-download {
         margin-top: 6px;
         width: 31px;
         height: 31px;
         padding: 10px;
       }
+
+      .modal-content {
+        max-width: calc(100% - 40px);
+        padding: 20px 15px;
+      }
+
+      .modal-content img {
+        width: 100%;
+        height: auto;
+        max-height: 300px;
+        object-fit: contain;
+      }
+
+      .modal-content p {
+        font-size: 15px;
+      }
     }
-
-    .loading-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.5);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-    }
-
-    /* прямоугольник по центру */
-    .loading-box {
-      background: #fff;
-      color: #000;
-      padding: 20px 40px;
-      border-radius: 8px;
-      font-size: 18px;
-      font-weight: 500;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-
-      display: flex;           /* новое */
-      flex-direction: column;  /* новое */
-      gap: 8px;                /* новое: расстояние между строками */
-      min-width: 260px;        /* можно расширить */
-      min-height: 100px;       /* можно расширить */
-      text-align: center;      /* красиво */
-    }
-
-    /* изначально скрыть */
-    #loadingOverlay.hidden {
-      display: none;
-    }
-
   </style>
 </head>
 <body>
-
-
-  <div class="notice-bar">Фотографии доступны до <strong> 01.12.2025</strong></div>
+  <div class="notice-bar">Фотографии доступны до <strong>01.12.2025</strong></div>
 
   <div class="highlight-box">
     <img id="cover-image" src="" alt="Обложка" />
@@ -525,13 +465,9 @@
   <div id="loadingOverlay" class="loading-overlay hidden">
     <div class="loading-box">
       <p id="loadingText">Идёт загрузка</p>
-      <p id="loadingProgress"></p> <!-- сюда выводим прогресс -->
+      <p id="loadingProgress"></p>
     </div>
   </div>
-
-
-
-
 
   <div class="topbar static" id="staticTopbar">
     <div class="left">Kovalev Nazar</div>
@@ -546,7 +482,6 @@
 
   <div id="photo-container"></div>
 
-  <!-- Lightbox -->
   <div id="lightbox">
     <div class="lightbox-backdrop" id="lightboxBackdrop"></div>
     <div class="lightbox-content">
@@ -560,369 +495,398 @@
     </div>
   </div>
 
-
-    <div id="thanksModal" class="modal-overlay">
-      <div class="modal-content">
-        <button class="modal-close" id="modalCloseBtn">×</button>
-        <img src="img/kittie1.jpg" alt="Котик" />
-        <p><b> >спасибо за фотосессию! </b> <br> сейчас начнется загрузка..</p>
-      </div>
+  <div id="thanksModal" class="modal-overlay">
+    <div class="modal-content">
+      <button class="modal-close" id="modalCloseBtn">×</button>
+      <img src="img/kittie1.jpg" alt="Котик" />
+      <p><b>&gt;спасибо за фотосессию!</b><br>сейчас начнется загрузка..</p>
     </div>
-
-
+  </div>
 
   <script>
     let allPhotoUrls = [];
     let currentIndex = 0;
     let zoomed = false;
+    let loadingInterval = null;
+    let currentCode = "";
+    let currentMode = "";
+    let hintShown = false;
+    let downloadAllInProgress = false;
 
-    async function downloadAllPhotos() {
-      if (allPhotoUrls.length === 0) {
-        alert("Фотографии ещё не загружены.");
-        return;
-      }
-      // Показать окно с котиком
-      const modal = document.getElementById("thanksModal");
-      modal.style.display = "flex";
-
-
-
-      const zip = new JSZip();
-      const promises = allPhotoUrls.map(async (url, index) => {
-        try {
-          const response = await fetch(url);
-          const blob = await response.blob();
-          const contentType = response.headers.get("Content-Type");
-          let ext = contentType.includes("jpeg") ? "jpg" :
-                    contentType.includes("png") ? "png" :
-                    contentType.includes("webp") ? "webp" : "jpg";
-          const fileName = `photo_${String(index + 1).padStart(3, '0')}.${ext}`;
-          zip.file(fileName, blob);
-        } catch (e) {
-          console.error(`Ошибка при загрузке ${url}`, e);
-        }
-      });
-
-      await Promise.all(promises);
-      const content = await zip.generateAsync({ type: "blob" });
-      saveAs(content, "gallery.zip");
+    function ShowLoadingOverlay(isVisible) {
+      const overlay = document.getElementById("loadingOverlay");
+      if (!overlay) return;
+      overlay.classList.toggle("hidden", !isVisible);
     }
 
-    function showLightbox(index) {
-      if (!allPhotoUrls[index]) return;
-      currentIndex = index;
-      zoomed = false;
-
-      // Обновляем href + download сразу
-      const url = allPhotoUrls[index];
-      const downloadBtn = document.getElementById("lightboxDownload");
-      downloadBtn.href = url;
-
-      // Вытащим имя файла из URL (или дадим своё)
-      const filename = url.split('/').pop() || `photo_${index + 1}.jpg`;
-      downloadBtn.setAttribute("download", filename);
-
-      const lightboxImage = document.getElementById("lightboxImage");
-      lightboxImage.src = url;
-      lightboxImage.style.transform = "scale(1)";
-      document.getElementById("lightbox").style.display = "block";
-    }
-
-    function closeLightbox() {
-      document.getElementById("lightbox").style.display = "none";
-    }
-
-    function nextImage() {
-      currentIndex = (currentIndex + 1) % allPhotoUrls.length;
-      showLightbox(currentIndex);
-    }
-
-    function prevImage() {
-      currentIndex = (currentIndex - 1 + allPhotoUrls.length) % allPhotoUrls.length;
-      showLightbox(currentIndex);
-    }
-
-    let loadingInterval;
-    function startLoadingAnimation() {
+    function StartLoadingAnimation() {
       const loadingText = document.getElementById("loadingText");
+      if (!loadingText) return;
+
+      StopLoadingAnimation();
       let dotCount = 0;
+
       loadingInterval = setInterval(() => {
-        dotCount = (dotCount + 1) % 4; // 0–3 точки
+        dotCount = (dotCount + 1) % 4;
         loadingText.textContent = "Идёт загрузка" + ".".repeat(dotCount);
       }, 500);
     }
 
-    function stopLoadingAnimation() {
-      clearInterval(loadingInterval);
+    function StopLoadingAnimation() {
+      if (loadingInterval) {
+        clearInterval(loadingInterval);
+        loadingInterval = null;
+      }
       const loadingText = document.getElementById("loadingText");
       if (loadingText) loadingText.textContent = "Идёт загрузка";
+      const loadingProgress = document.getElementById("loadingProgress");
+      if (loadingProgress) loadingProgress.textContent = "";
     }
 
+    function ShowLightbox(index) {
+      if (!allPhotoUrls[index]) return;
+      currentIndex = index;
+      zoomed = false;
 
-    window.addEventListener('load', () => {
-      const params = new URLSearchParams(window.location.search);
-      const code = params.get("code");
-      const container = document.getElementById("photo-container");
-      const key = params.get("code");
+      const url = allPhotoUrls[index];
+      const downloadBtn = document.getElementById("lightboxDownload");
+      if (downloadBtn) {
+        downloadBtn.href = url;
+        downloadBtn.setAttribute("download", url.split("/").pop() || `photo_${index + 1}.jpg`);
+      }
+
+      const lightboxImage = document.getElementById("lightboxImage");
+      if (lightboxImage) {
+        lightboxImage.src = url;
+        lightboxImage.style.transform = "scale(1)";
+      }
+
+      const lightbox = document.getElementById("lightbox");
+      if (lightbox) lightbox.style.display = "block";
+    }
+
+    function CloseLightbox() {
+      const lightbox = document.getElementById("lightbox");
+      if (lightbox) lightbox.style.display = "none";
+    }
+
+    function NextImage() {
+      if (!allPhotoUrls.length) return;
+      currentIndex = (currentIndex + 1) % allPhotoUrls.length;
+      ShowLightbox(currentIndex);
+    }
+
+    function PrevImage() {
+      if (!allPhotoUrls.length) return;
+      currentIndex = (currentIndex - 1 + allPhotoUrls.length) % allPhotoUrls.length;
+      ShowLightbox(currentIndex);
+    }
+
+    function ExtractRating(url) {
+      const match = url.match(/\/(\d)[^\/]*\.(jpg|jpeg|png|webp)/i);
+      return match ? parseInt(match[1], 10) : 0;
+    }
+
+    function SetModeButtonsByCode(code) {
       const validKeys = {
-        // Первый альбом
         avecfplcluttyikwkenfrcske: "original",
         icdluhxislzhofnugbfhtvkac: "filtered",
         ucnshzwbskeujgrdazmxcgwbn: "vintage",
-        // Второй альбом
         txllntcechyxfqheyncxvhase: "original",
         axxsxwmtuspvpaozqqwjqrmsn: "filtered",
         waqzhgeguhkgbwixgzfeuosqk: "vintage"
       };
 
-      if (key in validKeys) {
-        document.getElementById("modeButtons").style.display = "flex";
+      const modeButtons = document.getElementById("modeButtons");
+      if (!modeButtons) return;
 
-        // Активная кнопка
-        const mode = validKeys[key];
-        document.querySelectorAll('.mode-btn').forEach(btn => {
-          if (btn.dataset.mode === mode) {
-            btn.classList.add("active-mode");
-          }
+      if (code in validKeys) {
+        modeButtons.style.display = "flex";
+        const activeMode = validKeys[code];
+        document.querySelectorAll(".mode-btn").forEach((btn) => {
+          btn.classList.toggle("active-mode", btn.dataset.mode === activeMode);
         });
       }
+    }
 
-      document.getElementById("modalCloseBtn").addEventListener("click", () => {
-      document.getElementById("thanksModal").style.display = "none";
+    function SetupModeSwitching(code) {
+      const keyGroups = {
+        avecfplcluttyikwkenfrcske: "group1",
+        icdluhxislzhofnugbfhtvkac: "group1",
+        ucnshzwbskeujgrdazmxcgwbn: "group1",
+        txllntcechyxfqheyncxvhase: "group2",
+        axxsxwmtuspvpaozqqwjqrmsn: "group2",
+        waqzhgeguhkgbwixgzfeuosqk: "group2"
+      };
+
+      const keySets = {
+        group1: {
+          original: "avecfplcluttyikwkenfrcske",
+          filtered: "icdluhxislzhofnugbfhtvkac",
+          vintage: "ucnshzwbskeujgrdazmxcgwbn"
+        },
+        group2: {
+          original: "txllntcechyxfqheyncxvhase",
+          filtered: "axxsxwmtuspvpaozqqwjqrmsn",
+          vintage: "waqzhgeguhkgbwixgzfeuosqk"
+        }
+      };
+
+      const currentGroup = keyGroups[code];
+      if (!currentGroup) return;
+
+      document.querySelectorAll(".mode-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const mode = btn.dataset.mode;
+          const codeMap = keySets[currentGroup];
+          if (codeMap && codeMap[mode]) {
+            window.location.href = `${window.location.pathname}?code=${encodeURIComponent(codeMap[mode])}`;
+          }
+        });
       });
+    }
+
+    async function DownloadAllPhotos() {
+      if (downloadAllInProgress) return;
+
+      if (!allPhotoUrls.length) {
+        alert("Фотографии ещё не загружены.");
+        return;
+      }
+
+      downloadAllInProgress = true;
+
+      const modal = document.getElementById("thanksModal");
+      if (modal) modal.style.display = "flex";
+
+      try {
+        const zip = new JSZip();
+        const promises = allPhotoUrls.map(async (url, index) => {
+          try {
+            const response = await fetch(url);
+            const blob = await response.blob();
+            const contentType = (response.headers.get("Content-Type") || "").toLowerCase();
+
+            let ext = "jpg";
+            if (contentType.includes("jpeg")) ext = "jpg";
+            else if (contentType.includes("png")) ext = "png";
+            else if (contentType.includes("webp")) ext = "webp";
+
+            const fileName = `photo_${String(index + 1).padStart(3, "0")}.${ext}`;
+            zip.file(fileName, blob);
+          } catch (error) {
+            console.error(`Ошибка при загрузке ${url}`, error);
+          }
+        });
+
+        await Promise.all(promises);
+        const content = await zip.generateAsync({ type: "blob" });
+        saveAs(content, "gallery.zip");
+      } finally {
+        if (modal) modal.style.display = "none";
+        downloadAllInProgress = false;
+      }
+    }
+
+    async function LoadGallery() {
+      const params = new URLSearchParams(window.location.search);
+      const code = params.get("code");
+      currentCode = code || "";
+
+      const container = document.getElementById("photo-container");
+      const coverImage = document.getElementById("cover-image");
+      const sessionTitle = document.getElementById("session-title");
+      const sessionDate = document.getElementById("session-date");
+      const overlay = document.getElementById("loadingOverlay");
+
+      if (!container) return;
+
+      SetModeButtonsByCode(currentCode);
+      SetupModeSwitching(currentCode);
 
       if (!code) {
         container.innerHTML = "<p>Код доступа не указан.</p>";
         return;
       }
 
- fetch(`/api/photos/${code}`)
-  .then(res => res.json())
-  .then(data => {
-    if (!data.success) {
-      container.innerHTML = "<p>No photos found for this code.</p>";
-      return;
-    }
+      ShowLoadingOverlay(true);
+      StartLoadingAnimation();
 
-    // показываем оверлей загрузки
-    const overlay = document.getElementById("loadingOverlay");
-    overlay?.classList.remove("hidden"); // hidden = display:none в CSS
-    startLoadingAnimation();
+      try {
+        const response = await fetch(`/api/photos/${encodeURIComponent(code)}`);
+        const contentType = response.headers.get("content-type") || "";
+        const rawText = await response.text();
 
-    // заполняем заголовок, обложку, дату
-    document.getElementById("cover-image").src = data.cover || "";
-    document.getElementById("session-title").textContent = data.title || "Photoshoot";
-    document.getElementById("session-date").textContent = data.date || "";
-
-    // Функция извлечения рейтинга из имени файла
-    function extractRating(url) {
-      const match = url.match(/\/(\d)[^\/]*\.(jpg|jpeg|png|webp)/i);
-      return match ? parseInt(match[1], 10) : 0;
-    }
-    allPhotoUrls = data.urls.sort((a, b) => extractRating(b) - extractRating(a)); // <— этой строки у тебя сейчас нет
-
-    // Сортируем по убыванию рейтинга
-    container.innerHTML = ""; // очищаем контейнер
-
-    let loadedCount = 0;
-    const total = allPhotoUrls.length;
-
-    // ✅ создаём блоки для каждой фотки
-    allPhotoUrls.forEach((url, index) => {
-      const box = document.createElement("div");
-      box.className = "photo-box";
-
-      const img = document.createElement("img");
-      img.src = url;
-      img.alt = "Photo";
-
-      img.addEventListener("load", () => {
-        loadedCount++;
-        const progressEl = document.getElementById("loadingProgress");
-        if (progressEl) {
-          progressEl.textContent = `Загружено ${loadedCount} из ${total}…`;
+        if (!response.ok) {
+          throw new Error(rawText || `HTTP ${response.status}`);
         }
-        if (loadedCount === total && overlay) {
-          stopLoadingAnimation();
-          overlay.classList.add("hidden");
+
+        if (!contentType.includes("application/json")) {
+          throw new Error("Сервер вернул не JSON.");
         }
-      });
 
-      img.addEventListener("click", () => showLightbox(index));
+        const data = JSON.parse(rawText);
 
-      const download = document.createElement("a");
-      download.href = url;
-      download.download = "";
-      download.className = "download-button";
-
-      const icon = document.createElement("img");
-      icon.src = "img/download.svg";
-      icon.alt = "Download";
-      download.appendChild(icon);
-
-      box.appendChild(img);
-      box.appendChild(download);
-      container.appendChild(box);
-    });
-
-  });
-
-
-
-      const sentinel = document.createElement('div');
-      sentinel.style.height = '1px';
-      document.getElementById('staticTopbar').before(sentinel);
-      let observerStarted = false;
-
-      window.addEventListener('scroll', () => {
-        if (!observerStarted && window.scrollY >= 300) {
-          observerStarted = true;
-          const observer = new IntersectionObserver(([entry]) => {
-            document.getElementById('fixedTopbar').style.display = entry.isIntersecting ? 'none' : 'flex';
-          }, { rootMargin: "-30px 0px 0px 0px" });
-          observer.observe(sentinel);
+        if (!data.success) {
+          container.innerHTML = "<p>Фотографии не найдены для этого кода.</p>";
+          ShowLoadingOverlay(false);
+          StopLoadingAnimation();
+          return;
         }
-      });
 
-      document.getElementById('download-all-btn-static').addEventListener('click', downloadAllPhotos);
-      document.getElementById('download-all-btn-fixed').addEventListener('click', downloadAllPhotos);
-      document.getElementById("lightboxClose").addEventListener("click", closeLightbox);
-      document.getElementById("lightboxBackdrop").addEventListener("click", closeLightbox);
-      document.getElementById("nextBtn").addEventListener("click", nextImage);
-      document.getElementById("prevBtn").addEventListener("click", prevImage);
-      document.addEventListener("keydown", e => {
-        if (document.getElementById("lightbox").style.display === "block") {
-          if (e.key === "ArrowRight") nextImage();
-          if (e.key === "ArrowLeft") prevImage();
-          if (e.key === "Escape") closeLightbox();
+        document.title = data.title ? `${data.title} — Галерея` : "Ваша галерея";
+
+        if (coverImage) coverImage.src = data.cover || "";
+        if (sessionTitle) sessionTitle.textContent = data.title || "Photoshoot";
+        if (sessionDate) sessionDate.textContent = data.date || "";
+
+        if (!Array.isArray(data.urls) || data.urls.length === 0) {
+          container.innerHTML = "<p>Фотографии не найдены.</p>";
+          ShowLoadingOverlay(false);
+          StopLoadingAnimation();
+          return;
         }
-      });
-        
-        document.getElementById("lightboxDownload").addEventListener("click", async (e) => {
-          e.preventDefault();
-          const url = allPhotoUrls[currentIndex];
-          const response = await fetch(url);
-          const blob = await response.blob();
-          const link = document.createElement("a");
-          link.href = URL.createObjectURL(blob);
-          link.download = url.split('/').pop() || `photo_${currentIndex + 1}.jpg`;
-          document.body.appendChild(link);
-          link.click();
-          link.remove();
-          URL.revokeObjectURL(link.href);
 
-      });
+        allPhotoUrls = data.urls.slice().sort((a, b) => ExtractRating(b) - ExtractRating(a));
+        container.innerHTML = "";
 
+        let loadedCount = 0;
+        const total = allPhotoUrls.length;
 
-      // Обработка переключения режимов
-      document.querySelectorAll(".mode-btn").forEach(btn => {
-        btn.addEventListener("click", () => {
-          // Группировка ключей по альбомам
-          const keyGroups = {
-            // Альбом 1
-            avecfplcluttyikwkenfrcske: "group1",
-            icdluhxislzhofnugbfhtvkac: "group1",
-            ucnshzwbskeujgrdazmxcgwbn: "group1",
-            // Альбом 2
-            txllntcechyxfqheyncxvhase: "group2",
-            axxsxwmtuspvpaozqqwjqrmsn: "group2",
-            waqzhgeguhkgbwixgzfeuosqk: "group2"
-          };
+        allPhotoUrls.forEach((url, index) => {
+          const box = document.createElement("div");
+          box.className = "photo-box";
 
-          // Набор ключей по группам
-          const keySets = {
-            group1: {
-              original: "avecfplcluttyikwkenfrcske",
-              filtered: "icdluhxislzhofnugbfhtvkac",
-              vintage: "ucnshzwbskeujgrdazmxcgwbn"
-            },
-            group2: {
-              original: "txllntcechyxfqheyncxvhase",
-              filtered: "axxsxwmtuspvpaozqqwjqrmsn",
-              vintage: "waqzhgeguhkgbwixgzfeuosqk"
+          const img = document.createElement("img");
+          img.src = url;
+          img.alt = "Photo";
+          img.loading = "lazy";
+
+          img.addEventListener("load", () => {
+            loadedCount++;
+            const progressEl = document.getElementById("loadingProgress");
+            if (progressEl) {
+              progressEl.textContent = `Загружено ${loadedCount} из ${total}…`;
             }
-          };
-
-          // Определяем группу по текущему ключу
-          const currentGroup = keyGroups[code];
-
-          // Обработка переключения режимов с учётом группы
-          document.querySelectorAll(".mode-btn").forEach(btn => {
-            btn.addEventListener("click", () => {
-              const mode = btn.dataset.mode;
-              const codeMap = keySets[currentGroup];
-              if (codeMap && codeMap[mode]) {
-                window.location.href = `${window.location.pathname}?code=${codeMap[mode]}`;
-              }
-            });
+            if (loadedCount >= total) {
+              StopLoadingAnimation();
+              ShowLoadingOverlay(false);
+            }
           });
 
+          img.addEventListener("error", () => {
+            loadedCount++;
+            const progressEl = document.getElementById("loadingProgress");
+            if (progressEl) {
+              progressEl.textContent = `Ошибка загрузки ${loadedCount} из ${total}`;
+            }
+            if (loadedCount >= total) {
+              StopLoadingAnimation();
+              ShowLoadingOverlay(false);
+            }
+          });
+
+          img.addEventListener("click", () => ShowLightbox(index));
+
+          const download = document.createElement("a");
+          download.href = url;
+          download.download = "";
+          download.className = "download-button";
+
+          const icon = document.createElement("img");
+          icon.src = "img/download.svg";
+          icon.alt = "Download";
+          download.appendChild(icon);
+
+          box.appendChild(img);
+          box.appendChild(download);
+          container.appendChild(box);
         });
+
+        if (total === 0) {
+          StopLoadingAnimation();
+          ShowLoadingOverlay(false);
+        }
+      } catch (error) {
+        console.error("Ошибка загрузки галереи:", error);
+        container.innerHTML = "<p>Не удалось загрузить галерею.</p>";
+        StopLoadingAnimation();
+        ShowLoadingOverlay(false);
+      }
+    }
+
+    window.addEventListener("load", async () => {
+      const modalCloseBtn = document.getElementById("modalCloseBtn");
+      const downloadAllBtnStatic = document.getElementById("download-all-btn-static");
+      const downloadAllBtnFixed = document.getElementById("download-all-btn-fixed");
+      const lightboxClose = document.getElementById("lightboxClose");
+      const lightboxBackdrop = document.getElementById("lightboxBackdrop");
+      const nextBtn = document.getElementById("nextBtn");
+      const prevBtn = document.getElementById("prevBtn");
+      const lightboxImage = document.getElementById("lightboxImage");
+
+      if (modalCloseBtn) {
+        modalCloseBtn.addEventListener("click", () => {
+          const modal = document.getElementById("thanksModal");
+          if (modal) modal.style.display = "none";
+        });
+      }
+
+      if (downloadAllBtnStatic) downloadAllBtnStatic.addEventListener("click", DownloadAllPhotos);
+      if (downloadAllBtnFixed) downloadAllBtnFixed.addEventListener("click", DownloadAllPhotos);
+      if (lightboxClose) lightboxClose.addEventListener("click", CloseLightbox);
+      if (lightboxBackdrop) lightboxBackdrop.addEventListener("click", CloseLightbox);
+      if (nextBtn) nextBtn.addEventListener("click", NextImage);
+      if (prevBtn) prevBtn.addEventListener("click", PrevImage);
+
+      document.addEventListener("keydown", (event) => {
+        const lightbox = document.getElementById("lightbox");
+        if (!lightbox || lightbox.style.display !== "block") return;
+
+        if (event.key === "ArrowRight") NextImage();
+        if (event.key === "ArrowLeft") PrevImage();
+        if (event.key === "Escape") CloseLightbox();
       });
 
+      if (lightboxImage) {
+        lightboxImage.addEventListener("click", () => {
+          zoomed = !zoomed;
+          lightboxImage.style.transform = zoomed ? "scale(2.5)" : "scale(1)";
+          lightboxImage.style.cursor = zoomed ? "zoom-out" : "zoom-in";
+        });
 
-      document.getElementById("lightboxImage").addEventListener("click", () => {
-        
-        const img = document.getElementById("lightboxImage");
-        zoomed = !zoomed;
-        img.style.transform = zoomed ? "scale(2.5)" : "scale(1)";
-        img.style.cursor = zoomed ? "zoom-out" : "zoom-in";
+        lightboxImage.addEventListener("mousemove", (event) => {
+          if (window.innerWidth <= 768) return;
+          const rect = lightboxImage.getBoundingClientRect();
+          const x = ((event.clientX - rect.left) / rect.width) * 100;
+          const y = ((event.clientY - rect.top) / rect.height) * 100;
+          lightboxImage.style.transformOrigin = `${x}% ${y}%`;
+          if (zoomed) {
+            lightboxImage.style.transform = "scale(2.5)";
+          }
+        });
+
+        lightboxImage.addEventListener("mouseleave", () => {
+          if (window.innerWidth <= 768) return;
+          lightboxImage.style.transform = zoomed ? "scale(2.5)" : "scale(1)";
+        });
+      }
+
+      window.addEventListener("scroll", () => {
+        const fixedTopbar = document.getElementById("fixedTopbar");
+        const staticTopbar = document.getElementById("staticTopbar");
+
+        if (!fixedTopbar || !staticTopbar) return;
+
+        if (window.scrollY >= 300) {
+          fixedTopbar.style.display = "flex";
+        } else {
+          fixedTopbar.style.display = "none";
+        }
       });
+
+      await LoadGallery();
     });
-
-    const lightboxImage = document.getElementById("lightboxImage");
-
-    lightboxImage.addEventListener("mousemove", (e) => {
-      if (window.innerWidth <= 768) return; // Только на ПК
-      const rect = lightboxImage.getBoundingClientRect();
-      const x = ((e.clientX - rect.left) / rect.width) * 100;
-      const y = ((e.clientY - rect.top) / rect.height) * 100;
-      lightboxImage.style.transformOrigin = `${x}% ${y}%`;
-      if (zoomed) {
-        lightboxImage.style.transform = "scale(2.5)";
-      }
-    });
-
-    lightboxImage.addEventListener("mouseleave", () => {
-      if (window.innerWidth <= 768) return;
-      if (zoomed) {
-        lightboxImage.style.transform = "scale(2.5)";
-      } else {
-        lightboxImage.style.transform = "scale(1)";
-      }
-    });
-
-    let hintShown = false;
-
-    window.addEventListener('scroll', () => {
-      if (!hintShown && window.scrollY > 500) {
-        hintShown = true;
-
-        const overlay = document.getElementById('downloadHintOverlay');
-        const hintText = document.getElementById('hintText');
-        const btn = document.getElementById('download-all-btn-fixed');
-
-        const rect = btn.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
-
-        overlay.style.setProperty('--x', `${centerX}px`);
-        overlay.style.setProperty('--y', `${centerY}px`);
-        overlay.style.display = 'block';
-
-        hintText.style.left = `${centerX}px`;
-        hintText.style.top = `${centerY + 90}px`;
-        hintText.style.display = 'block';
-
-        setTimeout(() => {
-          overlay.style.display = 'none';
-          hintText.style.display = 'none';
-        }, 10000); // исчезнет через 10 секунд
-      }
-    });
-
-
-
   </script>
 </body>
 </html>
