@@ -20,17 +20,41 @@ export async function onRequestGet({ params, env }) {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          expression: `folder:${code}`,
+          expression: `folder="${code}"`,
           sort_by: [{ public_id: "asc" }],
           max_results: 100
         })
       }
     );
 
-    const result = await res.json();
+    // ❗ ВАЖНО
+    const text = await res.text();
+    console.log("RAW RESPONSE:", text);
 
-    const urls = result.resources.map(r => r.secure_url);
-    console.log(result);
+    if (!res.ok) {
+      return new Response(JSON.stringify({
+        success: false,
+        error: text
+      }), {
+        status: res.status,
+        headers: { "Content-Type": "application/json" }
+      });
+    }
+
+    let result;
+    try {
+      result = JSON.parse(text);
+    } catch {
+      return new Response(JSON.stringify({
+        success: false,
+        error: "Cloudinary вернул не JSON"
+      }), {
+        status: 500,
+        headers: { "Content-Type": "application/json" }
+      });
+    }
+
+    const urls = (result.resources || []).map(r => r.secure_url);
 
     return new Response(JSON.stringify({
       success: true,
@@ -40,9 +64,12 @@ export async function onRequestGet({ params, env }) {
     });
 
   } catch (err) {
-    console.error(err);
+    console.error("ERROR:", err);
 
-    return new Response(JSON.stringify({ success: false }), {
+    return new Response(JSON.stringify({
+      success: false,
+      error: err.message
+    }), {
       status: 500,
       headers: { "Content-Type": "application/json" }
     });
