@@ -20,7 +20,7 @@ export async function onRequestGet({ params, env }) {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          expression: `folder:${code}`,
+          expression: code,
           sort_by: [{ public_id: "asc" }],
           max_results: 100
         })
