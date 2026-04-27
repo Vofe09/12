@@ -400,10 +400,10 @@ export default {
     cover: "5DSC_4346-Улучшено-Ум._шума_ymw4z2" ////
   },
 
-    "": { 
-    title: "", 
-    date: "05.09.2025",
-    cover: "" ////
+    "esTRfhLTtKuvUK": { 
+    title: "Frisbee", 
+    date: "27.04.2026",
+    cover: "5DSC_0234_lmmkoi" ////
   },
 
     "": { 
