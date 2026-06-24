@@ -355,57 +355,67 @@ export default {
     "rrkxeqbucmzuyelwgowbeufqt": { 
     title: "Станция скорой помощи", 
     date: "22.09.2025",
-    cover: "_DSC0880_t85zyt" ////
+    cover: "_DSC0880_t85zyt" 
   },
 
     "ryrktcfvoslmfmsbwcqwoqtae": { 
     title: "Алёна", 
     date: "22.09.2025",
-    cover: "_DSC0899_noffp6" ////
+    cover: "_DSC0899_noffp6" 
   },
 
     "vmcbbjwmqcfgcnedrmfgkokby": { 
     title: "Станция скорой помощи (архив)", 
     date: "22.09.2025",
-    cover: "_DSC0880_zjqzky" ////
+    cover: "_DSC0880_zjqzky" 
   },
 
     "qaqyvqxspynfbnpeaxqxtjqwx": { 
     title: "Аля", 
     date: "27.09.2025",
-    cover: "DSC_0348-Улучшено-Ум._шума_otgc73" ////
+    cover: "DSC_0348-Улучшено-Ум._шума_otgc73" 
   },
 
     "eflhjpnwvyzmiwvwbkvollqjl": { 
     title: "hangout", 
     date: "27.09.2025",
-    cover: "DSC_0490-Улучшено-Ум._шума_qrjqbh" ////
+    cover: "DSC_0490-Улучшено-Ум._шума_qrjqbh" 
   },
 
     "jzcitgzgxnyvyjgdqacmxionk": { 
     title: "ждем степендию", 
     date: "29.09.2025",
-    cover: "DSC_0760_hjv5fy" ////
+    cover: "DSC_0760_hjv5fy"
   },
 
     "test": { 
     title: "Test", 
     date: "23.04.2026",
-    cover: "DSC_0171_xfr5p4" ////
+    cover: "DSC_0171_xfr5p4" 
   },
 
     "eEulMiWJOd": { 
     title: "American Corner guests ;)", 
     date: "23.04.2026",
-    cover: "5DSC_4346-Улучшено-Ум._шума_ymw4z2" ////
+    cover: "5DSC_4346-Улучшено-Ум._шума_ymw4z2" 
   },
 
     "esTRfhLTtKuvUK": { 
     title: "Frisbee", 
     date: "27.04.2026",
-    cover: "5DSC_0234_lmmkoi" ////
+    cover: "5DSC_0234_lmmkoi" 
   },
 
+    "lbhqbyryuqvjqvlitypsqmmncxyden": { 
+    title: "American Corner", 
+    date: "23.06.2026",
+    cover: "5DSC_4729-Улучшено-Ум._шума_limduc" ////
+  },
+    "": { 
+    title: "", 
+    date: "05.09.2025",
+    cover: "" ////
+  },
     "": { 
     title: "", 
     date: "05.09.2025",
