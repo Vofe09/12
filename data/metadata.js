@@ -409,7 +409,7 @@ export default {
     "lbhqbyryuqvjqvlitypsqmmncxyden": { 
     title: "American Corner", 
     date: "23.06.2026",
-    cover: "5DSC_4729-Улучшено-Ум._шума_limduc" ////
+    cover: "5DSC_4845-Улучшено-Ум._шума_esrfpa" ////
   },
     "": { 
     title: "", 
